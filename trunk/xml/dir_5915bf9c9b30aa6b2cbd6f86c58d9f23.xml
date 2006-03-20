@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.4.6">
+  <compounddef id="dir_5915bf9c9b30aa6b2cbd6f86c58d9f23" kind="dir">
+    <compoundname>liveplayer08/src/</compoundname>
+    <innerfile refid="liveplayer08_8cpp">liveplayer08.cpp</innerfile>
+    <innerfile refid="LP__alsaout_8cpp">LP_alsaout.cpp</innerfile>
+    <innerfile refid="LP__alsaout_8h">LP_alsaout.h</innerfile>
+    <innerfile refid="LP__audiofile_8cpp">LP_audiofile.cpp</innerfile>
+    <innerfile refid="LP__audiofile_8h">LP_audiofile.h</innerfile>
+    <innerfile refid="LP__global__var_8cpp">LP_global_var.cpp</innerfile>
+    <innerfile refid="LP__global__var_8h">LP_global_var.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/"/>
+  </compounddef>
+</doxygen>

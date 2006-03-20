@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.4.6">
+  <compound refid="classLP__alsa" kind="class"><name>LP_alsa</name>
+    <member refid="classLP__alsa_1fbef7e6695b0775d5dacd91706cb3697" kind="function"><name>lp_alsa_init</name></member>
+    <member refid="classLP__alsa_1b56c6161a20784af71434c036275af59" kind="function"><name>lp_alsa_close</name></member>
+    <member refid="classLP__alsa_175146f27a4dcbdcd947669c50a22761a" kind="variable"><name>lp_alsa_playing</name></member>
+    <member refid="classLP__alsa_188c0862812fb8e52783a158efba0bb04" kind="variable"><name>nb_max_channel</name></member>
+    <member refid="classLP__alsa_1594787a851c2fdc47fe6f05d22fe8d6e" kind="function"><name>test_hw_params</name></member>
+    <member refid="classLP__alsa_12f6d1c188c82fc63d6201c8e2d12eccc" kind="function"><name>set_hw_params</name></member>
+    <member refid="classLP__alsa_1334c8bae277af28f75a6a6d4bec5c07d" kind="function"><name>set_sw_params</name></member>
+    <member refid="classLP__alsa_1e76b339772b0e7a0dbe5c50ada287f39" kind="variable"><name>output</name></member>
+    <member refid="classLP__alsa_1f4cbb5277eff1ec54785b80688584458" kind="variable"><name>err</name></member>
+    <member refid="classLP__alsa_1ebe15fea11c588c8406ea4175544af69" kind="variable"><name>frame_readen</name></member>
+    <member refid="classLP__alsa_1df2f19fdd9d04349966fa3d4ab30bced" kind="variable"><name>frames_to_deliver</name></member>
+    <member refid="classLP__alsa_1a76063206d4b94c440763397746743ce" kind="variable"><name>pcm_handle</name></member>
+    <member refid="classLP__alsa_1ac44272d71590f63bc0cefbefd1bbec6" kind="variable"><name>hw_params</name></member>
+    <member refid="classLP__alsa_14c653b49a17fd87ed57eb186ccb60d9f" kind="variable"><name>sw_params</name></member>
+    <member refid="classLP__alsa_1d4e2c6a940287b5edaf76cbdf2fffce3" kind="variable"><name>pcm_format</name></member>
+    <member refid="classLP__alsa_1de5146dd8c86950597093c39cc16e5ec" kind="variable"><name>dir</name></member>
+    <member refid="classLP__alsa_131c12d07387ffe4b21e9724aee2ce7cc" kind="variable"><name>lp_alsa_stop</name></member>
+    <member refid="classLP__alsa_14d84295d7413c32383d4e4401126df12" kind="variable"><name>thread_id</name></member>
+  </compound>
+  <compound refid="classLP__global__audio__data" kind="class"><name>LP_global_audio_data</name>
+    <member refid="classLP__global__audio__data_1e37460b2d1212344fde8a81cec776f29" kind="function"><name>lp_audio_global_init</name></member>
+    <member refid="classLP__global__audio__data_1cafad84d44dfd74f4f90da8559ddbe6b" kind="function"><name>lp_audio_global_alloc</name></member>
+    <member refid="classLP__global__audio__data_1c4d2ab47a1f0d24a796f376f10eb256f" kind="function"><name>lp_audio_global_close</name></member>
+    <member refid="classLP__global__audio__data_10ae8c157463adf18dcb946a0076baf82" kind="variable"><name>hd_size</name></member>
+    <member refid="classLP__global__audio__data_1fec5bc101d89ea2c7d7683ec676e2ab3" kind="variable"><name>bus_buffer_mutex</name></member>
+    <member refid="classLP__global__audio__data_173b3c465153b3e33675dd4e88b713ad3" kind="variable"><name>it_size</name></member>
+    <member refid="classLP__global__audio__data_1b01d1d92a16e6e9a04e30f17c03ba0a7" kind="variable"><name>it_ot_buffer</name></member>
+    <member refid="classLP__global__audio__data_14ae91a0d297864bab7bf56892e45801f" kind="variable"><name>th_play</name></member>
+    <member refid="classLP__global__audio__data_136159761b0fe0d90bdcf1fb11a0d67fe" kind="variable"><name>it_ot_buffer_mutex</name></member>
+    <member refid="classLP__global__audio__data_15d4ba9cfcbdf28b6d02b238d21161f3b" kind="variable"><name>ot_size</name></member>
+    <member refid="classLP__global__audio__data_17eed5d823e0f9bc929ecb664b4c77bd4" kind="variable"><name>ot_full</name></member>
+    <member refid="classLP__global__audio__data_1eba4fdd152fdcf498431236f78dd6cc3" kind="variable"><name>ot_frames_to_read</name></member>
+    <member refid="classLP__global__audio__data_1b5aec91c9e739f6459b6245d08215361" kind="variable"><name>ot_buffer</name></member>
+    <member refid="classLP__global__audio__data_14ce835f5f53701925e3c8971487168aa" kind="variable"><name>nb_channel</name></member>
+    <member refid="classLP__global__audio__data_17ece6e48516e7c15b1ad12368807d981" kind="variable"><name>rate</name></member>
+    <member refid="classLP__global__audio__data_108bfc814b81d07afaaa9cab8cf78c646" kind="variable"><name>sample_format</name></member>
+    <member refid="classLP__global__audio__data_13e2334531757fd148ccccdbbceee355b" kind="variable"><name>nb_frames</name></member>
+    <member refid="classLP__global__audio__data_1e303b2352346d43cca4f8f8e7eeec59e" kind="variable"><name>it_to_ot_ready</name></member>
+    <member refid="classLP__global__audio__data_1c12bf7f7e0a8106148bac412b0a53ebb" kind="variable"><name>play_ready</name></member>
+    <member refid="classLP__global__audio__data_14c8fa74682e426c5b844e21efc7d7a02" kind="variable"><name>pcm_handle</name></member>
+    <member refid="classLP__global__audio__data_14edfd9f434d8185ca15f474d31c3fff3" kind="variable"><name>rd_to_buf_ready</name></member>
+    <member refid="classLP__global__audio__data_11ab9510b86248c92089167777ce67fd2" kind="variable"><name>init_ok</name></member>
+    <member refid="classLP__global__audio__data_1370e1ff5c89378230807717717eed6d8" kind="variable"><name>bus_buf_size</name></member>
+    <member refid="classLP__global__audio__data_1d53089420583fbcf9e7312c4362940eb" kind="variable"><name>bus_buffer_1</name></member>
+    <member refid="classLP__global__audio__data_1d0cf96ce790f88910e328b361616c336" kind="variable"><name>bus_buffer_2</name></member>
+    <member refid="classLP__global__audio__data_1fb911bdbe7f2137216d03165f8176f2b" kind="variable"><name>bus_buffer_3</name></member>
+    <member refid="classLP__global__audio__data_13b7aa88ddbb68ea2fc2197ac2859db98" kind="variable"><name>bus_buffer_4</name></member>
+    <member refid="classLP__global__audio__data_123984117feae452b2879acabf04acb38" kind="variable"><name>bus_out</name></member>
+    <member refid="classLP__global__audio__data_15a4beaca0186b830997260f485bb18b3" kind="variable"><name>nb_players</name></member>
+    <member refid="classLP__global__audio__data_11cddb293136f76016c6515d9be5206a8" kind="variable"><name>play_buf_full</name></member>
+    <member refid="classLP__global__audio__data_16cd24f4f54be8707796efe7e49885da5" kind="variable"><name>player_mode</name></member>
+    <member refid="classLP__global__audio__data_12aa611e8235e65e000047700d91f208f" kind="variable"><name>mixed_buffer</name></member>
+  </compound>
+  <compound refid="classLP__player" kind="class"><name>LP_player</name>
+    <member refid="classLP__player_1d41c33e80a90ec1a67b6ba7d9297a8a3" kind="function"><name>LP_player</name></member>
+    <member refid="classLP__player_176aea0bbf6e3341b4d189a507a5de3f5" kind="function"><name>~LP_player</name></member>
+    <member refid="classLP__player_12eba1c8dd12236a7cf505220ba512c19" kind="function"><name>test_LP</name></member>
+    <member refid="classLP__player_12b3e3e75f7d3251e9c27148fbe3aa4ee" kind="function"><name>get_file</name></member>
+    <member refid="classLP__player_1ff46962ad75b52eef7cdfd264e32e809" kind="function"><name>get_event</name></member>
+    <member refid="classLP__player_1eee1b381824a9740880d60aac5613315" kind="variable"><name>player_ID</name></member>
+    <member refid="classLP__player_1633cb1cd14d03a37f1a93af8534e7b75" kind="variable"><name>player_ready</name></member>
+    <member refid="classLP__player_1ac1b5a4946a2fd8394c8a24b9e655fc8" kind="variable"><name>snd_fd</name></member>
+    <member refid="classLP__player_166addd9b7c0f1f010880708beb4b7963" kind="variable"><name>rd_size</name></member>
+    <member refid="classLP__player_1ffa7b500a9e606050ff1af6b39c37ae8" kind="variable"><name>rd_buffer</name></member>
+    <member refid="classLP__player_1298d6038d1d6fd40d4055db7fbac6f4e" kind="variable"><name>mfile</name></member>
+    <member refid="classLP__player_1f9b952e65e1592fdc20a534a331e0a19" kind="variable"><name>mbus</name></member>
+    <member refid="classLP__player_16a6db173e24a5fcc4342061b3dc1a344" kind="variable"><name>mplay_mode</name></member>
+    <member refid="classLP__player_1e8035181a07a239c73a6a489fa560958" kind="variable"><name>volume</name></member>
+    <member refid="classLP__player_14c34d97c3ecebf03b2bcc126346c7e8b" kind="variable"><name>rate</name></member>
+    <member refid="classLP__player_1e45163ac38181edb850745c22466ff49" kind="variable"><name>audio_info</name></member>
+    <member refid="classLP__player_1eca1c19b74710f02d3edd55bcc306328" kind="variable"><name>nb_channel</name></member>
+  </compound>
+  <compound refid="namespacestd" kind="namespace"><name>std</name>
+  </compound>
+  <compound refid="liveplayer08_8cpp" kind="file"><name>liveplayer08.cpp</name>
+    <member refid="liveplayer08_8cpp_10ddf1224851353fc92bfbff6f499fa97" kind="function"><name>main</name></member>
+  </compound>
+  <compound refid="LP__alsaout_8cpp" kind="file"><name>LP_alsaout.cpp</name>
+    <member refid="LP__alsaout_8cpp_18843d02fcca8eccc783e2b7a1d9ef9de" kind="function"><name>lp_alsa_thread_init</name></member>
+    <member refid="LP__alsaout_8cpp_14ca27e2f26d04e70287ffbd43d8a1f66" kind="function"><name>lp_alsa_thread_join</name></member>
+    <member refid="LP__alsaout_8cpp_1bd076b090d26429bc3bb81ca4c477453" kind="function"><name>lp_alsa_thread</name></member>
+  </compound>
+  <compound refid="LP__alsaout_8h" kind="file"><name>LP_alsaout.h</name>
+    <member refid="LP__alsaout_8h_1705350c14c1f28bb8d6d57dafbf9ccff" kind="define"><name>ALSA_PCM_NEW_HW_PARAMS_API</name></member>
+    <member refid="LP__alsaout_8h_18843d02fcca8eccc783e2b7a1d9ef9de" kind="function"><name>lp_alsa_thread_init</name></member>
+    <member refid="LP__alsaout_8h_14ca27e2f26d04e70287ffbd43d8a1f66" kind="function"><name>lp_alsa_thread_join</name></member>
+    <member refid="LP__alsaout_8h_1bd076b090d26429bc3bb81ca4c477453" kind="function"><name>lp_alsa_thread</name></member>
+  </compound>
+  <compound refid="LP__audiofile_8cpp" kind="file"><name>LP_audiofile.cpp</name>
+    <member refid="LP__audiofile_8cpp_134b87b68336e7d0547dcf5a0ef91021e" kind="function"><name>lp_player_thread_init</name></member>
+    <member refid="LP__audiofile_8cpp_1b21a4f18b4fed3dd5e1eb92e1f855c47" kind="function"><name>lp_player_thread_join</name></member>
+    <member refid="LP__audiofile_8cpp_1b7f48a4cbaf8f0d97d328d4db6346b90" kind="function"><name>lp_player_thread</name></member>
+    <member refid="LP__audiofile_8cpp_1b094e9d4f260d1e03cbd754327a195a8" kind="function"><name>lp_it_ot_thread_init</name></member>
+    <member refid="LP__audiofile_8cpp_103e139f4176fab1a73f2da801db7eaa9" kind="function"><name>lp_it_ot_thread_join</name></member>
+    <member refid="LP__audiofile_8cpp_1cee0507d940e18c2943d6b9e384729ac" kind="function"><name>lp_it_to_ot_buffer</name></member>
+    <member refid="LP__audiofile_8cpp_1fb4f919263a34c8516b41f9ca65a6bab" kind="function"><name>mix_out</name></member>
+    <member refid="LP__audiofile_8cpp_131561cff9c2e4586e8227c02f915c51f" kind="function"><name>add_one_buffer</name></member>
+    <member refid="LP__audiofile_8cpp_105204cf8e860a51e8c822bf7d66e5717" kind="function"><name>extract_one_buffer</name></member>
+    <member refid="LP__audiofile_8cpp_173cef06636aee484f18d0a07eb517b1f" kind="function"><name>clear_bus_buffers</name></member>
+    <member refid="LP__audiofile_8cpp_13284f7c8dcb7def37b900836143abaf3" kind="function"><name>clear_mixed_buffer</name></member>
+  </compound>
+  <compound refid="LP__audiofile_8h" kind="file"><name>LP_audiofile.h</name>
+    <member refid="LP__audiofile_8h_134b87b68336e7d0547dcf5a0ef91021e" kind="function"><name>lp_player_thread_init</name></member>
+    <member refid="LP__audiofile_8h_1b21a4f18b4fed3dd5e1eb92e1f855c47" kind="function"><name>lp_player_thread_join</name></member>
+    <member refid="LP__audiofile_8h_1b7f48a4cbaf8f0d97d328d4db6346b90" kind="function"><name>lp_player_thread</name></member>
+    <member refid="LP__audiofile_8h_1b094e9d4f260d1e03cbd754327a195a8" kind="function"><name>lp_it_ot_thread_init</name></member>
+    <member refid="LP__audiofile_8h_103e139f4176fab1a73f2da801db7eaa9" kind="function"><name>lp_it_ot_thread_join</name></member>
+    <member refid="LP__audiofile_8h_1cee0507d940e18c2943d6b9e384729ac" kind="function"><name>lp_it_to_ot_buffer</name></member>
+    <member refid="LP__audiofile_8h_1fb4f919263a34c8516b41f9ca65a6bab" kind="function"><name>mix_out</name></member>
+    <member refid="LP__audiofile_8h_105204cf8e860a51e8c822bf7d66e5717" kind="function"><name>extract_one_buffer</name></member>
+    <member refid="LP__audiofile_8h_131561cff9c2e4586e8227c02f915c51f" kind="function"><name>add_one_buffer</name></member>
+    <member refid="LP__audiofile_8h_173cef06636aee484f18d0a07eb517b1f" kind="function"><name>clear_bus_buffers</name></member>
+    <member refid="LP__audiofile_8h_13284f7c8dcb7def37b900836143abaf3" kind="function"><name>clear_mixed_buffer</name></member>
+  </compound>
+  <compound refid="LP__global__var_8cpp" kind="file"><name>LP_global_var.cpp</name>
+  </compound>
+  <compound refid="LP__global__var_8h" kind="file"><name>LP_global_var.h</name>
+  </compound>
+  <compound refid="dir_6d3cd12205463692e09d9921dc995974" kind="dir"><name>liveplayer08/</name>
+  </compound>
+  <compound refid="dir_5915bf9c9b30aa6b2cbd6f86c58d9f23" kind="dir"><name>liveplayer08/src/</name>
+  </compound>
+</doxygenindex>

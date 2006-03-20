@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.4.6">
+  <compounddef id="dir_a0e0135aa2a104ea86f0a03f0378fa49" kind="dir">
+    <compoundname>liveplayer08/src/libresample/include/</compoundname>
+    <innerfile refid="libresample_8h">libresample.h</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/include/"/>
+  </compounddef>
+</doxygen>

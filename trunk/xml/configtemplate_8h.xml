@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.4.6">
+  <compounddef id="configtemplate_8h" kind="file">
+    <compoundname>configtemplate.h</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/*<sp/>Run<sp/>configure<sp/>to<sp/>generate<sp/>config.h<sp/>automatically<sp/>on<sp/>any</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"><sp/><sp/><sp/>system<sp/>supported<sp/>by<sp/>GNU<sp/>autoconf.<sp/><sp/>For<sp/>all<sp/>other<sp/>systems,</highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/><sp/><sp/>use<sp/>this<sp/>file<sp/>as<sp/>a<sp/>template<sp/>to<sp/>create<sp/>config.h</highlight></codeline>
+<codeline lineno="4"><highlight class="comment">*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="preprocessor">#undef<sp/>HAVE_INTTYPES_H</highlight></codeline>
+<codeline lineno="7"><highlight class="preprocessor"></highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/configtemplate.h"/>
+  </compounddef>
+</doxygen>

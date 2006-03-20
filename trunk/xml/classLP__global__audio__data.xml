@@ -1,0 +1,465 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.4.6">
+  <compounddef id="classLP__global__audio__data" kind="class" prot="public">
+    <compoundname>LP_global_audio_data</compoundname>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classLP__global__audio__data_1e37460b2d1212344fde8a81cec776f29" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int LP_global_audio_data::lp_audio_global_init</definition>
+        <argsstring>()</argsstring>
+        <name>lp_audio_global_init</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="36" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.cpp" bodystart="25" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classLP__global__audio__data_1cafad84d44dfd74f4f90da8559ddbe6b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int LP_global_audio_data::lp_audio_global_alloc</definition>
+        <argsstring>()</argsstring>
+        <name>lp_audio_global_alloc</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="37" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.cpp" bodystart="47" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classLP__global__audio__data_1c4d2ab47a1f0d24a796f376f10eb256f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>int</type>
+        <definition>int LP_global_audio_data::lp_audio_global_close</definition>
+        <argsstring>()</argsstring>
+        <name>lp_audio_global_close</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="38" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.cpp" bodystart="117" bodyend="128"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="classLP__global__audio__data_10ae8c157463adf18dcb946a0076baf82" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::hd_size</definition>
+        <argsstring></argsstring>
+        <name>hd_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="42" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1fec5bc101d89ea2c7d7683ec676e2ab3" prot="public" static="yes" mutable="no">
+        <type>pthread_mutex_t</type>
+        <definition>pthread_mutex_t LP_global_audio_data::bus_buffer_mutex</definition>
+        <argsstring></argsstring>
+        <name>bus_buffer_mutex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="43" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_173b3c465153b3e33675dd4e88b713ad3" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::it_size</definition>
+        <argsstring></argsstring>
+        <name>it_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="44" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1b01d1d92a16e6e9a04e30f17c03ba0a7" prot="public" static="yes" mutable="no">
+        <type>pthread_t</type>
+        <definition>pthread_t LP_global_audio_data::it_ot_buffer</definition>
+        <argsstring></argsstring>
+        <name>it_ot_buffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_14ae91a0d297864bab7bf56892e45801f" prot="public" static="yes" mutable="no">
+        <type>pthread_t</type>
+        <definition>pthread_t LP_global_audio_data::th_play</definition>
+        <argsstring></argsstring>
+        <name>th_play</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="46" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_136159761b0fe0d90bdcf1fb11a0d67fe" prot="public" static="yes" mutable="no">
+        <type>pthread_mutex_t</type>
+        <definition>pthread_mutex_t LP_global_audio_data::it_ot_buffer_mutex</definition>
+        <argsstring></argsstring>
+        <name>it_ot_buffer_mutex</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="47" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_15d4ba9cfcbdf28b6d02b238d21161f3b" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::ot_size</definition>
+        <argsstring></argsstring>
+        <name>ot_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="48" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_17eed5d823e0f9bc929ecb664b4c77bd4" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::ot_full</definition>
+        <argsstring></argsstring>
+        <name>ot_full</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="49" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1eba4fdd152fdcf498431236f78dd6cc3" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::ot_frames_to_read</definition>
+        <argsstring></argsstring>
+        <name>ot_frames_to_read</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="50" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1b5aec91c9e739f6459b6245d08215361" prot="public" static="yes" mutable="no">
+        <type>float *</type>
+        <definition>float * LP_global_audio_data::ot_buffer</definition>
+        <argsstring></argsstring>
+        <name>ot_buffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="51" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_14ce835f5f53701925e3c8971487168aa" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::nb_channel</definition>
+        <argsstring></argsstring>
+        <name>nb_channel</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="52" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_17ece6e48516e7c15b1ad12368807d981" prot="public" static="yes" mutable="no">
+        <type>unsigned int</type>
+        <definition>unsigned int LP_global_audio_data::rate</definition>
+        <argsstring></argsstring>
+        <name>rate</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="53" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="53" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_108bfc814b81d07afaaa9cab8cf78c646" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::sample_format</definition>
+        <argsstring></argsstring>
+        <name>sample_format</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="54" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="54" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_13e2334531757fd148ccccdbbceee355b" prot="public" static="yes" mutable="no">
+        <type>snd_pcm_uframes_t</type>
+        <definition>snd_pcm_uframes_t LP_global_audio_data::nb_frames</definition>
+        <argsstring></argsstring>
+        <name>nb_frames</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="55" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1e303b2352346d43cca4f8f8e7eeec59e" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::it_to_ot_ready</definition>
+        <argsstring></argsstring>
+        <name>it_to_ot_ready</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="56" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="56" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1c12bf7f7e0a8106148bac412b0a53ebb" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::play_ready</definition>
+        <argsstring></argsstring>
+        <name>play_ready</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="57" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_14c8fa74682e426c5b844e21efc7d7a02" prot="public" static="yes" mutable="no">
+        <type>snd_pcm_t *</type>
+        <definition>snd_pcm_t * LP_global_audio_data::pcm_handle</definition>
+        <argsstring></argsstring>
+        <name>pcm_handle</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="58" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_14edfd9f434d8185ca15f474d31c3fff3" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::rd_to_buf_ready</definition>
+        <argsstring></argsstring>
+        <name>rd_to_buf_ready</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="59" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_11ab9510b86248c92089167777ce67fd2" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::init_ok</definition>
+        <argsstring></argsstring>
+        <name>init_ok</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="60" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1370e1ff5c89378230807717717eed6d8" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::bus_buf_size</definition>
+        <argsstring></argsstring>
+        <name>bus_buf_size</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="62" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1d53089420583fbcf9e7312c4362940eb" prot="public" static="yes" mutable="no">
+        <type>float *</type>
+        <definition>float * LP_global_audio_data::bus_buffer_1</definition>
+        <argsstring></argsstring>
+        <name>bus_buffer_1</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="63" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="63" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1d0cf96ce790f88910e328b361616c336" prot="public" static="yes" mutable="no">
+        <type>float *</type>
+        <definition>float * LP_global_audio_data::bus_buffer_2</definition>
+        <argsstring></argsstring>
+        <name>bus_buffer_2</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="64" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_1fb911bdbe7f2137216d03165f8176f2b" prot="public" static="yes" mutable="no">
+        <type>float *</type>
+        <definition>float * LP_global_audio_data::bus_buffer_3</definition>
+        <argsstring></argsstring>
+        <name>bus_buffer_3</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="65" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_13b7aa88ddbb68ea2fc2197ac2859db98" prot="public" static="yes" mutable="no">
+        <type>float *</type>
+        <definition>float * LP_global_audio_data::bus_buffer_4</definition>
+        <argsstring></argsstring>
+        <name>bus_buffer_4</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="66" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_123984117feae452b2879acabf04acb38" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::bus_out</definition>
+        <argsstring>[5]</argsstring>
+        <name>bus_out</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="67" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_15a4beaca0186b830997260f485bb18b3" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::nb_players</definition>
+        <argsstring></argsstring>
+        <name>nb_players</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="68" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_11cddb293136f76016c6515d9be5206a8" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::play_buf_full</definition>
+        <argsstring>[10]</argsstring>
+        <name>play_buf_full</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="69" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_16cd24f4f54be8707796efe7e49885da5" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int LP_global_audio_data::player_mode</definition>
+        <argsstring>[10]</argsstring>
+        <name>player_mode</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="70" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classLP__global__audio__data_12aa611e8235e65e000047700d91f208f" prot="public" static="yes" mutable="no">
+        <type>float *</type>
+        <definition>float * LP_global_audio_data::mixed_buffer</definition>
+        <argsstring></argsstring>
+        <name>mixed_buffer</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="71" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" line="32" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.h" bodystart="32" bodyend="72"/>
+    <listofallmembers>
+      <member refid="classLP__global__audio__data_1370e1ff5c89378230807717717eed6d8" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>bus_buf_size</name></member>
+      <member refid="classLP__global__audio__data_1d53089420583fbcf9e7312c4362940eb" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>bus_buffer_1</name></member>
+      <member refid="classLP__global__audio__data_1d0cf96ce790f88910e328b361616c336" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>bus_buffer_2</name></member>
+      <member refid="classLP__global__audio__data_1fb911bdbe7f2137216d03165f8176f2b" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>bus_buffer_3</name></member>
+      <member refid="classLP__global__audio__data_13b7aa88ddbb68ea2fc2197ac2859db98" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>bus_buffer_4</name></member>
+      <member refid="classLP__global__audio__data_1fec5bc101d89ea2c7d7683ec676e2ab3" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>bus_buffer_mutex</name></member>
+      <member refid="classLP__global__audio__data_123984117feae452b2879acabf04acb38" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>bus_out</name></member>
+      <member refid="classLP__global__audio__data_10ae8c157463adf18dcb946a0076baf82" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>hd_size</name></member>
+      <member refid="classLP__global__audio__data_11ab9510b86248c92089167777ce67fd2" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>init_ok</name></member>
+      <member refid="classLP__global__audio__data_1b01d1d92a16e6e9a04e30f17c03ba0a7" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>it_ot_buffer</name></member>
+      <member refid="classLP__global__audio__data_136159761b0fe0d90bdcf1fb11a0d67fe" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>it_ot_buffer_mutex</name></member>
+      <member refid="classLP__global__audio__data_173b3c465153b3e33675dd4e88b713ad3" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>it_size</name></member>
+      <member refid="classLP__global__audio__data_1e303b2352346d43cca4f8f8e7eeec59e" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>it_to_ot_ready</name></member>
+      <member refid="classLP__global__audio__data_1cafad84d44dfd74f4f90da8559ddbe6b" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>lp_audio_global_alloc</name></member>
+      <member refid="classLP__global__audio__data_1c4d2ab47a1f0d24a796f376f10eb256f" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>lp_audio_global_close</name></member>
+      <member refid="classLP__global__audio__data_1e37460b2d1212344fde8a81cec776f29" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>lp_audio_global_init</name></member>
+      <member refid="classLP__global__audio__data_12aa611e8235e65e000047700d91f208f" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>mixed_buffer</name></member>
+      <member refid="classLP__global__audio__data_14ce835f5f53701925e3c8971487168aa" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>nb_channel</name></member>
+      <member refid="classLP__global__audio__data_13e2334531757fd148ccccdbbceee355b" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>nb_frames</name></member>
+      <member refid="classLP__global__audio__data_15a4beaca0186b830997260f485bb18b3" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>nb_players</name></member>
+      <member refid="classLP__global__audio__data_1b5aec91c9e739f6459b6245d08215361" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>ot_buffer</name></member>
+      <member refid="classLP__global__audio__data_1eba4fdd152fdcf498431236f78dd6cc3" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>ot_frames_to_read</name></member>
+      <member refid="classLP__global__audio__data_17eed5d823e0f9bc929ecb664b4c77bd4" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>ot_full</name></member>
+      <member refid="classLP__global__audio__data_15d4ba9cfcbdf28b6d02b238d21161f3b" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>ot_size</name></member>
+      <member refid="classLP__global__audio__data_14c8fa74682e426c5b844e21efc7d7a02" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>pcm_handle</name></member>
+      <member refid="classLP__global__audio__data_11cddb293136f76016c6515d9be5206a8" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>play_buf_full</name></member>
+      <member refid="classLP__global__audio__data_1c12bf7f7e0a8106148bac412b0a53ebb" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>play_ready</name></member>
+      <member refid="classLP__global__audio__data_16cd24f4f54be8707796efe7e49885da5" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>player_mode</name></member>
+      <member refid="classLP__global__audio__data_17ece6e48516e7c15b1ad12368807d981" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>rate</name></member>
+      <member refid="classLP__global__audio__data_14edfd9f434d8185ca15f474d31c3fff3" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>rd_to_buf_ready</name></member>
+      <member refid="classLP__global__audio__data_108bfc814b81d07afaaa9cab8cf78c646" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>sample_format</name></member>
+      <member refid="classLP__global__audio__data_14ae91a0d297864bab7bf56892e45801f" prot="public" virt="non-virtual"><scope>LP_global_audio_data</scope><name>th_play</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

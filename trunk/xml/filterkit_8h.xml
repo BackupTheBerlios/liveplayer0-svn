@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.4.6">
+  <compounddef id="filterkit_8h" kind="file">
+    <compoundname>filterkit.h</compoundname>
+    <includes refid="resample__defs_8h" local="yes">resample_defs.h</includes>
+    <includedby refid="filterkit_8c" local="yes">liveplayer08/src/libresample/src/filterkit.c</includedby>
+    <includedby refid="resample_8c" local="yes">liveplayer08/src/libresample/src/resample.c</includedby>
+    <includedby refid="resamplesubs_8c" local="yes">liveplayer08/src/libresample/src/resamplesubs.c</includedby>
+    <incdepgraph>
+      <node id="19">
+        <label>resample_defs.h</label>
+        <link refid="resample__defs_8h-source"/>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
+        </childnode>
+      </node>
+      <node id="18">
+        <label>liveplayer08/src/libresample/src/filterkit.h</label>
+        <link refid="filterkit.h"/>
+        <childnode refid="19" relation="include">
+        </childnode>
+      </node>
+      <node id="20">
+        <label>config.h</label>
+        <link refid="config_8h-source"/>
+      </node>
+      <node id="21">
+        <label>inttypes.h</label>
+      </node>
+    </incdepgraph>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="filterkit_8h_1bb7f74ff0580a964a37aa18910f9897b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>float</type>
+        <definition>float lrsFilterUp</definition>
+        <argsstring>(float Imp[], float ImpD[], UWORD Nwing, BOOL Interp, float *Xp, double Ph, int Inc)</argsstring>
+        <name>lrsFilterUp</name>
+        <param>
+          <type>float</type>
+          <declname>Imp</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ImpD</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>UWORD</type>
+          <declname>Nwing</declname>
+        </param>
+        <param>
+          <type>BOOL</type>
+          <declname>Interp</declname>
+        </param>
+        <param>
+          <type>float *</type>
+          <declname>Xp</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>Ph</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>Inc</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/filterkit.h" line="23" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/filterkit.c" bodystart="115" bodyend="167"/>
+      </memberdef>
+      <memberdef kind="function" id="filterkit_8h_1d54066457bcb1b8c4181dfd1cc34d272" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>float</type>
+        <definition>float lrsFilterUD</definition>
+        <argsstring>(float Imp[], float ImpD[], UWORD Nwing, BOOL Interp, float *Xp, double Ph, int Inc, double dhb)</argsstring>
+        <name>lrsFilterUD</name>
+        <param>
+          <type>float</type>
+          <declname>Imp</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>float</type>
+          <declname>ImpD</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>UWORD</type>
+          <declname>Nwing</declname>
+        </param>
+        <param>
+          <type>BOOL</type>
+          <declname>Interp</declname>
+        </param>
+        <param>
+          <type>float *</type>
+          <declname>Xp</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>Ph</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>Inc</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dhb</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/filterkit.h" line="26" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/filterkit.c" bodystart="169" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="filterkit_8h_1225162b456094d6fbe44a4199259e354" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void lrsLpFilter</definition>
+        <argsstring>(double c[], int N, double frq, double Beta, int Num)</argsstring>
+        <name>lrsLpFilter</name>
+        <param>
+          <type>double</type>
+          <declname>c</declname>
+          <array>[]</array>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>frq</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>Beta</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>Num</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/filterkit.h" line="28" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/filterkit.c" bodystart="84" bodyend="113"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">/**********************************************************************</highlight></codeline>
+<codeline lineno="2"><highlight class="comment"></highlight></codeline>
+<codeline lineno="3"><highlight class="comment"><sp/><sp/>resamplesubs.c</highlight></codeline>
+<codeline lineno="4"><highlight class="comment"></highlight></codeline>
+<codeline lineno="5"><highlight class="comment"><sp/><sp/>Real-time<sp/>library<sp/>interface<sp/>by<sp/>Dominic<sp/>Mazzoni</highlight></codeline>
+<codeline lineno="6"><highlight class="comment"></highlight></codeline>
+<codeline lineno="7"><highlight class="comment"><sp/><sp/>Based<sp/>on<sp/>resample-1.7:</highlight></codeline>
+<codeline lineno="8"><highlight class="comment"><sp/><sp/><sp/><sp/>http://www-ccrma.stanford.edu/~jos/resample/</highlight></codeline>
+<codeline lineno="9"><highlight class="comment"></highlight></codeline>
+<codeline lineno="10"><highlight class="comment"><sp/><sp/>License:<sp/>LGPL<sp/>-<sp/>see<sp/>the<sp/>file<sp/>LICENSE.txt<sp/>for<sp/>more<sp/>information</highlight></codeline>
+<codeline lineno="11"><highlight class="comment"></highlight></codeline>
+<codeline lineno="12"><highlight class="comment">**********************************************************************/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="comment">/*<sp/>Definitions<sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;resample_defs.h&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="comment">/*</highlight></codeline>
+<codeline lineno="18"><highlight class="comment"><sp/>*<sp/>FilterUp()<sp/>-<sp/>Applies<sp/>a<sp/>filter<sp/>to<sp/>a<sp/>given<sp/>sample<sp/>when<sp/>up-converting.</highlight></codeline>
+<codeline lineno="19"><highlight class="comment"><sp/>*<sp/>FilterUD()<sp/>-<sp/>Applies<sp/>a<sp/>filter<sp/>to<sp/>a<sp/>given<sp/>sample<sp/>when<sp/>up-<sp/>or<sp/>down-</highlight></codeline>
+<codeline lineno="20"><highlight class="comment"><sp/>*/</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>lrsFilterUp(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>Imp[],<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>ImpD[],<sp/>UWORD<sp/>Nwing,<sp/>BOOL<sp/>Interp,</highlight></codeline>
+<codeline lineno="23"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*Xp,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>Ph,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>Inc);</highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>lrsFilterUD(</highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>Imp[],<sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>ImpD[],<sp/>UWORD<sp/>Nwing,<sp/>BOOL<sp/>Interp,</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*Xp,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>Ph,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>Inc,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>dhb);</highlight></codeline>
+<codeline lineno="27"><highlight class="normal"></highlight></codeline>
+<codeline lineno="28"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>lrsLpFilter(</highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>c[],<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>N,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>frq,<sp/></highlight><highlight class="keywordtype">double</highlight><highlight class="normal"><sp/>Beta,<sp/></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>Num);</highlight></codeline>
+    </programlisting>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/filterkit.h"/>
+  </compounddef>
+</doxygen>

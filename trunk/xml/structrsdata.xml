@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='iso-8859-1' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.4.6">
+  <compounddef id="structrsdata" kind="struct" prot="public">
+    <compoundname>rsdata</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structrsdata_142a795bb7b5946e405020980ab884031" prot="public" static="no" mutable="no">
+        <type>float *</type>
+        <definition>float* rsdata::Imp</definition>
+        <argsstring></argsstring>
+        <name>Imp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="31" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1d7931de2eae60717b99663a68f588685" prot="public" static="no" mutable="no">
+        <type>float *</type>
+        <definition>float* rsdata::ImpD</definition>
+        <argsstring></argsstring>
+        <name>ImpD</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="32" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_10dd5ba1a60a8d90a35eb43ec00a40f78" prot="public" static="no" mutable="no">
+        <type>float</type>
+        <definition>float rsdata::LpScl</definition>
+        <argsstring></argsstring>
+        <name>LpScl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="33" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="33" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_12a2fae26d1fa2403e5eed27cd9fdda80" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::Nmult</definition>
+        <argsstring></argsstring>
+        <name>Nmult</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="34" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="34" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1a7ca4642676686f4d0098bc0a8c2f13d" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::Nwing</definition>
+        <argsstring></argsstring>
+        <name>Nwing</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="35" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="35" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1b96e92dc93746f56bb1d86321fadb818" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double rsdata::minFactor</definition>
+        <argsstring></argsstring>
+        <name>minFactor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="36" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1a11b74e1d59a44cc89e9ea389e6d42ea" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double rsdata::maxFactor</definition>
+        <argsstring></argsstring>
+        <name>maxFactor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="37" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="37" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1cc1c102e149f8f0736f23c48bc9d98a8" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::XSize</definition>
+        <argsstring></argsstring>
+        <name>XSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="38" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1372ffd0d34bb00905f163fff5590f3f1" prot="public" static="no" mutable="no">
+        <type>float *</type>
+        <definition>float* rsdata::X</definition>
+        <argsstring></argsstring>
+        <name>X</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="39" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="39" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1b9149381a44bb463f755801703eafbb2" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::Xp</definition>
+        <argsstring></argsstring>
+        <name>Xp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="40" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_115dec6b3cb84d0a520c8ebb81eb3d8e5" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::Xread</definition>
+        <argsstring></argsstring>
+        <name>Xread</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="41" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="41" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1a2c1a300872743154f022a6c69345fd7" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::Xoff</definition>
+        <argsstring></argsstring>
+        <name>Xoff</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="42" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_18119fe6bfebd4d8018c46654a920da9b" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::YSize</definition>
+        <argsstring></argsstring>
+        <name>YSize</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="43" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_18f03b3edd504c950bc3b4b0504f77c38" prot="public" static="no" mutable="no">
+        <type>float *</type>
+        <definition>float* rsdata::Y</definition>
+        <argsstring></argsstring>
+        <name>Y</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="44" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1946c5d66150c33d4e8d276d519bcc139" prot="public" static="no" mutable="no">
+        <type>UWORD</type>
+        <definition>UWORD rsdata::Yp</definition>
+        <argsstring></argsstring>
+        <name>Yp</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="structrsdata_1f591a376b6f32f73e0495950ef4095c0" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double rsdata::Time</definition>
+        <argsstring></argsstring>
+        <name>Time</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="46" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" line="30" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/libresample/src/resample.c" bodystart="30" bodyend="47"/>
+    <listofallmembers>
+      <member refid="structrsdata_142a795bb7b5946e405020980ab884031" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Imp</name></member>
+      <member refid="structrsdata_1d7931de2eae60717b99663a68f588685" prot="public" virt="non-virtual"><scope>rsdata</scope><name>ImpD</name></member>
+      <member refid="structrsdata_10dd5ba1a60a8d90a35eb43ec00a40f78" prot="public" virt="non-virtual"><scope>rsdata</scope><name>LpScl</name></member>
+      <member refid="structrsdata_1a11b74e1d59a44cc89e9ea389e6d42ea" prot="public" virt="non-virtual"><scope>rsdata</scope><name>maxFactor</name></member>
+      <member refid="structrsdata_1b96e92dc93746f56bb1d86321fadb818" prot="public" virt="non-virtual"><scope>rsdata</scope><name>minFactor</name></member>
+      <member refid="structrsdata_12a2fae26d1fa2403e5eed27cd9fdda80" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Nmult</name></member>
+      <member refid="structrsdata_1a7ca4642676686f4d0098bc0a8c2f13d" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Nwing</name></member>
+      <member refid="structrsdata_1f591a376b6f32f73e0495950ef4095c0" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Time</name></member>
+      <member refid="structrsdata_1372ffd0d34bb00905f163fff5590f3f1" prot="public" virt="non-virtual"><scope>rsdata</scope><name>X</name></member>
+      <member refid="structrsdata_1a2c1a300872743154f022a6c69345fd7" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Xoff</name></member>
+      <member refid="structrsdata_1b9149381a44bb463f755801703eafbb2" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Xp</name></member>
+      <member refid="structrsdata_115dec6b3cb84d0a520c8ebb81eb3d8e5" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Xread</name></member>
+      <member refid="structrsdata_1cc1c102e149f8f0736f23c48bc9d98a8" prot="public" virt="non-virtual"><scope>rsdata</scope><name>XSize</name></member>
+      <member refid="structrsdata_18f03b3edd504c950bc3b4b0504f77c38" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Y</name></member>
+      <member refid="structrsdata_1946c5d66150c33d4e8d276d519bcc139" prot="public" virt="non-virtual"><scope>rsdata</scope><name>Yp</name></member>
+      <member refid="structrsdata_18119fe6bfebd4d8018c46654a920da9b" prot="public" virt="non-virtual"><scope>rsdata</scope><name>YSize</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
