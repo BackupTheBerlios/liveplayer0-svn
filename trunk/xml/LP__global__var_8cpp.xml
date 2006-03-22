@@ -4,29 +4,13 @@
     <compoundname>LP_global_var.cpp</compoundname>
     <includes refid="LP__global__var_8h" local="yes">LP_global_var.h</includes>
     <incdepgraph>
-      <node id="89">
-        <label>LP_alsaout.h</label>
-        <link refid="LP__alsaout_8h-source"/>
-        <childnode refid="90" relation="include">
+      <node id="79">
+        <label>LP_global_var.h</label>
+        <link refid="LP__global__var_8h-source"/>
+        <childnode refid="80" relation="include">
         </childnode>
-        <childnode refid="82" relation="include">
+        <childnode refid="89" relation="include">
         </childnode>
-        <childnode refid="91" relation="include">
-        </childnode>
-        <childnode refid="79" relation="include">
-        </childnode>
-      </node>
-      <node id="82">
-        <label>stdlib.h</label>
-      </node>
-      <node id="83">
-        <label>fcntl.h</label>
-      </node>
-      <node id="91">
-        <label>alsa/asoundlib.h</label>
-      </node>
-      <node id="87">
-        <label>sndfile.h</label>
       </node>
       <node id="80">
         <label>LP_audiofile.h</label>
@@ -50,6 +34,18 @@
         <childnode refid="88" relation="include">
         </childnode>
       </node>
+      <node id="82">
+        <label>stdlib.h</label>
+      </node>
+      <node id="83">
+        <label>fcntl.h</label>
+      </node>
+      <node id="91">
+        <label>alsa/asoundlib.h</label>
+      </node>
+      <node id="87">
+        <label>sndfile.h</label>
+      </node>
       <node id="86">
         <label>pthread.h</label>
       </node>
@@ -59,24 +55,28 @@
       <node id="85">
         <label>string.h</label>
       </node>
-      <node id="78">
-        <label>liveplayer08/src/LP_global_var.cpp</label>
-        <link refid="LP_global_var.cpp"/>
-        <childnode refid="79" relation="include">
-        </childnode>
-      </node>
       <node id="88">
         <label>samplerate.h</label>
       </node>
       <node id="90">
         <label>iostream</label>
       </node>
-      <node id="79">
-        <label>LP_global_var.h</label>
-        <link refid="LP__global__var_8h-source"/>
-        <childnode refid="80" relation="include">
+      <node id="78">
+        <label>mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_global_var.cpp</label>
+        <link refid="LP_global_var.cpp"/>
+        <childnode refid="79" relation="include">
         </childnode>
-        <childnode refid="89" relation="include">
+      </node>
+      <node id="89">
+        <label>LP_alsaout.h</label>
+        <link refid="LP__alsaout_8h-source"/>
+        <childnode refid="90" relation="include">
+        </childnode>
+        <childnode refid="82" relation="include">
+        </childnode>
+        <childnode refid="91" relation="include">
+        </childnode>
+        <childnode refid="79" relation="include">
         </childnode>
       </node>
       <node id="81">
@@ -250,6 +250,6 @@
 <codeline lineno="160"><highlight class="normal"></highlight><highlight class="keywordtype">int</highlight><highlight class="normal"><sp/>LP_global_audio_data::player_mode[10];<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Gestion<sp/>des<sp/>attentes<sp/>entre<sp/>players</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="161"><highlight class="normal"></highlight><highlight class="keywordtype">float</highlight><highlight class="normal"><sp/>*LP_global_audio_data::mixed_buffer;<sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Buffer<sp/>pret,<sp/>c&apos;est<sp/>lui<sp/>qui<sp/>sera<sp/>transmis<sp/>a<sp/>it_buffer)</highlight><highlight class="normal"></highlight></codeline>
     </programlisting>
-    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_global_var.cpp"/>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_global_var.cpp"/>
   </compounddef>
 </doxygen>

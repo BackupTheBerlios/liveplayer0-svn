@@ -14,7 +14,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="37" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="25" bodyend="86"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="37" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="25" bodyend="86"/>
       </memberdef>
       <memberdef kind="function" id="classLP__alsa_1b56c6161a20784af71434c036275af59" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -27,7 +27,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="38" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="90" bodyend="99"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="38" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="90" bodyend="99"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-attrib">
@@ -42,7 +42,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="39" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="39" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="39" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="39" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_188c0862812fb8e52783a158efba0bb04" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -55,7 +55,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="40" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="40" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="40" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="40" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-func">
@@ -70,7 +70,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="51" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="103" bodyend="157"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="51" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="103" bodyend="157"/>
       </memberdef>
       <memberdef kind="function" id="classLP__alsa_12f6d1c188c82fc63d6201c8e2d12eccc" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -83,7 +83,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="52" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="160" bodyend="230"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="52" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="160" bodyend="230"/>
       </memberdef>
       <memberdef kind="function" id="classLP__alsa_1334c8bae277af28f75a6a6d4bec5c07d" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -96,7 +96,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="53" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="234" bodyend="270"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="53" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="234" bodyend="270"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -111,7 +111,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="43" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="43" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="43" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_1f4cbb5277eff1ec54785b80688584458" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -124,7 +124,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="44" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="44" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="44" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="44" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_1ebe15fea11c588c8406ea4175544af69" prot="private" static="no" mutable="no">
         <type>snd_pcm_sframes_t</type>
@@ -137,7 +137,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="45" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_1df2f19fdd9d04349966fa3d4ab30bced" prot="private" static="no" mutable="no">
         <type>snd_pcm_sframes_t</type>
@@ -150,7 +150,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="45" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_1a76063206d4b94c440763397746743ce" prot="private" static="no" mutable="no">
         <type>snd_pcm_t *</type>
@@ -163,7 +163,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="46" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="46" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="46" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="46" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_1ac44272d71590f63bc0cefbefd1bbec6" prot="private" static="no" mutable="no">
         <type>snd_pcm_hw_params_t *</type>
@@ -176,7 +176,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="47" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="47" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="47" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="47" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_14c653b49a17fd87ed57eb186ccb60d9f" prot="private" static="no" mutable="no">
         <type>snd_pcm_sw_params_t *</type>
@@ -189,7 +189,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="48" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="48" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="48" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="48" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_1d4e2c6a940287b5edaf76cbdf2fffce3" prot="private" static="no" mutable="no">
         <type>snd_pcm_format_t</type>
@@ -202,7 +202,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="49" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="49" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="49" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="49" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_1de5146dd8c86950597093c39cc16e5ec" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -215,7 +215,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="50" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="50" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="50" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="50" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_131c12d07387ffe4b21e9724aee2ce7cc" prot="private" static="no" mutable="no">
         <type>int</type>
@@ -228,7 +228,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="54" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="54" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="54" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="54" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__alsa_14d84295d7413c32383d4e4401126df12" prot="private" static="no" mutable="no">
         <type>pthread_t</type>
@@ -241,14 +241,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="55" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="55" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="55" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="55" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" line="32" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.h" bodystart="32" bodyend="56"/>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" line="32" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.h" bodystart="32" bodyend="56"/>
     <listofallmembers>
       <member refid="classLP__alsa_1de5146dd8c86950597093c39cc16e5ec" prot="private" virt="non-virtual"><scope>LP_alsa</scope><name>dir</name></member>
       <member refid="classLP__alsa_1f4cbb5277eff1ec54785b80688584458" prot="private" virt="non-virtual"><scope>LP_alsa</scope><name>err</name></member>

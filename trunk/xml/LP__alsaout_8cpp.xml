@@ -4,29 +4,13 @@
     <compoundname>LP_alsaout.cpp</compoundname>
     <includes refid="LP__alsaout_8h" local="yes">LP_alsaout.h</includes>
     <incdepgraph>
-      <node id="17">
-        <label>LP_alsaout.h</label>
-        <link refid="LP__alsaout_8h-source"/>
-        <childnode refid="18" relation="include">
+      <node id="21">
+        <label>LP_global_var.h</label>
+        <link refid="LP__global__var_8h-source"/>
+        <childnode refid="22" relation="include">
         </childnode>
-        <childnode refid="19" relation="include">
+        <childnode refid="17" relation="include">
         </childnode>
-        <childnode refid="20" relation="include">
-        </childnode>
-        <childnode refid="21" relation="include">
-        </childnode>
-      </node>
-      <node id="19">
-        <label>stdlib.h</label>
-      </node>
-      <node id="24">
-        <label>fcntl.h</label>
-      </node>
-      <node id="20">
-        <label>alsa/asoundlib.h</label>
-      </node>
-      <node id="28">
-        <label>sndfile.h</label>
       </node>
       <node id="22">
         <label>LP_audiofile.h</label>
@@ -50,6 +34,18 @@
         <childnode refid="29" relation="include">
         </childnode>
       </node>
+      <node id="19">
+        <label>stdlib.h</label>
+      </node>
+      <node id="24">
+        <label>fcntl.h</label>
+      </node>
+      <node id="20">
+        <label>alsa/asoundlib.h</label>
+      </node>
+      <node id="28">
+        <label>sndfile.h</label>
+      </node>
       <node id="27">
         <label>pthread.h</label>
       </node>
@@ -59,24 +55,28 @@
       <node id="26">
         <label>string.h</label>
       </node>
+      <node id="29">
+        <label>samplerate.h</label>
+      </node>
       <node id="16">
-        <label>liveplayer08/src/LP_alsaout.cpp</label>
+        <label>mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp</label>
         <link refid="LP_alsaout.cpp"/>
         <childnode refid="17" relation="include">
         </childnode>
       </node>
-      <node id="29">
-        <label>samplerate.h</label>
-      </node>
       <node id="18">
         <label>iostream</label>
       </node>
-      <node id="21">
-        <label>LP_global_var.h</label>
-        <link refid="LP__global__var_8h-source"/>
-        <childnode refid="22" relation="include">
+      <node id="17">
+        <label>LP_alsaout.h</label>
+        <link refid="LP__alsaout_8h-source"/>
+        <childnode refid="18" relation="include">
         </childnode>
-        <childnode refid="17" relation="include">
+        <childnode refid="19" relation="include">
+        </childnode>
+        <childnode refid="20" relation="include">
+        </childnode>
+        <childnode refid="21" relation="include">
         </childnode>
       </node>
       <node id="23">
@@ -99,7 +99,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" line="274" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="274" bodyend="287"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" line="274" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="274" bodyend="287"/>
       </memberdef>
       <memberdef kind="function" id="LP__alsaout_8cpp_14ca27e2f26d04e70287ffbd43d8a1f66" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -116,7 +116,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" line="291" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="291" bodyend="302"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" line="291" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="291" bodyend="302"/>
       </memberdef>
       <memberdef kind="function" id="LP__alsaout_8cpp_1bd076b090d26429bc3bb81ca4c477453" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>void *</type>
@@ -133,7 +133,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" line="310" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp" bodystart="310" bodyend="394"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" line="310" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp" bodystart="310" bodyend="394"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
@@ -536,6 +536,6 @@
 <codeline lineno="393"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>Here<sp/>I<sp/>must<sp/>implement<sp/>a<sp/>proper<sp/>ending....</highlight><highlight class="normal"></highlight></codeline>
 <codeline lineno="394"><highlight class="normal">}</highlight></codeline>
     </programlisting>
-    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_alsaout.cpp"/>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_alsaout.cpp"/>
   </compounddef>
 </doxygen>

@@ -14,7 +14,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="39" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.cpp" bodystart="26" bodyend="54"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="39" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.cpp" bodystart="26" bodyend="54"/>
       </memberdef>
       <memberdef kind="function" id="classLP__player_176aea0bbf6e3341b4d189a507a5de3f5" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type></type>
@@ -27,7 +27,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="40" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.cpp" bodystart="56" bodyend="61"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="40" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.cpp" bodystart="56" bodyend="61"/>
       </memberdef>
       <memberdef kind="function" id="classLP__player_12eba1c8dd12236a7cf505220ba512c19" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -44,7 +44,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="41" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.cpp" bodystart="138" bodyend="143"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="41" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.cpp" bodystart="138" bodyend="143"/>
       </memberdef>
       <memberdef kind="function" id="classLP__player_12b3e3e75f7d3251e9c27148fbe3aa4ee" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -61,7 +61,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="42" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.cpp" bodystart="65" bodyend="87"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="42" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.cpp" bodystart="65" bodyend="87"/>
       </memberdef>
       <memberdef kind="function" id="classLP__player_1ff46962ad75b52eef7cdfd264e32e809" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
         <type>int</type>
@@ -74,7 +74,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="53" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.cpp" bodystart="97" bodyend="136"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="53" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.cpp" bodystart="97" bodyend="136"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="public-attrib">
@@ -89,7 +89,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="43" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="43" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="43" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="43" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_1633cb1cd14d03a37f1a93af8534e7b75" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -102,7 +102,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="44" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="44" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="44" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="44" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_1ac1b5a4946a2fd8394c8a24b9e655fc8" prot="public" static="no" mutable="no">
         <type>SNDFILE *</type>
@@ -115,7 +115,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="45" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="45" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="45" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_166addd9b7c0f1f010880708beb4b7963" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -128,7 +128,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="46" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="46" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="46" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="46" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_1ffa7b500a9e606050ff1af6b39c37ae8" prot="public" static="no" mutable="no">
         <type>float *</type>
@@ -141,7 +141,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="47" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="47" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="47" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="47" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_1298d6038d1d6fd40d4055db7fbac6f4e" prot="public" static="no" mutable="no">
         <type>char *</type>
@@ -154,7 +154,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="55" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="55" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="55" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="55" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_1f9b952e65e1592fdc20a534a331e0a19" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -167,7 +167,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="56" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="56" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="56" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="56" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_16a6db173e24a5fcc4342061b3dc1a344" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -180,7 +180,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="57" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="57" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="57" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="57" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_1e8035181a07a239c73a6a489fa560958" prot="public" static="no" mutable="no">
         <type>int</type>
@@ -193,7 +193,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="59" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="59" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="59" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="59" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-attrib">
@@ -208,7 +208,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="62" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="62" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="62" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="62" bodyend="-1"/>
       </memberdef>
       <memberdef kind="variable" id="classLP__player_1e45163ac38181edb850745c22466ff49" prot="private" static="no" mutable="no">
         <type>SF_INFO *</type>
@@ -221,7 +221,7 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="63" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="63" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="63" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="63" bodyend="-1"/>
       </memberdef>
       </sectiondef>
       <sectiondef kind="private-static-attrib">
@@ -237,14 +237,14 @@
         </detaileddescription>
         <inbodydescription>
         </inbodydescription>
-        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="61" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="61" bodyend="-1"/>
+        <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="61" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="61" bodyend="-1"/>
       </memberdef>
       </sectiondef>
     <briefdescription>
     </briefdescription>
     <detaileddescription>
     </detaileddescription>
-    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" line="36" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/liveplayer08/src/LP_audiofile.h" bodystart="36" bodyend="64"/>
+    <location file="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" line="36" bodyfile="/home/philippe/mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/LP_audiofile.h" bodystart="36" bodyend="64"/>
     <listofallmembers>
       <member refid="classLP__player_1e45163ac38181edb850745c22466ff49" prot="private" virt="non-virtual"><scope>LP_player</scope><name>audio_info</name></member>
       <member refid="classLP__player_1ff46962ad75b52eef7cdfd264e32e809" prot="public" virt="non-virtual"><scope>LP_player</scope><name>get_event</name></member>

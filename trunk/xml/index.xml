@@ -75,8 +75,8 @@
   </compound>
   <compound refid="namespacestd" kind="namespace"><name>std</name>
   </compound>
-  <compound refid="liveplayer08_8cpp" kind="file"><name>liveplayer08.cpp</name>
-    <member refid="liveplayer08_8cpp_10ddf1224851353fc92bfbff6f499fa97" kind="function"><name>main</name></member>
+  <compound refid="liveplayer_8cpp" kind="file"><name>liveplayer.cpp</name>
+    <member refid="liveplayer_8cpp_10ddf1224851353fc92bfbff6f499fa97" kind="function"><name>main</name></member>
   </compound>
   <compound refid="LP__alsaout_8cpp" kind="file"><name>LP_alsaout.cpp</name>
     <member refid="LP__alsaout_8cpp_18843d02fcca8eccc783e2b7a1d9ef9de" kind="function"><name>lp_alsa_thread_init</name></member>
@@ -119,8 +119,28 @@
   </compound>
   <compound refid="LP__global__var_8h" kind="file"><name>LP_global_var.h</name>
   </compound>
-  <compound refid="dir_6d3cd12205463692e09d9921dc995974" kind="dir"><name>liveplayer08/</name>
+  <compound refid="dir_5b71ea97dacb72ed255ae483a9e958a7" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/programation/C_C++/</name>
   </compound>
-  <compound refid="dir_5915bf9c9b30aa6b2cbd6f86c58d9f23" kind="dir"><name>liveplayer08/src/</name>
+  <compound refid="dir_5f44e37319708619871a8638b018fa2e" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/</name>
+  </compound>
+  <compound refid="dir_d954d0886cab89be9c9255f1d6a78aec" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/</name>
+  </compound>
+  <compound refid="dir_e6518b46f6d0c97e5cf256ff8bec2ff7" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/</name>
+  </compound>
+  <compound refid="dir_b6d5ad3575fdb5a1a36fa4f1ea2a7f33" kind="dir"><name>mnt/</name>
+  </compound>
+  <compound refid="dir_fd54fcde02b8513b556cbead04dc3b84" kind="dir"><name>mnt/nfs/</name>
+  </compound>
+  <compound refid="dir_af50152742959dc060b75d8711151d90" kind="dir"><name>mnt/nfs/serveur/philippe/</name>
+  </compound>
+  <compound refid="dir_c85d79f5933f23727ad5b3079cf0232f" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/programation/</name>
+  </compound>
+  <compound refid="dir_5f36100d51fd9896720d95227cb80e6a" kind="dir"><name>mnt/nfs/serveur/</name>
+  </compound>
+  <compound refid="dir_a1d9eb464c72d224d52408bfdb448043" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/src/</name>
+  </compound>
+  <compound refid="dir_50d6cdd8302a336aa99ee129a444b118" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/</name>
+  </compound>
+  <compound refid="dir_056985046dde03ec7f499a87715e0395" kind="dir"><name>mnt/nfs/serveur/philippe/Documents/programation/C_C++/live-player/kdevelop/svn_berlios/trunk/</name>
   </compound>
 </doxygenindex>
