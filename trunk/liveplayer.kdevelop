@@ -3,7 +3,7 @@
   <general>
     <author>Philippe</author>
     <email>scandyna@users.berlios.de</email>
-    <version>0.1</version>
+    <version>0.1.0</version>
     <projectmanagement>KDevTrollProject</projectmanagement>
     <primarylanguage>C++</primarylanguage>
     <keywords>
@@ -110,6 +110,7 @@
     </make>
   </kdevtrollproject>
   <kdevfilecreate>
+    <filetypes/>
     <useglobaltypes>
       <type ext="ui" />
       <type ext="cpp" />
@@ -165,4 +166,28 @@
       <implementationsuffix>.cpp</implementationsuffix>
     </filetemplates>
   </cppsupportpart>
+  <dist>
+    <custom>false</custom>
+    <bzip>false</bzip>
+    <archname/>
+    <appname>liveplayer</appname>
+    <version>0.1.0</version>
+    <release/>
+    <vendor/>
+    <licence>GPL</licence>
+    <summary/>
+    <group/>
+    <packager/>
+    <description/>
+    <changelog/>
+    <devpackage>false</devpackage>
+    <docspackage>false</docspackage>
+    <appicon>false</appicon>
+    <arch>0</arch>
+    <genHTML>false</genHTML>
+    <useRPM>false</useRPM>
+    <ftpkde>false</ftpkde>
+    <appskde>false</appskde>
+    <url/>
+  </dist>
 </kdevelop>
