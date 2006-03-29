@@ -71,7 +71,7 @@ int LP_alsa::lp_alsa_init() {
 	}
 
 	/* debug info... */
-	snd_pcm_dump(pcm_handle, output);
+	//snd_pcm_dump(pcm_handle, output);
 
 	/* lancement du thread */
 	/* initialise the alsa_out thread */

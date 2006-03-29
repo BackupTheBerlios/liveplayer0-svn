@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
   LP_global_audio_data audio_globals;
   audio_globals.lp_audio_global_init();
 
-  /* appel a alsainit */
+  /* appel a alsa_init */
   LP_alsa aout;
   aout.lp_alsa_init();
 
@@ -52,13 +52,17 @@ int main(int argc, char *argv[])
   lp_it_ot_thread_init(&thread_id);
 
   LP_player *player_1 = new LP_player;
+	if(player_1 == 0) { std::cout << "Probleme init player_1\n"; 	return -1;}
+
   LP_player *player_2 = new LP_player;
+	if(player_2 == 0) { std::cout << "Probleme init player_2\n"; 	return -1;}
+
 
   player_1->mplay_mode = 2;
   player_2->mplay_mode = 2;
 
   lp_player_thread_init(player_1, 0,&th_play1);
-  lp_player_thread_init(player_2, 1,&th_play1);
+  lp_player_thread_init(player_2, 1,&th_play2);
 
 
   player_1->mbus = 1;

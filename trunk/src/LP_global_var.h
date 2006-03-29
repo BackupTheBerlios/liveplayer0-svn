@@ -41,6 +41,7 @@ class LP_global_audio_data {
 
 		static int hd_size;				// File read buffer factor
 		static pthread_mutex_t bus_buffer_mutex;	// bus buffers mutex
+		static pthread_mutex_t sampling_mutex;		// Librairies de resampling non thredable ? attende la fin de chaque instance
 		static int it_size;
 		static pthread_t it_ot_buffer;			// Thread it_to_ot_buffer
 		static pthread_t th_play;			// Thread de lecture

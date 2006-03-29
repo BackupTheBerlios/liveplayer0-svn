@@ -29,8 +29,9 @@
 #include <string.h>
 #include <pthread.h>
 #include <sndfile.h>
+#include <soundtouch/SoundTouch.h>
 #include "LP_global_var.h"
-#include <samplerate.h>
+//#include <samplerate.h>
 
 /* Les players individuels seront issu de cette classe */
 class LP_player {

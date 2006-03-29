@@ -36,7 +36,7 @@ LP_player::LP_player() {
 		exit(-1);
 	}
 	//rd_buffer = (float *)malloc(rd_size * sizeof(float));
-	rd_buffer = new float[rd_size];
+	rd_buffer = new float[rd_size * 2];
 	if(rd_buffer == 0) {
 		std::cout << "LP_player::LP_player(): cannot allocate memory for rd_buffer\n";
 	}
@@ -185,35 +185,33 @@ extern "C" void *lp_player_thread(void *p_data) {
 	/* obtenir une instance de LP_player */
 	/* get an instance of LP_player class */
 	LP_player *data = (LP_player *)p_data;
-	int ev_ret, i;
+	int ev_ret;
 	sf_count_t rd_readen = 0;	// Taille renvoyee par sf_read_float()
 	sf_count_t to_read = 0;
+	float *sampled_buffer = (float*)malloc(data->rd_size * sizeof(float));
+	int nSampled = 0;
+
+	double factor;
+	factor = 1.2;
 
 	/* Variables audio globales */
 	/* get the global vars */
 	LP_global_audio_data audio_data;
 
+	/* SoundTouch */
+	soundtouch::SoundTouch *pSoundTouch = new soundtouch::SoundTouch;
+
+	pthread_mutex_init (&audio_data.sampling_mutex, NULL);
+
+	/* Parametres soundtouch */
+	pSoundTouch->setSampleRate(audio_data.rate);
+	pSoundTouch->setChannels(2);
+
+	pSoundTouch->setRate(factor);
+
 	/* TMP */
-	float fl_tmp = 0;	// Variable de stockage calcules flottants
 	double d_tmp = 0;
 	int i_tmp = 0;
-
-	/* samplerate */
-	SRC_STATE *src_state;
-	int src_err, sampled_buffer_size;
-	double factor;
-
-	factor = 0.9;
-	//sampled_buffer_size = data->rd_size;
-	src_state = src_new(1, 2, &src_err);
-	if(src_state == NULL) {
-		fprintf(stderr, "ID: %d - ECHEC src_new\n", data->player_ID);
-	}
-	SRC_DATA *src_data = (SRC_DATA*)malloc(sizeof(SRC_DATA));
-	
-	float *sampled_buffer = (float*)malloc(data->rd_size * sizeof(float));
-	src_data->data_in = data->rd_buffer;
-	src_data->data_out = sampled_buffer;
 
 	/* Attendre que it_to_ot_ready == 1 */
 	/* waiting until it_ot_buffer thread is ready */
@@ -242,7 +240,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 		usleep(100);
 	}
 
-	d_tmp =  data->rd_size / factor;
+	d_tmp =  data->rd_size * factor;
 	//printf("***** d_tmp: %f, entier: %d\n", d_tmp, (int)d_tmp);
 
 	to_read = (int)d_tmp;
@@ -263,44 +261,27 @@ extern "C" void *lp_player_thread(void *p_data) {
 		}
 		
 		rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, to_read);
-//		std::cout << "Lecture " << rd_readen << " samples, ID " << data->player_ID << std::endl;
+		//rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, data->rd_size);
+		std::cout << "Lecture " << rd_readen << " samples, ID " << data->player_ID << std::endl;
 
 		/****** Simuler un delais *******/
 		usleep(1000);
 
-		/* samplerate */
+		/* SoundTouch (rate) */
+		pthread_mutex_lock(&audio_data.sampling_mutex);  // PAs utiles ???
+		pSoundTouch->putSamples(data->rd_buffer, rd_readen/2);
 
-		src_data->input_frames = rd_readen / 2;
-		src_data->output_frames = data->rd_size / 2;
-		src_data->src_ratio = factor;
-		src_data->end_of_input = 1;
-		
-		src_set_ratio(src_state, factor);
+		//while(nSampled < 1000){// (data->rd_size/2)) {
+		//	std::cout << "Nbre disponible: " << pSoundTouch->numSamples() << std::endl;
+			nSampled = pSoundTouch->receiveSamples(sampled_buffer, data->rd_size/2);
+			std::cout << "Nbre processes: " << nSampled * 2 << " (ID " << data->player_ID << ")" << std::endl;
 
-		if(src_process(src_state, src_data) != 0){
-			fprintf(stderr,"ID %d - ECHEC src_process\n", data->player_ID);
-		}
-		/* Si il manque des samples pour arriver a rd_size -> on lis le reste */
-		if(((src_data->output_frames_gen * 2) < data->rd_size) && (src_data->input_frames_used != 0)) {
-			/* Calcule de ce qui manque */
-			d_tmp = (data->rd_size - (src_data->output_frames_gen * 2)) / factor;
-			i_tmp = (int)d_tmp;
-			printf("ID %d - complete de %d samples\n", data->player_ID, i_tmp);
-			sf_read_float(data->snd_fd, data->rd_buffer, i_tmp);
-			/* On ajoute ceci a to_read */
-			to_read = to_read + i_tmp;
-		}
-		/* si il y a trops de samples lu, on repositionne la tete, et on annonce une taille de lecture plus petite
-		   sf_seek parle en frames */
-		if(((src_data->output_frames_gen * 2) > data->rd_size) && (src_data->output_frames_gen != 0)) {
-			/* Calcule du surplus */
-			to_read = to_read - ((src_data->input_frames_used * 2) - rd_readen);
-			sf_seek(data->snd_fd, - ((src_data->input_frames_used) - (rd_readen / 2)), SEEK_CUR);
-//			printf("ID %d - retour de %d frames\n", data->player_ID,  (src_data->input_frames_used - rd_readen));
-		}
+		//}
 
-		printf("ID %d - in: %d frames, out: %d frames, to_read: %d\n", data->player_ID, src_data->input_frames_used*2, src_data->output_frames_gen*2, to_read);
-
+		//pSoundTouch->flush();
+		pSoundTouch->clear();
+		//pSoundTouch->flush();
+		pthread_mutex_unlock(&audio_data.sampling_mutex);
 
 		/* Tant que play_buf_full != 0 --> buffer plein, on attends*/
 		/* witing until buffer is empty */
@@ -321,11 +302,13 @@ extern "C" void *lp_player_thread(void *p_data) {
 		/* write out */
 		//mix_out(data->rd_buffer, rd_readen, data->mbus);
 		mix_out(sampled_buffer, data->rd_size, data->mbus);
-		printf("MIX OUT\n");
+		//printf("MIX OUT\n");
 
 		/* On indique que le buffer est plein */
 		/* buffer is written, we say it */
 		audio_data.play_buf_full[data->player_ID] = 1;
+
+		/* flush sountouch buffer */
 
 		/* Nettoyer sampled buffer */
 		/* clean the buffer (I had some echo problems) */
@@ -334,7 +317,6 @@ extern "C" void *lp_player_thread(void *p_data) {
 //			data->rd_buffer[i] = 0;
 //		}
 
-		src_reset(src_state);
 	}
 
 	/* Attente evenements */

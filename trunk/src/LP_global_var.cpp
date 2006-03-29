@@ -131,6 +131,7 @@ int LP_global_audio_data::lp_audio_global_close() {
 /* Global vars */
 int LP_global_audio_data::hd_size;				// Taille tampon disque, facteur (nbre de x)
 pthread_mutex_t LP_global_audio_data::bus_buffer_mutex;		// Mutex d'ecriture sur les bus
+pthread_mutex_t LP_global_audio_data::sampling_mutex;	
 int LP_global_audio_data::it_size;
 pthread_t LP_global_audio_data::it_ot_buffer;			// Thread it_to_ot_buffer
 pthread_t LP_global_audio_data::th_play;			// Thread de lecture
