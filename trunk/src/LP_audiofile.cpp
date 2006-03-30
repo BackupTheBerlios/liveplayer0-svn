@@ -384,6 +384,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 	audio_data.player_mode[data->player_ID] = LP_PLAY_MODE_PAUSE;
 	printf("Player %d END\n", data->player_ID);
 	/* liberation */
+	//pSoundTouch->clear();
 	//delete(data);
 
 	//return 0;
