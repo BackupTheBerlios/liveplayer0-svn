@@ -40,8 +40,10 @@
 class LP_player {
 
 	public:
-		LP_player();
+		LP_player(int player_ID);
 		~LP_player();
+		int setSpeed(double speed);
+		double getSpeed();
 		int test_LP(int d);
 		int get_file(char *file);
 		int player_ID;
@@ -51,7 +53,6 @@ class LP_player {
 		float *rd_buffer;
 		float *sampled_buffer;
 		static const int nb_channel;	// Nb de cannaux du fichier, fixe a 2
-		double speed;			// Playing speed
 		/* Recherche les variables changees et reagis
 		Si un evenement s'est produit, renvois 1
 		Si une erreur est survenue, renvois < 0
@@ -67,11 +68,13 @@ class LP_player {
 	private:
 		unsigned int rate;		// sample rate du fichier
 		SF_INFO *audio_info;		// Infos fournis par libsndfile
+		pthread_t thread_id;		// Thread ID for LP_player instance
+		double mSpeed;			// Resampling factor for speed
 };
 
 
 /* lance un nouveau player et donne un objet LP_player */
-int lp_player_thread_init(LP_player *player, int player_ID, pthread_t *thread_id);
+//int lp_player_thread_init(LP_player *player, int player_ID, pthread_t *thread_id);
 int lp_player_thread_join(pthread_t thread_id);
 
 /* Fonction appelee dans n thread:
@@ -89,7 +92,7 @@ extern "C" void *lp_it_to_ot_buffer(void *fake);
    On donne le buffer a mixer et router, le bus (mixage "virtuel")
    Le buffer doit etre de 2 cannaux (stereo)
 */
-int mix_out(float *in_buffer, int in_buf_size, int out_buf_size ,int bus);
+int mix_out(float *in_buffer, int in_buf_size, int bus);
 
 /* Cette fonction extrait 2 cannaux d'un buffer:
    Donner le cannal a extraire (1, 3, 5, etc...), elle revois le canal donne et le suivant...
@@ -101,7 +104,7 @@ int extract_one_buffer(float *in_buffer,int in_buf_len , int in_nb_channels,floa
    On donne la sortie: 1, 3, 5 ou 7. Le tout travaille en stereo !
    Donc: in_buffer = 2 cannaux - Merci a Joel (un ami) pour la solution !
 */
-int add_one_buffer(float *in_buffer, float *out_buffer, int in_buffer_len, int out_buf_len, int out_channels, int output);
+int add_one_buffer(float *in_buffer, float *out_buffer, int in_buffer_len, int out_channels, int output);
 
 /* Fonction nettoyage d'un buffer */
 int clean_buffer(float *buffer, int buf_size);

@@ -33,7 +33,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
   int err;
-  pthread_t thread_id, th_play1, th_play2;
+  pthread_t thread_id;
 
   /* on mets les parametres audio */
   LP_global_audio_data audio_globals;
@@ -51,21 +51,15 @@ int main(int argc, char *argv[])
 
   lp_it_ot_thread_init(&thread_id);
 
-  LP_player *player_1 = new LP_player;
+  LP_player *player_1 = new LP_player(0);
 	if(player_1 == 0) { std::cout << "Probleme init player_1\n"; 	return -1;}
 
-  LP_player *player_2 = new LP_player;
+  LP_player *player_2 = new LP_player(1);
 	if(player_2 == 0) { std::cout << "Probleme init player_2\n"; 	return -1;}
 
 
   player_1->mplay_mode = LP_PLAY_MODE_PAUSE;
   player_2->mplay_mode = LP_PLAY_MODE_PAUSE;
-
-player_1->speed = 1.0;
-player_2->speed = 1.2;
-
-  lp_player_thread_init(player_1, 0,&th_play1);
-  lp_player_thread_init(player_2, 1,&th_play2);
 
   player_1->mbus = 1;
 
@@ -86,21 +80,65 @@ for (i=2; i>0; i--){
   player_1->mplay_mode = LP_PLAY_MODE_PLAYING;	// mode play
   player_2->mplay_mode = LP_PLAY_MODE_PLAYING;
 
-sleep(5);
- //  player_1->mplay_mode = 2;
-//sleep(5);
-//  player_2->mplay_mode = 2;
-//  player_1->mplay_mode = 1;
+/* Some brutal speed variations.... */
+usleep(100000);
+player_1->setSpeed(0.9);
+usleep(1000000);
+player_1->setSpeed(1.2);
+player_2->setSpeed(1.2);
+usleep(1000000);
+player_1->setSpeed(0.9);
+usleep(1000000);
+player_1->setSpeed(1.05);
+usleep(1000000);
+player_1->setSpeed(1.1);
+usleep(1000000);
+player_1->setSpeed(1.0);
+player_1->setSpeed(0.5464);
+usleep(1000000);
+player_1->setSpeed(1.05314);
+usleep(1000000);
+player_1->setSpeed(1.453431);
+player_2->setSpeed(1.0);
+usleep(1000000);
+player_1->setSpeed(0.9);
+usleep(100000);
+player_1->setSpeed(0.91);
+player_2->setSpeed(1.0);
+usleep(100000);
+player_1->setSpeed(0.91);
+usleep(100000);
+player_1->setSpeed(0.93);
+usleep(100000);
+player_1->setSpeed(0.95);
+usleep(100000);
+player_1->setSpeed(0.97);
+usleep(100000);
+player_1->setSpeed(0.99);
+usleep(100000);
+player_1->setSpeed(1.0);
+usleep(100000);
+player_1->setSpeed(1.02);
+usleep(100000);
+player_1->setSpeed(1.04);
+usleep(100000);
+player_1->setSpeed(1.06);
+usleep(100000);
+player_1->setSpeed(1.08);
+usleep(100000);
+player_1->setSpeed(1.09);
+usleep(1000000);
+player_1->setSpeed(1.1);
 
-  /* tout fermer */
-  lp_player_thread_join(th_play1);
-  lp_player_thread_join(th_play2);
+/* The destructor waits the end of thread */
+delete player_1;
+delete player_2;
+
   lp_it_ot_thread_join(thread_id);
 
   audio_globals.lp_audio_global_close();
   aout.lp_alsa_close();
 
-//  sleep(1);
 
   return EXIT_SUCCESS;
 }

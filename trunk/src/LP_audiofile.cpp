@@ -23,10 +23,31 @@
 /* Constantes privees */
 const int LP_player::nb_channel = 2;
 
-LP_player::LP_player() {
+LP_player::LP_player(int init_player_ID) {
 
 	/* Variables */
 	LP_global_audio_data audio_data;
+	int err;
+
+	/* player settings */
+
+	/* Player ID - must stay all the player's life */
+	player_ID = init_player_ID;
+
+	/* audio_info (libsndfile) */
+	audio_info = new SF_INFO;
+
+	/* new file event detection - default: no event (0) */
+	mfile = 0;
+
+	/* Bus de sortie: par defaut 1 */
+	/* output bus, default is 1 (see LP_global_var.cpp) */
+	mbus = 1;
+
+	/* default speed - if 0, player never start */
+	mSpeed = 1.0;
+
+	/* Setup the buffers */
 
 	/* rd_buffer PS: nb_channel prive, defini a 2 */
 	/* rd_buffer is the buffer readen from a file, only 2ch files supported for the moment */
@@ -35,6 +56,7 @@ LP_player::LP_player() {
 		std::cout << "LP_player::LP_player(): cannot define rd_size\n";
 		exit(-1);
 	}
+
 	/* This buffer is given to the read() function.
 	   must have memory to store more sample that given in rd_size
            wenn we use resampling functions
@@ -44,30 +66,65 @@ LP_player::LP_player() {
 		std::cout << "LP_player::LP_player(): cannot allocate memory for rd_buffer\n";
 	}
 
-	/* audio_info */
-	audio_info = new SF_INFO;
-
-	mfile = 0;
-
-	/* Bus de sortie: par defaut 1 */
-	/* output bus, default is 1 (see LP_global_var.cpp) */
-	mbus = 1;
-
-	/* The buffer wich sores the resampled data */
+	/* The buffer wich recieve the resampled data */
 	sampled_buffer = new float[rd_size + 1000];
 	if(sampled_buffer == 0) {
 		std::cout << "LP_player::LP_player(): cannot allocate memory for sampled_buffer\n";
 	}
 
-	std::cout << "LP_player - alloc OK, rd_size: " << rd_size << std::endl;
+	/* Run the player thread */
+	err = pthread_create(&thread_id, 0, lp_player_thread, (void *)this);
+	if(err != 0) {
+		std::cerr << "player_thread_init: failed to create thread for player_ID " << player_ID << std::endl;
+	}
+
+	/* Attente que tout soit pret avant de retourner */
+	/* while the new player thread isn't ready we don't return */
+	while(this->player_ready != 1) {
+		usleep(1000);
+	}
+
+	std::cout << "LP_player - init OK, rd_size: " << rd_size << std::endl;
 }
 
 LP_player::~ LP_player() {
+	/* variables */
+	int err;
+
+	/* Waiting the end of the thread */
+	err = pthread_join(thread_id, 0);
+	if(err != 0) {
+		std::cerr << "player_thread_join: failed to join thread, thread_id: " << thread_id << std::endl;
+	}
 
 	/* Liberation memoire */
 	delete[] rd_buffer;
 	delete[] audio_info;
 	delete[] sampled_buffer;
+}
+
+/* Set player speed */
+int LP_player::setSpeed(double speed){
+	/* variables */
+	double min, max;
+	LP_global_audio_data audio_data;
+
+	/* Limits */
+	min = 0.000001;		// See the raylity in SoundTouch 
+	max = 2.0;		// See the raylity in SoundTouch
+
+	if((speed <= min) || (speed >= max)) {
+		std::cout << "LP_player::setSpeed: illegal speed settings\n";
+		return -1;
+	}
+
+	mSpeed = speed;
+
+	return 0;
+}
+
+double LP_player::getSpeed(){
+	return mSpeed;
 }
 
 /* Ouverture d'un fichier */
@@ -145,49 +202,42 @@ int LP_player::get_event() {
 	return ret;
 }
 
-int LP_player::test_LP(int d) {
-	std::cout << "HELLO! test: " << d << std::endl;
-	std::cout << "player_ID = " << player_ID << std::endl;
-
-	return 0;
-}
-
 /* lance un nouveau player et donne un objet LP_player */
 /* makes a new player in a new thread and give it a pointer of an LP_player class instance */
-int lp_player_thread_init(LP_player *player, int player_ID, pthread_t *thread_id) {
+//int lp_player_thread_init(LP_player *player, int player_ID, pthread_t *thread_id) {
 
 	/* On lance un nouveau player */
-	int err;
-	printf("LP thread_init - OK\n");
+//	int err;
+//	printf("LP thread_init - OK\n");
 
 	//player = new LP_player;
-	player->player_ID = player_ID;
-	err = pthread_create(thread_id, 0, lp_player_thread, (void *)player);
-	if(err != 0) {
+//	player->player_ID = player_ID;
+//	err = pthread_create(thread_id, 0, lp_player_thread, (void *)player);
+/*	if(err != 0) {
 		std::cerr << "player_thread_init: failed to create thread for player_ID " << player_ID << std::endl;
 		return err;
 	}
-
+*/
 	/* Attente que tout soit pret avant de retourner */
 	/* while the new player thread isn't ready we don't return */
-	while(player->player_ready != 1) {
+/*	while(player->player_ready != 1) {
 		usleep(1000);
 	}
+*/
+//	return 0;
+//}
 
-	return 0;
-}
-
-int lp_player_thread_join(pthread_t thread_id) {
-
-	int err;
-	err = pthread_join(thread_id, 0);
-	if(err != 0) {
-		std::cerr << "player_thread_join: failed to join thread, thread_id: " << thread_id << std::endl;
-		return err;
-	}
-
-	return 0;
-}
+//int lp_player_thread_join(pthread_t thread_id) {
+//
+//	int err;
+//	err = pthread_join(thread_id, 0);
+//	if(err != 0) {
+//		std::cerr << "player_thread_join: failed to join thread, thread_id: " << thread_id << std::endl;
+//		return err;
+//	}
+//
+//	return 0;
+//}
 
 /* Fonction player */
 extern "C" void *lp_player_thread(void *p_data) {
@@ -206,7 +256,10 @@ extern "C" void *lp_player_thread(void *p_data) {
 
 	/* Speed/pitch/tempo with SoundTouch */
 	double factor;
-	factor = data->speed;
+	factor = data->getSpeed();
+
+	/* Temp vars */
+	double d_tmp = 0;
 
 	soundtouch::SoundTouch *pSoundTouch = new soundtouch::SoundTouch;
 
@@ -215,12 +268,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 	pSoundTouch->setSampleRate(audio_data.rate);
 	/* Player channels (alwways 2) */
 	pSoundTouch->setChannels(2);
-
 	pSoundTouch->setRate(factor);
-
-	/* TMP */
-	double d_tmp = 0;
-	int i_tmp = 0;
 
 	/* Attendre que it_to_ot_ready == 1 */
 	/* waiting until it_ot_buffer thread is ready */
@@ -253,19 +301,18 @@ extern "C" void *lp_player_thread(void *p_data) {
 	d_tmp =  data->rd_size * factor;
 	to_read = (int)d_tmp;
 
-		/* Si to_read / nb_channels (cad: 2) n'est pas entier -> corriger */
-		if((to_read % 2) > 0) {
-			if(to_read > (data->rd_size / factor)) {
-				to_read = to_read - 1;
-			} else {
-				to_read = to_read + 1;
-			}
+	/* Si to_read / nb_channels (cad: 2) n'est pas entier -> corriger */
+	if((to_read % 2) > 0) {
+		if(to_read > (data->rd_size / factor)) {
+			to_read = to_read - 1;
+		} else {
+			to_read = to_read + 1;
 		}
+	}
 
 	/* Lecture du fichier */
 	while((rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, to_read)) > 0){
-		
-		
+
 		//rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, data->rd_size);
 		std::cout << "Lecture " << rd_readen << " samples, ID " << data->player_ID << std::endl;
 
@@ -273,7 +320,6 @@ extern "C" void *lp_player_thread(void *p_data) {
 		usleep(1000);
 
 		/* SoundTouch (rate) */
-		//pthread_mutex_lock(&audio_data.sampling_mutex);  // PAs utiles ???
 		pSoundTouch->putSamples(data->rd_buffer, rd_readen/2);
 
 		nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
@@ -296,7 +342,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 
 		/* Ecriture */
 		/* write out */
-		mix_out(data->sampled_buffer, (nSampled * data->nb_channel),data->rd_size ,data->mbus);
+		mix_out(data->sampled_buffer, (nSampled * data->nb_channel),data->mbus);
 
 		/* On indique que le buffer est plein */
 		/* buffer is written, we say it */
@@ -304,6 +350,13 @@ extern "C" void *lp_player_thread(void *p_data) {
 
 		/* Correction to_read selon revois nSampled - Seulement si rd_readen == to_read (sinon c'est que EOF) */
 		if(rd_readen == to_read){
+			/* New speed factor */
+			factor = data->getSpeed();
+			pSoundTouch->setRate(factor);
+			/* Samples to read: outsize (it's rd_size) * resampling factor (factor) */
+			d_tmp =  data->rd_size * factor;
+			to_read = (int)d_tmp;
+
 			if((nSampled * data->nb_channel) < data->rd_size) {
 				to_read = to_read + ((data->rd_size - (nSampled * data->nb_channel)) *  (int)factor) + 1;
 				std::cout << "CORR Positiv\n";
@@ -322,10 +375,6 @@ extern "C" void *lp_player_thread(void *p_data) {
 				}
 			}
 		}
-
-		/* clean */
-		//clean_buffer(data->rd_buffer, data->rd_size * 2);
-		//clean_buffer(data->sampled_buffer, data->rd_size + 1000);
 	}
 
 	/* Attente evenements */
@@ -354,8 +403,7 @@ int lp_it_ot_thread_init(pthread_t *thread_id) {
 		return err;
 	}
 
-	return 0;
-	
+	return 0;	
 }
 
 int lp_it_ot_thread_join(pthread_t thread_id) {
@@ -395,11 +443,6 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 		exit(-1);
 	}
 
-	if((err = pthread_mutex_init(&audio_data.bus_buffer_mutex, NULL)) != 0){
-		fprintf(stderr, "lp_it_to_ot_buffer: unable to initialize bus_buffer_mutex\n");
-		exit(-1);
-	}
-
 	/* On positionne play_buf_full[] a 1 */
 	for(i=0; i<audio_data.nb_players; i++){
 		audio_data.play_buf_full[i] = 1;
@@ -409,9 +452,6 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 	audio_data.it_to_ot_ready = 1;
 
 	while(1 > 0) {
-		/* Nettoyer mixed_buffer */
-		//clear_mixed_buffer();
-
 		/* Pour chaque player */
 		for(i=0; i<audio_data.nb_players; i++){
 			/* Si le player est en pause, on passe */
@@ -425,16 +465,10 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 					usleep(1000);
 				}
 	
-				//printf("Ok pour %d\n", i);
-	
-				//pthread_mutex_lock(&audio_data.bus_buffer_mutex);
-	//			printf("\nit_to_ot_buffer: traitement de it_buffer - %d samples\n", audio_data.it_size);
-			
 				/* copie du buffer */
 				for(y=0; y<audio_data.it_size; y++) {
 					buffer[y] = audio_data.mixed_buffer[y];
 				}
-				//pthread_mutex_unlock(&audio_data.bus_buffer_mutex);
 			}
 		}
 
@@ -447,24 +481,19 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 			ot_ite = audio_data.it_size / audio_data.ot_size;
 		}
 
-		//printf("ot_ite: %d\n", ot_ite);
-
 		/* On remplis ot_buffer */
 		/* fill the buffer */
 		m = 0;
 		for(i = 0; i < ot_ite; i++) {
 			while (audio_data.ot_full != 0) {
-			//	printf("\nit_to_ot_buffer: attente lp_play ...\n");
-			//	y++;
 				usleep(1000);
 			}
 			pthread_mutex_lock(&audio_data.it_ot_buffer_mutex);
 
 			for(y=0; y<(audio_data.ot_size); y++) {
-//				audio_data.ot_buffer[y] = audio_data.it_buffer[y+m];
 				audio_data.ot_buffer[y] = buffer[y+m];
 			}
-			//printf("it_to_ot_buffer: buffer copie... %d samples\n", audio_data.ot_size);
+
 			/* taille du buffer [frames] */
 			audio_data.ot_full = 1;
 			audio_data.ot_frames_to_read = audio_data.ot_size / audio_data.nb_channel;
@@ -478,15 +507,8 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 		/* clean buffer (echo problems else) */
 		clear_bus_buffers(0);
 
-		/* clean internal buffer (utile ?) */
-/*		for(i=0; i<audio_data.it_size; i++){
-			buffer[i] = 0;
-		}
-*/
-		/* clean */
-		//clean_buffer(buffer, audio_data.it_size);
+		/* clean buffer (else ringbuffer problems whenn passing in pause mode) */
 		clean_buffer(audio_data.mixed_buffer, audio_data.it_size);
-
 	}
 	free(buffer);
 }
@@ -497,7 +519,7 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 */
 /* Mix out function: it mix buffers providing from the player and/or send it to output bus (multitrak soundcards)
 */
-int mix_out(float *in_buffer, int in_buf_size, int out_buf_size ,int bus)
+int mix_out(float *in_buffer, int in_buf_size, int bus)
 {
 	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
 	/* variables internes */
@@ -536,10 +558,7 @@ int mix_out(float *in_buffer, int in_buf_size, int out_buf_size ,int bus)
 	}
 
 	/* Routing de sortie */
-	add_one_buffer(out_buffer, audio_data.mixed_buffer, in_buf_size, out_buf_size ,audio_data.nb_channel, audio_data.bus_out[bus]);
-
-	/* clean */
-	//clean_buffer(out_buffer, out_buf_size);
+	add_one_buffer(out_buffer, audio_data.mixed_buffer, in_buf_size, audio_data.nb_channel, audio_data.bus_out[bus]);
 
 	return 0;
 }
@@ -551,7 +570,7 @@ int mix_out(float *in_buffer, int in_buf_size, int out_buf_size ,int bus)
 /* This function set the output routing (multitrack soundcards)
    Thank to Joel (a friend) for the solution !
 */
-int add_one_buffer(float *in_buffer, float *out_buffer, int in_buffer_len, int out_buf_len, int out_channels, int output)
+int add_one_buffer(float *in_buffer, float *out_buffer, int in_buffer_len, int out_channels, int output)
 {
 	int i;
 
