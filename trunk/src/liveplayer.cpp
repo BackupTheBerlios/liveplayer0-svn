@@ -58,12 +58,14 @@ int main(int argc, char *argv[])
 	if(player_2 == 0) { std::cout << "Probleme init player_2\n"; 	return -1;}
 
 
-  player_1->mplay_mode = 2;
-  player_2->mplay_mode = 2;
+  player_1->mplay_mode = LP_PLAY_MODE_PAUSE;
+  player_2->mplay_mode = LP_PLAY_MODE_PAUSE;
+
+player_1->speed = 1.0;
+player_2->speed = 1.2;
 
   lp_player_thread_init(player_1, 0,&th_play1);
   lp_player_thread_init(player_2, 1,&th_play2);
-
 
   player_1->mbus = 1;
 
@@ -72,6 +74,8 @@ int main(int argc, char *argv[])
   player_1->mfile = argv[1];
   player_2->mfile = argv[2];
 
+
+
 /* Decompte */
 int i;
 for (i=2; i>0; i--){
@@ -79,8 +83,8 @@ for (i=2; i>0; i--){
 	std::cout << "Decompte: " << i << std::endl;
 }
 
-  player_1->mplay_mode = 1;	// mode play
-  player_2->mplay_mode = 1;
+  player_1->mplay_mode = LP_PLAY_MODE_PLAYING;	// mode play
+  player_2->mplay_mode = LP_PLAY_MODE_PLAYING;
 
 sleep(5);
  //  player_1->mplay_mode = 2;

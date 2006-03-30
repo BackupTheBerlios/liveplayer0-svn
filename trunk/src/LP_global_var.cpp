@@ -32,7 +32,7 @@ int LP_global_audio_data::lp_audio_global_init() {
 	nb_players = 2;				// numbers of players
 	nb_frames = 1024;
 	/* Give the file read buffer size, it's a factor of internal buffer (2x seems a good factor) */
-	hd_size = 2;	// On definis x * it_size pour le buffer disque
+	hd_size = 20;	// On definis x * it_size pour le buffer disque
 	/* output routing (multitrack soundcard) */
 	bus_out[1] = 1;	// output 1 et 2
 	bus_out[2] = 3;	// output 3 et 4
@@ -131,7 +131,6 @@ int LP_global_audio_data::lp_audio_global_close() {
 /* Global vars */
 int LP_global_audio_data::hd_size;				// Taille tampon disque, facteur (nbre de x)
 pthread_mutex_t LP_global_audio_data::bus_buffer_mutex;		// Mutex d'ecriture sur les bus
-pthread_mutex_t LP_global_audio_data::sampling_mutex;	
 int LP_global_audio_data::it_size;
 pthread_t LP_global_audio_data::it_ot_buffer;			// Thread it_to_ot_buffer
 pthread_t LP_global_audio_data::th_play;			// Thread de lecture
