@@ -2,11 +2,14 @@ liveplayer wants to become a dj playing software, but it is very new project.
 
 For the moment it is a small (and bugged..) command-line software, because I try to implement the audio_device before make the GUI...
 
+LivePlayer is based on libsndfile, wich is a powerfull linar audiofile reader API. Output is directly done with ALSA.
+To resample audio (for instance just for speed variation), the very nice SoundTouch library is used.
+
 Install: some libraries must be installed bofore this software can be compiled:
 
 - libasound, libasound-dev
 - libsndfile, libsndfile-dev
-- libsamplerate, libsamplerate-dev
+- SoundTouch
 - Others ?
 
 PS: read the usage section befor continue:
@@ -23,17 +26,20 @@ Usage:
 then, in the bin/ directory:
 ./liveplayer file1 file2   (depending of number of player configured in the LP_global_var.cpp file) 
 
+Now, no control system is desinged, but you can edit liveplayer.cpp to change the speed (it's only testing release, sorry).
+
 It's realy a very BETA software, I hope just it can play somthing with your system.. 
 
 Features:
 - plays linear audiofile, like wav, aiff, etc.... (thank you sndfile ! ;) )
 - hmm... playing 2 files ...
 - options ? sorry, just the input files can be passed for the moment (configs need editing, recompiling -> BAD, I now :) )
+- speed variation can be done (thank you SoundTouch !)
 - Nothing else :(
 
 Planed:
-- get the resampling working (have problem to implement proper resampling, see LP_audiofile.cpp, try to change factor to hear result)
 - eliminate bugs....
+- implement libogg
 - initialise the players automatically (for the moment you must edit liveplayer.cpp and LP_global_var.cpp for the moment)
 - put the LADSPA
 - build a GUI
