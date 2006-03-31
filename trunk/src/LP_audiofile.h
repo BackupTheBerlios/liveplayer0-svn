@@ -36,6 +36,10 @@
 #define LP_PLAY_MODE_PLAYING	1
 #define LP_PLAY_MODE_PAUSE 	2
 
+/* Play direction */
+#define LP_PLAY_FORWARD		1
+#define LP_PLAY_REVERSE		2
+
 /* Les players individuels seront issu de cette classe */
 class LP_player {
 
@@ -44,6 +48,8 @@ class LP_player {
 		~LP_player();
 		int setSpeed(double speed);
 		double getSpeed();
+		int setDirection(int direction);
+		int getDirection();
 		int test_LP(int d);
 		int get_file(char *file);
 		int player_ID;
@@ -70,6 +76,7 @@ class LP_player {
 		SF_INFO *audio_info;		// Infos fournis par libsndfile
 		pthread_t thread_id;		// Thread ID for LP_player instance
 		double mSpeed;			// Resampling factor for speed
+		int mDirection;			// Play direction
 };
 
 
@@ -92,7 +99,7 @@ extern "C" void *lp_it_to_ot_buffer(void *fake);
    On donne le buffer a mixer et router, le bus (mixage "virtuel")
    Le buffer doit etre de 2 cannaux (stereo)
 */
-int mix_out(float *in_buffer, int in_buf_size, int bus);
+int mix_out(float *in_buffer, int in_buf_size, int bus, int direction);
 
 /* Cette fonction extrait 2 cannaux d'un buffer:
    Donner le cannal a extraire (1, 3, 5, etc...), elle revois le canal donne et le suivant...

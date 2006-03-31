@@ -47,6 +47,9 @@ LP_player::LP_player(int init_player_ID) {
 	/* default speed - if 0, player never start */
 	mSpeed = 1.0;
 
+	/* Default play direction */
+	mDirection = LP_PLAY_FORWARD;
+
 	/* Setup the buffers */
 
 	/* rd_buffer PS: nb_channel prive, defini a 2 */
@@ -125,6 +128,25 @@ int LP_player::setSpeed(double speed){
 
 double LP_player::getSpeed(){
 	return mSpeed;
+}
+
+/* Play direction */
+int LP_player::setDirection(int direction) {
+	/* test values */
+	switch (direction){
+		case LP_PLAY_FORWARD: mDirection = direction; 
+			break;
+		case LP_PLAY_REVERSE: mDirection = direction;
+			break;
+		default:
+			std::cout << "LP_player::setDirection(): illegal parameter - set standard (forward)\n";
+			mDirection = LP_PLAY_FORWARD;
+			break;
+	}
+}
+
+int LP_player::getDirection(){
+	return mDirection;
 }
 
 /* Ouverture d'un fichier */
@@ -245,7 +267,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 	/* obtenir une instance de LP_player */
 	/* get an instance of LP_player class */
 	LP_player *data = (LP_player *)p_data;
-	int ev_ret;
+	int ev_ret, err;
 	sf_count_t rd_readen = 0;	// Taille renvoyee par sf_read_float()
 	sf_count_t to_read = 0;
 	int nSampled = 0;
@@ -342,7 +364,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 
 		/* Ecriture */
 		/* write out */
-		mix_out(data->sampled_buffer, (nSampled * data->nb_channel),data->mbus);
+		mix_out(data->sampled_buffer, (nSampled * data->nb_channel), data->mbus, data->getDirection());
 
 		/* On indique que le buffer est plein */
 		/* buffer is written, we say it */
@@ -373,6 +395,12 @@ extern "C" void *lp_player_thread(void *p_data) {
 				} else {
 					to_read = to_read + 1;
 				}
+			}
+			/* Direction */
+			if(data->getDirection() == LP_PLAY_REVERSE) {
+				err = sf_seek(data->snd_fd, -(to_read), SEEK_CUR);
+				if(err < 0) { printf("ERR SEEK\n"); }
+				std::cout << "REV - SEEK " << -(to_read) << std::endl;
 			}
 		}
 	}
@@ -520,13 +548,13 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 */
 /* Mix out function: it mix buffers providing from the player and/or send it to output bus (multitrak soundcards)
 */
-int mix_out(float *in_buffer, int in_buf_size, int bus)
+int mix_out(float *in_buffer, int in_buf_size, int bus, int direction)
 {
-	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
+	printf("mix_out: recus %d samples pour bus %d, direction: %d\n", in_buf_size, bus, direction);
 	/* variables internes */
 	float *out_buffer = NULL;
 	float tmp1, tmp2;
-	int i;
+	int i, y;
 	LP_global_audio_data audio_data;
 
 	/* Test de in_buffer */
@@ -552,10 +580,23 @@ int mix_out(float *in_buffer, int in_buf_size, int bus)
 	}
 
 	/* mixage */
-	for(i=0; i<in_buf_size; i++) {
-		tmp1 = out_buffer[i];
-		tmp2 = in_buffer[i];
-		out_buffer[i] = (tmp1) + (tmp2 / audio_data.nb_players);
+	if(direction == LP_PLAY_FORWARD) {
+		printf("mix - STD\n");
+		for(i=0; i<in_buf_size; i++) {
+			tmp1 = out_buffer[i];
+			tmp2 = in_buffer[i];
+			out_buffer[i] = (tmp1) + (tmp2 / audio_data.nb_players);
+		}
+	}else if(direction == LP_PLAY_REVERSE) {
+		printf("mix - REVERSE\n");
+		/* mixage, sens inverse */
+		y = in_buf_size - 1;
+		for(i=0; i<in_buf_size; i++){
+			tmp1 = out_buffer[i];
+			tmp2 = in_buffer[y];
+			out_buffer[i] = (tmp1) + (tmp2 / audio_data.nb_players);
+			y--;
+		}
 	}
 
 	/* Routing de sortie */
