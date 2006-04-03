@@ -40,16 +40,28 @@
 #define LP_PLAY_FORWARD		1
 #define LP_PLAY_REVERSE		2
 
+#define LP_OFF 			0
+#define LP_ON			1
+
 /* Les players individuels seront issu de cette classe */
 class LP_player {
 
 	public:
 		LP_player(int player_ID);
 		~LP_player();
+		// Enable / Disable SoundTouch processing
+		int setSoundTouch(int state);	// can be LP_ON or LP_OFF
+		int getSoundTouch();		// Return state (LP_ON or LP_OFF)
+		// Speed settings
 		int setSpeed(double speed);
 		double getSpeed();
+		// Play direction settings
 		int setDirection(int direction);
 		int getDirection();
+		// Seek in file: set how many frames and from location you want count
+		int setSeek(int frames, int position);
+		int mSeekRefPos;		// Start from position: SEEK_SET (beginging of file), SEEK_CUR, SEEK_END
+		int mSeekOffset;
 		int test_LP(int d);
 		int get_file(char *file);
 		int player_ID;
@@ -57,6 +69,7 @@ class LP_player {
 		SNDFILE *snd_fd;		// descripteur fichier (libsndfile)
 		int rd_size;
 		float *rd_buffer;
+		float *tmp_buffer;		// intermediaire
 		float *sampled_buffer;
 		static const int nb_channel;	// Nb de cannaux du fichier, fixe a 2
 		/* Recherche les variables changees et reagis
@@ -75,8 +88,10 @@ class LP_player {
 		unsigned int rate;		// sample rate du fichier
 		SF_INFO *audio_info;		// Infos fournis par libsndfile
 		pthread_t thread_id;		// Thread ID for LP_player instance
+		int mSoundTouch;		// Enable / disable SoundTouch processing
 		double mSpeed;			// Resampling factor for speed
 		int mDirection;			// Play direction
+		int mSeekEvent;
 };
 
 
@@ -99,7 +114,7 @@ extern "C" void *lp_it_to_ot_buffer(void *fake);
    On donne le buffer a mixer et router, le bus (mixage "virtuel")
    Le buffer doit etre de 2 cannaux (stereo)
 */
-int mix_out(float *in_buffer, int in_buf_size, int bus, int direction);
+int mix_out(float *in_buffer, int in_buf_size, int bus);
 
 /* Cette fonction extrait 2 cannaux d'un buffer:
    Donner le cannal a extraire (1, 3, 5, etc...), elle revois le canal donne et le suivant...

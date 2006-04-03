@@ -44,6 +44,9 @@ LP_player::LP_player(int init_player_ID) {
 	/* output bus, default is 1 (see LP_global_var.cpp) */
 	mbus = 1;
 
+	/* Enable SoundTouch processing by default */
+	mSoundTouch = LP_ON;
+
 	/* default speed - if 0, player never start */
 	mSpeed = 1.0;
 
@@ -68,6 +71,16 @@ LP_player::LP_player(int init_player_ID) {
 	if(rd_buffer == 0) {
 		std::cout << "LP_player::LP_player(): cannot allocate memory for rd_buffer\n";
 	}
+
+	/* This buffer recives a copy of rd_buffer. When playing reverse, must
+	   copy reverse here, and then we can resample. If we copy resampled buffers
+	   reverse, drops occured
+	*/
+	tmp_buffer = new float[rd_size * 2];
+	if(tmp_buffer == 0) {
+		std::cout << "LP_player::LP_player(): cannot allocate memory for rd_buffer\n";
+	}
+	
 
 	/* The buffer wich recieve the resampled data */
 	sampled_buffer = new float[rd_size + 1000];
@@ -102,8 +115,31 @@ LP_player::~ LP_player() {
 
 	/* Liberation memoire */
 	delete[] rd_buffer;
+	delete[] tmp_buffer;
 	delete[] audio_info;
 	delete[] sampled_buffer;
+}
+
+/* Enable / Disable SoundTouch procesing */
+int LP_player::setSoundTouch(int state) {
+	if(state == LP_ON) {
+		mSoundTouch = LP_ON;
+		return 0;
+	}
+	if(state == LP_OFF) {
+		mSoundTouch = LP_OFF;
+		return 0;
+	}
+	if((state != LP_ON) && (state != LP_OFF)){
+		std::cout << "LP_player::SetSoundTout: Illegal value\n";
+		return -1;
+	}
+	return 0;
+}
+
+/* get SoundTouch processing state (ON or OFF */
+int LP_player::getSoundTouch(){
+	return mSoundTouch;
 }
 
 /* Set player speed */
@@ -112,22 +148,32 @@ int LP_player::setSpeed(double speed){
 	double min, max;
 	LP_global_audio_data audio_data;
 
-	/* Limits */
-	min = 0.000001;		// See the raylity in SoundTouch 
-	max = 2.0;		// See the raylity in SoundTouch
-
-	if((speed <= min) || (speed >= max)) {
-		std::cout << "LP_player::setSpeed: illegal speed settings\n";
-		return -1;
+	/* Check if SoundTouch is enable */
+	if(mSoundTouch == LP_ON) {
+		/* Limits */
+		min = 0.000001;		// See the raylity in SoundTouch 
+		max = 2.0;		// See the raylity in SoundTouch
+	
+		if((speed <= min) || (speed >= max)) {
+			std::cout << "LP_player::setSpeed: illegal speed settings\n";
+			return -1;
+		}
+		mSpeed = speed;
+		return 0;
+	} else {
+		mSpeed = 1.0;
+		std::cout << "LP_player::setSpeed: SoundTouch is disabled\n";
+		return 0;
 	}
-
-	mSpeed = speed;
-
-	return 0;
 }
 
 double LP_player::getSpeed(){
-	return mSpeed;
+	/* Check if SoundTouch precessing is enabled, else return 1.0 */
+	if(mSoundTouch == LP_ON) {
+		return mSpeed;
+	} else {
+		return 1.0;
+	}
 }
 
 /* Play direction */
@@ -143,12 +189,41 @@ int LP_player::setDirection(int direction) {
 			mDirection = LP_PLAY_FORWARD;
 			break;
 	}
+
+	return 0;
 }
 
 int LP_player::getDirection(){
 	return mDirection;
 }
 
+/* Seek in file */
+int LP_player::setSeek(int frames, int position) {
+	/* test args - if ok, define vars */
+	
+	mSeekOffset = frames;
+	
+	switch(position) {
+		case SEEK_SET: mSeekRefPos = position;
+			mSeekEvent = 1;
+			break;
+		case SEEK_CUR: mSeekRefPos = position;
+			mSeekEvent = 1;
+			break;
+		case SEEK_END: mSeekRefPos = position;
+			mSeekEvent = 1;
+			break;
+		default: std::cout << "LP_player::setSeek: illegal parameter\n";
+			mSeekEvent = 0;
+	}
+	return 0;
+}
+
+/*int LP_player::getSeek(){
+	return mSeekEvent;
+	mSeekEvent = 0;
+}
+*/
 /* Ouverture d'un fichier */
 /* open a file */
 int LP_player::get_file(char *file) {
@@ -224,42 +299,6 @@ int LP_player::get_event() {
 	return ret;
 }
 
-/* lance un nouveau player et donne un objet LP_player */
-/* makes a new player in a new thread and give it a pointer of an LP_player class instance */
-//int lp_player_thread_init(LP_player *player, int player_ID, pthread_t *thread_id) {
-
-	/* On lance un nouveau player */
-//	int err;
-//	printf("LP thread_init - OK\n");
-
-	//player = new LP_player;
-//	player->player_ID = player_ID;
-//	err = pthread_create(thread_id, 0, lp_player_thread, (void *)player);
-/*	if(err != 0) {
-		std::cerr << "player_thread_init: failed to create thread for player_ID " << player_ID << std::endl;
-		return err;
-	}
-*/
-	/* Attente que tout soit pret avant de retourner */
-	/* while the new player thread isn't ready we don't return */
-/*	while(player->player_ready != 1) {
-		usleep(1000);
-	}
-*/
-//	return 0;
-//}
-
-//int lp_player_thread_join(pthread_t thread_id) {
-//
-//	int err;
-//	err = pthread_join(thread_id, 0);
-//	if(err != 0) {
-//		std::cerr << "player_thread_join: failed to join thread, thread_id: " << thread_id << std::endl;
-//		return err;
-//	}
-//
-//	return 0;
-//}
 
 /* Fonction player */
 extern "C" void *lp_player_thread(void *p_data) {
@@ -267,7 +306,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 	/* obtenir une instance de LP_player */
 	/* get an instance of LP_player class */
 	LP_player *data = (LP_player *)p_data;
-	int ev_ret, err;
+	int ev_ret, err, i, y;
 	sf_count_t rd_readen = 0;	// Taille renvoyee par sf_read_float()
 	sf_count_t to_read = 0;
 	int nSampled = 0;
@@ -291,6 +330,11 @@ extern "C" void *lp_player_thread(void *p_data) {
 	/* Player channels (alwways 2) */
 	pSoundTouch->setChannels(2);
 	pSoundTouch->setRate(factor);
+	/* tests SoundTouch prcessing options */
+	pSoundTouch->setSetting(SETTING_SEQUENCE_MS, 82);	// For tempo optimisation (default: 82)
+	pSoundTouch->setSetting(SETTING_SEEKWINDOW_MS, 28);	// default 28
+	pSoundTouch->setSetting(SETTING_OVERLAP_MS, 12);	// default 12
+	pSoundTouch->setSetting(SETTING_USE_QUICKSEEK, 0);	// With 1, faster but degrade sound quality
 
 	/* Attendre que it_to_ot_ready == 1 */
 	/* waiting until it_ot_buffer thread is ready */
@@ -338,14 +382,33 @@ extern "C" void *lp_player_thread(void *p_data) {
 		//rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, data->rd_size);
 		std::cout << "Lecture " << rd_readen << " samples, ID " << data->player_ID << std::endl;
 
+		/* Copy rd_buffer to tmp_buffer - if reverse playing, do the reverse copy here */
+		if(data->getDirection() == LP_PLAY_FORWARD) {
+			/* copie, sens normal */
+			for(i=0; i<rd_readen; i++) {
+				data->tmp_buffer[i] = data->rd_buffer[i];
+			}
+		}else if(data->getDirection() == LP_PLAY_REVERSE) {
+			printf("mix - REVERSE\n");
+			/* copie, sens inverse */
+			y = rd_readen - 1;
+			for(i=0; i<rd_readen; i++){
+				data->tmp_buffer[y] = data->rd_buffer[i];
+				y--;
+			}
+		}
+
 		/****** Simuler un delais *******/
 		usleep(1000);
 
-		/* SoundTouch (rate) */
-		pSoundTouch->putSamples(data->rd_buffer, rd_readen/2);
-
-		nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
-		std::cout << "Nbre processes: " << nSampled * 2 << " (ID " << data->player_ID << ")" << std::endl;
+		/* If SoundTouch processing is enabled */
+		if(data->getSoundTouch() == LP_ON){
+			/* SoundTouch (rate) */
+			pSoundTouch->putSamples(data->tmp_buffer, rd_readen/2);
+			
+			nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
+			std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
+		}
 
 		/* Tant que play_buf_full != 0 --> buffer plein, on attends*/
 		/* witing until buffer is empty */
@@ -363,8 +426,12 @@ extern "C" void *lp_player_thread(void *p_data) {
 		}
 
 		/* Ecriture */
-		/* write out */
-		mix_out(data->sampled_buffer, (nSampled * data->nb_channel), data->mbus, data->getDirection());
+		/* write out - If SoundTouch is ON, send sampled_buffer, else rd_buffer */
+		if(data->getSoundTouch() == LP_ON) {
+			mix_out(data->sampled_buffer, (nSampled * data->nb_channel), data->mbus);
+		} else {
+			mix_out(data->tmp_buffer, rd_readen, data->mbus);
+		}
 
 		/* On indique que le buffer est plein */
 		/* buffer is written, we say it */
@@ -372,20 +439,33 @@ extern "C" void *lp_player_thread(void *p_data) {
 
 		/* Correction to_read selon revois nSampled - Seulement si rd_readen == to_read (sinon c'est que EOF) */
 		if(rd_readen == to_read){
-			/* New speed factor */
-			factor = data->getSpeed();
-			pSoundTouch->setRate(factor);
-			/* Samples to read: outsize (it's rd_size) * resampling factor (factor) */
-			d_tmp =  data->rd_size * factor;
-			to_read = (int)d_tmp;
-
-			if((nSampled * data->nb_channel) < data->rd_size) {
-				to_read = to_read + ((data->rd_size - (nSampled * data->nb_channel)) *  (int)factor) + 1;
-				std::cout << "CORR Positiv\n";
-			}
-			if((nSampled * data->nb_channel) > data->rd_size) {
-				to_read = to_read - (((nSampled * data->nb_channel) - data->rd_size) * (int)factor) - 1;
-				std::cout << "CORR Negativ\n";
+			/* If SoundTouch processing is enabled */
+			if(data->getSoundTouch() == LP_ON){
+				/* New speed factor */
+				factor = data->getSpeed();
+				pSoundTouch->setRate(factor);
+				/* Samples to read: outsize (it's rd_size) * resampling factor (factor) */
+				d_tmp =  data->rd_size * factor;
+				to_read = (int)d_tmp;
+	
+				if((nSampled * data->nb_channel) < data->rd_size) {
+					to_read = to_read + ((data->rd_size - (nSampled * data->nb_channel)) *  (int)factor) + 1;
+					std::cout << "CORR Positiv\n";
+				}
+				if((nSampled * data->nb_channel) > data->rd_size) {
+					to_read = to_read - (((nSampled * data->nb_channel) - data->rd_size) * (int)factor) - 1;
+					std::cout << "CORR Negativ\n";
+				}
+			} else {
+				/* Correct samples to read (can be false when enable/disable SoundTouch by last calculed to_read value)*/
+				if(rd_readen < data->rd_size) {
+					to_read = to_read + (data->rd_size - rd_readen);
+					std::cout << "CORR Positiv\n";
+				}
+				if(rd_readen > data->rd_size) {
+					to_read = to_read - (rd_readen - data->rd_size);
+					std::cout << "CORR Negativ\n";
+				}				
 			}
 	
 			/* Si to_read / nb_channels (cad: 2) n'est pas entier -> corriger */
@@ -399,8 +479,15 @@ extern "C" void *lp_player_thread(void *p_data) {
 			/* Direction */
 			if(data->getDirection() == LP_PLAY_REVERSE) {
 				err = sf_seek(data->snd_fd, -(to_read), SEEK_CUR);
-				if(err < 0) { printf("ERR SEEK\n"); }
+				if(err < 0) { printf("ERR SEEK - err no: %d\n", err); }
 				std::cout << "REV - SEEK " << -(to_read) << std::endl;
+			}
+			/* Seek */
+			if(data->mSeekRefPos > 0) {
+				sf_seek(data->snd_fd, data->mSeekOffset, data->mSeekRefPos);
+				data->mSeekRefPos = 0;
+				data->mSeekOffset = 0;
+			//	printf("SEEEEEEEK -------------- EVEBT\n");
 			}
 		}
 	}
@@ -548,13 +635,13 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 */
 /* Mix out function: it mix buffers providing from the player and/or send it to output bus (multitrak soundcards)
 */
-int mix_out(float *in_buffer, int in_buf_size, int bus, int direction)
+int mix_out(float *in_buffer, int in_buf_size, int bus)
 {
-	printf("mix_out: recus %d samples pour bus %d, direction: %d\n", in_buf_size, bus, direction);
+	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
 	/* variables internes */
 	float *out_buffer = NULL;
 	float tmp1, tmp2;
-	int i, y;
+	int i;
 	LP_global_audio_data audio_data;
 
 	/* Test de in_buffer */
@@ -580,23 +667,10 @@ int mix_out(float *in_buffer, int in_buf_size, int bus, int direction)
 	}
 
 	/* mixage */
-	if(direction == LP_PLAY_FORWARD) {
-		printf("mix - STD\n");
-		for(i=0; i<in_buf_size; i++) {
-			tmp1 = out_buffer[i];
-			tmp2 = in_buffer[i];
-			out_buffer[i] = (tmp1) + (tmp2 / audio_data.nb_players);
-		}
-	}else if(direction == LP_PLAY_REVERSE) {
-		printf("mix - REVERSE\n");
-		/* mixage, sens inverse */
-		y = in_buf_size - 1;
-		for(i=0; i<in_buf_size; i++){
-			tmp1 = out_buffer[i];
-			tmp2 = in_buffer[y];
-			out_buffer[i] = (tmp1) + (tmp2 / audio_data.nb_players);
-			y--;
-		}
+	for(i=0; i<in_buf_size; i++) {
+		tmp1 = out_buffer[i];
+		tmp2 = in_buffer[i];
+		out_buffer[i] = (tmp1) + (tmp2 / audio_data.nb_players);
 	}
 
 	/* Routing de sortie */
