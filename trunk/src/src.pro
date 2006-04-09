@@ -12,4 +12,4 @@ SOURCES += liveplayer.cpp \
            LP_global_var.cpp 
 TARGET=../bin/liveplayer
 
-LIBS += -lasound -lpthread -lsndfile -lsamplerate -lSoundTouch
+LIBS += -lasound -lpthread -lsndfile -lsamplerate -lSoundTouch -lvorbis -lvorbisfile

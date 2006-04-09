@@ -30,6 +30,9 @@
 #include <pthread.h>
 #include <sndfile.h>
 #include <soundtouch/SoundTouch.h>
+//#include <mad.h>
+#include <vorbis/codec.h>
+#include <vorbis/vorbisfile.h>
 #include "LP_global_var.h"
 
 /* Play mode */
@@ -40,8 +43,15 @@
 #define LP_PLAY_FORWARD		1
 #define LP_PLAY_REVERSE		2
 
+/* Switchs */
 #define LP_OFF 			0
 #define LP_ON			1
+
+/* Read libs */
+#define LP_LIB_SNDFILE		1
+#define LP_LIB_VORBIS		2
+#define LP_LIB_MAD		3
+
 
 /* Les players individuels seront issu de cette classe */
 class LP_player {
@@ -62,15 +72,17 @@ class LP_player {
 		int setSeek(int frames, int position);
 		int mSeekRefPos;		// Start from position: SEEK_SET (beginging of file), SEEK_CUR, SEEK_END
 		int mSeekOffset;
-		int test_LP(int d);
 		int get_file(char *file);
-		int player_ID;
-		int player_ready;
+		/* To read a opened file */
+		sf_count_t lp_read(sf_count_t samples);
+		sf_count_t lp_seek(sf_count_t samples, int ref_pos);
 		SNDFILE *snd_fd;		// descripteur fichier (libsndfile)
 		int rd_size;
 		float *rd_buffer;
 		float *tmp_buffer;		// intermediaire
 		float *sampled_buffer;
+		int player_ID;
+		int player_ready;
 		static const int nb_channel;	// Nb de cannaux du fichier, fixe a 2
 		/* Recherche les variables changees et reagis
 		Si un evenement s'est produit, renvois 1
@@ -84,14 +96,20 @@ class LP_player {
 		int mplay_mode;	// 0, rien, 1: play,2: pause
 
 		int volume;
+
 	private:
 		unsigned int rate;		// sample rate du fichier
 		SF_INFO *audio_info;		// Infos fournis par libsndfile
+		OggVorbis_File *vf;		// Structure pour vorbisfile
+		int vf_current_section;
+		float **vorbis_buffer;
+		FILE *fds;			// file stream opened with fopen
 		pthread_t thread_id;		// Thread ID for LP_player instance
 		int mSoundTouch;		// Enable / disable SoundTouch processing
 		double mSpeed;			// Resampling factor for speed
 		int mDirection;			// Play direction
 		int mSeekEvent;
+		int mRead_lib;			// To now witch lib to use, can be LP_LIB_SNDFILE, LP_LIB_VORBIS or LP_LIB_MAD
 };
 
 

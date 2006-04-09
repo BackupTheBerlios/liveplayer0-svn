@@ -37,6 +37,12 @@ LP_player::LP_player(int init_player_ID) {
 	/* audio_info (libsndfile) */
 	audio_info = new SF_INFO;
 
+	/* vorbisfile data structure */
+	vf = new OggVorbis_File;
+
+	/* stream from opened file with fopen */
+	fds = new FILE;
+
 	/* new file event detection - default: no event (0) */
 	mfile = 0;
 
@@ -52,6 +58,7 @@ LP_player::LP_player(int init_player_ID) {
 
 	/* Default play direction */
 	mDirection = LP_PLAY_FORWARD;
+
 
 	/* Setup the buffers */
 
@@ -88,6 +95,10 @@ LP_player::LP_player(int init_player_ID) {
 		std::cout << "LP_player::LP_player(): cannot allocate memory for sampled_buffer\n";
 	}
 
+	/* The ogg/vorbis buffer */
+//	vorbis_buffer[0] = new float[rd_size * 2];
+//	vorbis_buffer[1] = new float[rd_size * 2];
+
 	/* Run the player thread */
 	err = pthread_create(&thread_id, 0, lp_player_thread, (void *)this);
 	if(err != 0) {
@@ -114,6 +125,9 @@ LP_player::~ LP_player() {
 	}
 
 	/* Liberation memoire */
+	delete audio_info;
+	delete vf;
+	delete fds;
 	delete[] rd_buffer;
 	delete[] tmp_buffer;
 	delete[] audio_info;
@@ -146,7 +160,7 @@ int LP_player::getSoundTouch(){
 int LP_player::setSpeed(double speed){
 	/* variables */
 	double min, max;
-	LP_global_audio_data audio_data;
+//	LP_global_audio_data audio_data;
 
 	/* Check if SoundTouch is enable */
 	if(mSoundTouch == LP_ON) {
@@ -213,7 +227,7 @@ int LP_player::setSeek(int frames, int position) {
 		case SEEK_END: mSeekRefPos = position;
 			mSeekEvent = 1;
 			break;
-		default: std::cout << "LP_player::setSeek: illegal parameter\n";
+		default: std::cout << "LP_player::setSeek: illegal parameter - possible are: SEEK_SET, SEEK_CUR, SEEK_END\n";
 			mSeekEvent = 0;
 	}
 	return 0;
@@ -234,16 +248,37 @@ int LP_player::get_file(char *file) {
 		return -1;
 	}
 
+	/* TEST Formats (ogg, mp3) */
+
+	/* Ogg/Vorbis with vorbisfile
+	   At first, we test if the file is in ogg/vorbis format
+	 */
+	if((fds = fopen(file, "r")) == 0) {
+		std::cerr << "LP_player::get_file(): could not open file: " << file << std::endl;
+		return -1;
+	}
+	if(ov_test(fds, vf, 0, 0) == 0) {
+		/* it's Ogg/Vorbis file: finish open the file */
+		if(ov_test_open(vf) != 0) {
+			std::cerr << "LP_player::get_file(): unable to open the Ogg/Vorbis file: " << file << std::endl;
+		}
+		/* Ok, tell that the lib to use is vorbisfile and return 0 */
+		mRead_lib = LP_LIB_VORBIS;
+		return 0;
+	}
+	
+
 	/* infos fichier - mise a 0 du champs format (requis pour ouverture en lecture) */
 	/* file infos - set field 'format' to 0 (describe in API doc of libsndfile */
 	audio_info->format = 0;
 
-	/* Ouverture du fichier */
+	/* Ouverture du fichier avec libsndfile */
 	snd_fd = sf_open(file, SFM_READ, audio_info);
 	if(snd_fd == 0) {
 		std::cerr << "LP_player::get_file(): failed to open file '" << file << "'\n";
 		return -1;
 	}
+	mRead_lib = LP_LIB_SNDFILE;
 
 	std::cout << "LP_player::get_file(): player " << player_ID << ", read file: " << mfile << std::endl;
 
@@ -255,7 +290,7 @@ int LP_player::get_file(char *file) {
    Si une erreur est survenue, renvois < 0
    Si rien ne s'est produit, renvois 0
 */
-/* Look in some public vars for changes and get event if it is
+/* Look in some public vars for changes and get event. If it is,
    return 1 if an event was, 0 if no event was detected, negative code on error 
 */
 int LP_player::get_event() {
@@ -297,6 +332,43 @@ int LP_player::get_event() {
 
 	/* OK, on retourne  */
 	return ret;
+}
+
+/* Fonction de lecture
+   I take the sf_count_t which is a type long long on ix86
+ */
+sf_count_t LP_player::lp_read(sf_count_t samples) {
+
+	int ret = 0;
+
+	/* Select the read routine and read */
+	switch (mRead_lib){
+		case LP_LIB_SNDFILE:
+			return sf_read_float(snd_fd, rd_buffer, samples);
+			break;
+		case LP_LIB_VORBIS:
+float **pcm;			ret = ov_read_float(vf, &pcm, samples, &vf_current_section);
+
+			break;
+		default:
+			std::cout << "LP_player::lp_read: unable to find wich lib to use for reading\n";
+			return 0;
+			break;
+	}
+}
+
+/* Fonction de recherche de position dans le fichier */
+sf_count_t LP_player::lp_seek(sf_count_t samples, int ref_pos){
+
+	switch (mRead_lib){
+		case LP_LIB_SNDFILE:
+			return sf_seek(snd_fd, samples, ref_pos);
+			break;
+		default:
+			std::cout << "LP_player::lp_read: unable to find wich lib to use for reading\n";
+			return 0;
+			break;
+	}
 }
 
 
@@ -377,7 +449,8 @@ extern "C" void *lp_player_thread(void *p_data) {
 	}
 
 	/* Lecture du fichier */
-	while((rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, to_read)) > 0){
+	//while((rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, to_read)) > 0){
+	while((rd_readen = data->lp_read(to_read)) > 0){
 
 		//rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, data->rd_size);
 		std::cout << "Lecture " << rd_readen << " samples, ID " << data->player_ID << std::endl;
@@ -478,13 +551,13 @@ extern "C" void *lp_player_thread(void *p_data) {
 			}
 			/* Direction */
 			if(data->getDirection() == LP_PLAY_REVERSE) {
-				err = sf_seek(data->snd_fd, -(to_read), SEEK_CUR);
+				err = data->lp_seek( -(to_read), SEEK_CUR);
 				if(err < 0) { printf("ERR SEEK - err no: %d\n", err); }
 				std::cout << "REV - SEEK " << -(to_read) << std::endl;
 			}
 			/* Seek */
 			if(data->mSeekRefPos > 0) {
-				sf_seek(data->snd_fd, data->mSeekOffset, data->mSeekRefPos);
+				data->lp_seek(data->mSeekOffset, data->mSeekRefPos);
 				data->mSeekRefPos = 0;
 				data->mSeekOffset = 0;
 			//	printf("SEEEEEEEK -------------- EVEBT\n");
