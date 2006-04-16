@@ -34,6 +34,7 @@
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 #include "LP_global_var.h"
+#include "LP_mad.h"
 
 /* Play mode */
 #define LP_PLAY_MODE_PLAYING	1
@@ -104,6 +105,7 @@ class LP_player {
 		int vf_current_section;
 		float **vorbis_buffer;
 		FILE *fds;			// file stream opened with fopen
+		LP_mad *mad_cb;			// The mad callback
 		pthread_t thread_id;		// Thread ID for LP_player instance
 		int mSoundTouch;		// Enable / disable SoundTouch processing
 		double mSpeed;			// Resampling factor for speed

@@ -80,6 +80,8 @@ for (i=2; i>0; i--){
   player_1->mplay_mode = LP_PLAY_MODE_PLAYING;	// mode play
   player_2->mplay_mode = LP_PLAY_MODE_PLAYING;
 
+sleep(150);
+
 /* Some brutal speed variations.... */
 usleep(100000);
 player_1->setSpeed(0.95);

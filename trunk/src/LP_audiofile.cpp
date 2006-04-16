@@ -274,15 +274,31 @@ int LP_player::get_file(char *file) {
 
 	/* Ouverture du fichier avec libsndfile */
 	snd_fd = sf_open(file, SFM_READ, audio_info);
-	if(snd_fd == 0) {
-		std::cerr << "LP_player::get_file(): failed to open file '" << file << "'\n";
-		return -1;
+	if(snd_fd != 0) {
+		/* Ok, tell that the lib to use is sndfile and return 0 */
+		mRead_lib = LP_LIB_SNDFILE;
+		return 0;
 	}
-	mRead_lib = LP_LIB_SNDFILE;
+
+	/* Open with the mad callback (mpg file) */
+	mad_cb = new LP_mad(rd_size);
+	if(mad_cb == 0) {
+		std::cerr << "LP_player::get_file: unable to call LP_mad \n";
+	} else {
+		if(mad_cb->open_file(file)<0) {
+			std::cerr << "LP_player::get_file: unable to open file: " << file << std::endl;
+		}else {
+			mRead_lib = LP_LIB_MAD;
+		}
+	}
+	
 
 	std::cout << "LP_player::get_file(): player " << player_ID << ", read file: " << mfile << std::endl;
 
 	return 0;
+
+	std::cerr << "LP_player::get_file(): failed to open file '" << file << "'\n";
+	return -1;
 }
 
 /* Recherche les variables changees et reagis
@@ -350,8 +366,12 @@ sf_count_t LP_player::lp_read(sf_count_t samples) {
 float **pcm;			ret = ov_read_float(vf, &pcm, samples, &vf_current_section);
 
 			break;
+		case LP_LIB_MAD:
+			ret = mad_cb->read(rd_buffer, rd_size);
+			return rd_size;
+			break;
 		default:
-			std::cout << "LP_player::lp_read: unable to find wich lib to use for reading\n";
+			std::cerr << "LP_player::lp_read: unable to find wich lib to use for reading\n";
 			return 0;
 			break;
 	}
