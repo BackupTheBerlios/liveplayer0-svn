@@ -104,6 +104,7 @@ class LP_player {
 		OggVorbis_File *vf;		// Structure pour vorbisfile
 		int vf_current_section;
 		float **vorbis_buffer;
+		float **pcm;
 		FILE *fds;			// file stream opened with fopen
 		LP_mad *mad_cb;			// The mad callback
 		pthread_t thread_id;		// Thread ID for LP_player instance

@@ -250,6 +250,18 @@ int LP_player::get_file(char *file) {
 
 	/* TEST Formats (ogg, mp3) */
 
+	/* infos fichier - mise a 0 du champs format (requis pour ouverture en lecture) */
+	/* file infos - set field 'format' to 0 (describe in API doc of libsndfile */
+	audio_info->format = 0;
+
+	/* Ouverture du fichier avec libsndfile */
+	snd_fd = sf_open(file, SFM_READ, audio_info);
+	if(snd_fd != 0) {
+		/* Ok, tell that the lib to use is sndfile and return 0 */
+		mRead_lib = LP_LIB_SNDFILE;
+		return 0;
+	}
+
 	/* Ogg/Vorbis with vorbisfile
 	   At first, we test if the file is in ogg/vorbis format
 	 */
@@ -266,19 +278,6 @@ int LP_player::get_file(char *file) {
 		mRead_lib = LP_LIB_VORBIS;
 		return 0;
 	}
-	
-
-	/* infos fichier - mise a 0 du champs format (requis pour ouverture en lecture) */
-	/* file infos - set field 'format' to 0 (describe in API doc of libsndfile */
-	audio_info->format = 0;
-
-	/* Ouverture du fichier avec libsndfile */
-	snd_fd = sf_open(file, SFM_READ, audio_info);
-	if(snd_fd != 0) {
-		/* Ok, tell that the lib to use is sndfile and return 0 */
-		mRead_lib = LP_LIB_SNDFILE;
-		return 0;
-	}
 
 	/* Open with the mad callback (mpg file) */
 	mad_cb = new LP_mad(rd_size);
@@ -288,15 +287,13 @@ int LP_player::get_file(char *file) {
 		if(mad_cb->open_file(file)<0) {
 			std::cerr << "LP_player::get_file: unable to open file: " << file << std::endl;
 		}else {
+			/* Ok, tell that the lib to use is libmad and return 0 */
 			mRead_lib = LP_LIB_MAD;
+			return 0;
 		}
 	}
-	
 
-	std::cout << "LP_player::get_file(): player " << player_ID << ", read file: " << mfile << std::endl;
-
-	return 0;
-
+	/* wenn arriving here, the file is not supported */
 	std::cerr << "LP_player::get_file(): failed to open file '" << file << "'\n";
 	return -1;
 }
@@ -363,8 +360,32 @@ sf_count_t LP_player::lp_read(sf_count_t samples) {
 			return sf_read_float(snd_fd, rd_buffer, samples);
 			break;
 		case LP_LIB_VORBIS:
-float **pcm;			ret = ov_read_float(vf, &pcm, samples, &vf_current_section);
+		 int i,y, pos, pos2;	
+			y=0; ret=0; pos = 0; pos2=0;
+			//printf("OV  lire %d samples\n", samples);
+			while(pos < (samples/2)){
+				ret = ov_read_float(vf, &pcm, samples, &vf_current_section);
+			printf("RET - %d -- current: %d\n", ret, vf_current_section);
+/*			for(i=0; i<rd_size/2; i++){
+				rd_buffer[i] = pcm[0][i];
+				rd_buffer[i+1] = pcm[1][i];
+			printf("rd_buffer[%d]: %f\trd_buffer[%d]: %f\n", i, rd_buffer[i], i+1, rd_buffer[i+1]);
+			}
+*/
+				for(i=0; i<2; i++){
+					for(y=0; y<(ret/2); y++){
+						rd_buffer[pos+y*2+i] = pcm[i][y];
+						//printf("rd_buffer[%d]: %f\t\t\ty: %d\ti: %d\n",pos+y*2+i, rd_buffer[pos+y*2+i],y, i);
+						//printf("C%d:%d-",i, pos+y*2+i);
+					}
+				}
+			pos = pos + ret;
+			printf("EOB - pos: %d\n", pos);
+			}
+		//printf("RETURN %d\n\n\n", pos);
+		//sleep(1);
 
+			return pos;
 			break;
 		case LP_LIB_MAD:
 			ret = mad_cb->read(rd_buffer, rd_size);
