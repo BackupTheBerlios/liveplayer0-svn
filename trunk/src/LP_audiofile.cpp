@@ -98,6 +98,8 @@ LP_player::LP_player(int init_player_ID) {
 	/* The ogg/vorbis buffer */
 //	vorbis_buffer[0] = new float[rd_size * 2];
 //	vorbis_buffer[1] = new float[rd_size * 2];
+	//LP_utils LPu;
+	vorbis_buffer = LPu.lp_fmalloc_2d_array( 2, (rd_size/2) * 2 );
 
 	/* Run the player thread */
 	err = pthread_create(&thread_id, 0, lp_player_thread, (void *)this);
@@ -132,6 +134,7 @@ LP_player::~ LP_player() {
 	delete[] tmp_buffer;
 	delete[] audio_info;
 	delete[] sampled_buffer;
+	delete[] vorbis_buffer;
 }
 
 /* Enable / Disable SoundTouch procesing */
@@ -151,7 +154,7 @@ int LP_player::setSoundTouch(int state) {
 	return 0;
 }
 
-/* get SoundTouch processing state (ON or OFF */
+/* get SoundTouch processing state (ON or OFF) */
 int LP_player::getSoundTouch(){
 	return mSoundTouch;
 }
@@ -165,8 +168,8 @@ int LP_player::setSpeed(double speed){
 	/* Check if SoundTouch is enable */
 	if(mSoundTouch == LP_ON) {
 		/* Limits */
-		min = 0.000001;		// See the raylity in SoundTouch 
-		max = 2.0;		// See the raylity in SoundTouch
+		min = 0.000001;		// See the reaylity in SoundTouch 
+		max = 2.0;		// See the reaylity in SoundTouch
 	
 		if((speed <= min) || (speed >= max)) {
 			std::cout << "LP_player::setSpeed: illegal speed settings\n";
@@ -363,29 +366,16 @@ sf_count_t LP_player::lp_read(sf_count_t samples) {
 		 int i,y, pos, pos2;	
 			y=0; ret=0; pos = 0; pos2=0;
 			//printf("OV  lire %d samples\n", samples);
-			while(pos < (samples/2)){
+/*			while(pos < (samples/2)){
 				ret = ov_read_float(vf, &pcm, samples, &vf_current_section);
 			printf("RET - %d -- current: %d\n", ret, vf_current_section);
-/*			for(i=0; i<rd_size/2; i++){
-				rd_buffer[i] = pcm[0][i];
-				rd_buffer[i+1] = pcm[1][i];
-			printf("rd_buffer[%d]: %f\trd_buffer[%d]: %f\n", i, rd_buffer[i], i+1, rd_buffer[i+1]);
-			}
-*/
-				for(i=0; i<2; i++){
-					for(y=0; y<(ret/2); y++){
-						rd_buffer[pos+y*2+i] = pcm[i][y];
-						//printf("rd_buffer[%d]: %f\t\t\ty: %d\ti: %d\n",pos+y*2+i, rd_buffer[pos+y*2+i],y, i);
-						//printf("C%d:%d-",i, pos+y*2+i);
-					}
-				}
 			pos = pos + ret;
 			printf("EOB - pos: %d\n", pos);
 			}
-		//printf("RETURN %d\n\n\n", pos);
-		//sleep(1);
-
-			return pos;
+*/
+			ret = ov_read_float(vf, &vorbis_buffer, samples, &vf_current_section);
+			LPu.lp_fcopy_2d_1d_array(vorbis_buffer, rd_buffer, 2, rd_size/2);
+			return ret;
 			break;
 		case LP_LIB_MAD:
 			ret = mad_cb->read(rd_buffer, rd_size);
@@ -818,7 +808,7 @@ int add_one_buffer(float *in_buffer, float *out_buffer, int in_buffer_len, int o
 	output = output - 1;
 
 	/* test que buffer soit renseigne (buffer_1 et buffer_2 sont toujour utilises */
-	if(in_buffer == NULL) { fprintf(stderr, "add_buffer: buffer_1 cant't be NULL !\n"); exit(-1); }
+	if(in_buffer == NULL) { fprintf(stderr, "add_one_buffer: buffer_1 cant't be NULL !\n"); exit(-1); }
 
 	for(i=0; i<in_buffer_len/2; i++) {
 		out_buffer[out_channels*i+output]   = 	in_buffer[i*2];

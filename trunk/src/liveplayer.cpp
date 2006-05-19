@@ -84,7 +84,7 @@ sleep(150);
 
 /* Some brutal speed variations.... */
 usleep(100000);
-player_1->setSpeed(0.95);
+//player_1->setSpeed(0.95);
 usleep(1000000);
 
 //player_1->setDirection(LP_PLAY_REVERSE);

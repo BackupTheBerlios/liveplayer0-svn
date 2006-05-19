@@ -30,6 +30,8 @@
 #include <pthread.h>
 #include <sndfile.h>
 #include <soundtouch/SoundTouch.h>
+/* Utilities */
+#include "LP_utils.h"
 //#include <mad.h>
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
@@ -99,12 +101,13 @@ class LP_player {
 		int volume;
 
 	private:
+		LP_utils LPu;
 		unsigned int rate;		// sample rate du fichier
 		SF_INFO *audio_info;		// Infos fournis par libsndfile
 		OggVorbis_File *vf;		// Structure pour vorbisfile
 		int vf_current_section;
 		float **vorbis_buffer;
-		float **pcm;
+//		float **pcm;
 		FILE *fds;			// file stream opened with fopen
 		LP_mad *mad_cb;			// The mad callback
 		pthread_t thread_id;		// Thread ID for LP_player instance
