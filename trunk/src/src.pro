@@ -16,3 +16,6 @@ SOURCES += liveplayer.cpp \
            LP_mad.cpp 
 TARGET=../bin/liveplayer
 LIBS += -lasound -lpthread -lsndfile -lsamplerate -lSoundTouch -lvorbis -lvorbisfile -lmad
+LIBS += lp_ladspa_cpp/liblp_ladspa_cpp.a
+LIBS += -lqwt
+CFLAFS += -ldl

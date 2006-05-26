@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-class LP_utils // NOTE Type: flot etre LADSPA_data ? Verifier validite de channel_len
+class LP_ladspa_utils // NOTE Type: flot etre LADSPA_data ? Verifier validite de channel_len
 {
 	public:
 	/**

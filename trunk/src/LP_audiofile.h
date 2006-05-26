@@ -37,6 +37,10 @@
 #include <vorbis/vorbisfile.h>
 #include "LP_global_var.h"
 #include "LP_mad.h"
+// QT
+#include <qapplication.h>
+
+#include "lp_ladspa_cpp/LP_ladspa_cpp.h"
 
 /* Play mode */
 #define LP_PLAY_MODE_PLAYING	1
@@ -60,7 +64,7 @@
 class LP_player {
 
 	public:
-		LP_player(int player_ID);
+		LP_player(int player_ID , LP_ladspa_manager *_llm);
 		~LP_player();
 		// Enable / Disable SoundTouch processing
 		int setSoundTouch(int state);	// can be LP_ON or LP_OFF
@@ -99,6 +103,8 @@ class LP_player {
 		int mplay_mode;	// 0, rien, 1: play,2: pause
 
 		int volume;
+		/// Instance de dialogue ladspa_cpp
+		LP_ladspa_manager *llm;
 
 	private:
 		LP_utils LPu;

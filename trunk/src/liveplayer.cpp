@@ -26,6 +26,7 @@
 #include <iostream>
 #include <cstdlib>
 #include "LP_global_var.h"
+#include "lp_ladspa_cpp/LP_ladspa_manager.h"
 
 
 using namespace std;
@@ -33,7 +34,15 @@ using namespace std;
 int main(int argc, char *argv[])
 {
   int err;
+  QApplication a(argc, argv);
   pthread_t thread_id;
+
+  /// LADSPA
+  ladspa_manager_dlg *lmd1 = new ladspa_manager_dlg(0, "TES", 0, 0);
+  lmd1->show();
+
+  ladspa_manager_dlg *lmd2 = new ladspa_manager_dlg(0, "TEST2", 0, 0);
+  lmd2->show();
 
   /* on mets les parametres audio */
   LP_global_audio_data audio_globals;
@@ -51,10 +60,10 @@ int main(int argc, char *argv[])
 
   lp_it_ot_thread_init(&thread_id);
 
-  LP_player *player_1 = new LP_player(0);
+  LP_player *player_1 = new LP_player(0, lmd1->get_manager_instance() );
 	if(player_1 == 0) { std::cout << "Probleme init player_1\n"; 	return -1;}
 
-  LP_player *player_2 = new LP_player(1);
+  LP_player *player_2 = new LP_player(1, lmd2->get_manager_instance());
 	if(player_2 == 0) { std::cout << "Probleme init player_2\n"; 	return -1;}
 
 
@@ -80,6 +89,8 @@ for (i=2; i>0; i--){
   player_1->mplay_mode = LP_PLAY_MODE_PLAYING;	// mode play
   player_2->mplay_mode = LP_PLAY_MODE_PLAYING;
 
+a.exec();
+
 sleep(150);
 
 /* Some brutal speed variations.... */
@@ -94,7 +105,7 @@ sleep(5);
 player_1->setSoundTouch(LP_ON);
 
 player_1->setSpeed(1.2);
-player_2->setSpeed(1.2);
+//player_2->setSpeed(1.2);
 player_1->setDirection(LP_PLAY_FORWARD);
 usleep(1000000);
 player_1->setSpeed(0.9);
@@ -114,13 +125,13 @@ player_1->setSpeed(1.05314);
 //player_1->setDirection(LP_PLAY_REVERSE);
 usleep(1000000);
 player_1->setSpeed(1.453431);
-player_2->setSpeed(1.0);
+//player_2->setSpeed(1.0);
 player_1->setDirection(LP_PLAY_FORWARD);
 usleep(1000000);
 player_1->setSpeed(0.9);
 usleep(100000);
 player_1->setSpeed(0.91);
-player_2->setSpeed(1.0);
+//player_2->setSpeed(1.0);
 player_1->setDirection(LP_PLAY_FORWARD);
 usleep(100000);
 player_1->setSpeed(0.91);
@@ -162,7 +173,7 @@ player_1->setSpeed(0.9);
 
 /* The destructor waits the end of thread */
 delete player_1;
-delete player_2;
+//delete player_2;
 
   lp_it_ot_thread_join(thread_id);
 

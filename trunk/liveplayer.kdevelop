@@ -98,7 +98,7 @@
       <envvars/>
     </run>
     <general>
-      <activedir>src</activedir>
+      <activedir>src/ladspa_cpp</activedir>
     </general>
     <make>
       <abortonerror>true</abortonerror>
@@ -190,4 +190,8 @@
     <appskde>false</appskde>
     <url/>
   </dist>
+  <ctagspart>
+    <customArguments/>
+    <customTagfilePath/>
+  </ctagspart>
 </kdevelop>
