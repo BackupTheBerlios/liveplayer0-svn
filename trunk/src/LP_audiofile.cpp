@@ -521,7 +521,11 @@ extern "C" void *lp_player_thread(void *p_data) {
 		}
 
 		/// Premiers test ladspa_cpp
-		data->llm->run_plugins(data->sampled_buffer);
+		if(data->getSoundTouch() == LP_ON) {
+			data->llm->run_plugins(data->sampled_buffer);
+		} else {
+			data->llm->run_plugins(data->tmp_buffer);
+		}
 
 		/* Tant que play_buf_full != 0 --> buffer plein, on attends*/
 		/* witing until buffer is empty */

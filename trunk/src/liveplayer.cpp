@@ -67,11 +67,11 @@ int main(int argc, char *argv[])
 	if(player_2 == 0) { std::cout << "Probleme init player_2\n"; 	return -1;}
 
 
+
   player_1->mplay_mode = LP_PLAY_MODE_PAUSE;
   player_2->mplay_mode = LP_PLAY_MODE_PAUSE;
 
   player_1->mbus = 1;
-
   player_2->mbus = 2;
 
   player_1->mfile = argv[1];

@@ -42,14 +42,14 @@ LP_ladspa_plugin::LP_ladspa_plugin(char *file_path)
 	// Plugin's UI
 	pv_ui = 0;
 
-	// Set the samplerate to 44100 - TEMORAIRE !!
+	// Set the samplerate to 44100 - TEMPORAIRE !!
 	pv_srate = 44100;
 
 	// Set ports ctl value to a default
 	unsigned long ul;
 	for(ul=0; ul<LP_MAX_PORT; ul++){
 		pv_in_ctl_value[ul] = 1;
-		pv_out_ctl_value[ul] = 1;
+		pv_out_ctl_value[ul] = 0;
 	}
 
 	// Set port buffers to Null
@@ -57,6 +57,16 @@ LP_ladspa_plugin::LP_ladspa_plugin(char *file_path)
 		pv_in_buffer[ul] = 0;
 		pv_out_buffer[ul] = 0;
 	}
+
+	// Set the ready state to FALSE
+	pv_plugin_ready = FALSE;
+
+	// Set the active state to FALSE as default
+	pv_active = FALSE;
+
+	// Set handles to 0
+	pv_ladspa_handle = 0;
+	pv_ladspa_handle2 = 0;
 }
 
 // Destructor
@@ -88,7 +98,7 @@ LP_ladspa_plugin::~LP_ladspa_plugin()
 			delete[] pv_out_buffer[ul];
 		}
 	}
-	// TODO Delete pv_LR_buffer 
+	// TODO Delete pv_LR_buffer and FINI !
 }
 
 
@@ -160,11 +170,32 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 			std::cout << pv_maker << std::endl;
 			std::cout << pv_copyright << std::endl;
 
-			// Instanciate the plugin
-			pv_ladspa_handle = (pv_LD->instantiate)(pv_LD, pv_srate);
-			if(pv_ladspa_handle == 0){
-				std::cerr << "LP_ladspa_plugin::init_plugin: instantiate fails\n";
-				return -1;
+			// Must run Realtime ?
+			if(LADSPA_IS_REALTIME(pv_LD->Properties) ){
+				pv_must_rt = TRUE;
+			}else{
+				pv_must_rt = FALSE;
+			}
+
+			// Hard RT capable ?
+			if(LADSPA_IS_HARD_RT_CAPABLE (pv_LD->Properties) ){
+				pv_hard_rt = TRUE;
+			}else{
+				pv_hard_rt = FALSE;
+			}
+
+			// Inplace broken ?
+			if(LADSPA_IS_INPLACE_BROKEN (pv_LD->Properties) ){
+				pv_inplace_broken = TRUE;
+			}else{
+				pv_inplace_broken = FALSE;
+			}
+
+			// Activate function aviable ?
+			if(pv_LD->activate != 0){
+				pv_has_activate = TRUE;
+			}else{
+				pv_has_activate = FALSE;
 			}
 
 			// Plugin's ports
@@ -288,13 +319,18 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 						pv_ports[port].default_value = def_val;
 					}
 				}// Plugin's ctl ports
-
+				// Output controls
+				if((LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port])) && (LADSPA_IS_PORT_CONTROL(pv_LD->PortDescriptors[port]))) {
+					pv_ports[port].name = strdup(pv_LD->PortNames[port]);
+					pv_ports[port].is_out_ctl = true;
+				}
 				// Audio input ports
 				if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
 					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 					pv_ports[port].is_in_ctl = FALSE;
 					// Allocate memory for in buffer
-					pv_in_buffer[port] = new LADSPA_Data[pv_buf_len * 2];
+					pv_in_buffer[port] = new LADSPA_Data[pv_buf_len];
+					std::cout << "Allocation audio in, port " << port << " addresse: " << pv_in_buffer[port] << std::endl;
 					if(pv_in_buffer[port] == 0){
 						std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_in_buffer\n";
 						return -1;
@@ -306,7 +342,8 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 					pv_ports[port].is_in_ctl = FALSE;
 					// Allocate memory for out buffer
-					pv_out_buffer[port] = new LADSPA_Data[pv_buf_len * 2];
+					pv_out_buffer[port] = new LADSPA_Data[pv_buf_len];
+					std::cout << "Allocation audio out, port " << port << " addresse: " << pv_out_buffer[port] << std::endl;
 					if(pv_out_buffer[port] == 0){
 						std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_buffer\n";
 						return -1;
@@ -321,6 +358,26 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 				return -1;
 			}
 
+			// Instanciate the plugin
+			pv_ladspa_handle = (pv_LD->instantiate)(pv_LD, pv_srate);
+			if(pv_ladspa_handle == 0){
+				std::cerr << "LP_ladspa_plugin::init_plugin: instantiate fails\n";
+				return -1;
+			}
+/*			if((pv_nb_audio_in == 1)&&(pv_nb_channels == 2)) {
+				pv_ladspa_handle2 = (pv_LD->instantiate)(pv_LD, pv_srate);
+				if(pv_ladspa_handle2 == 0){
+					std::cerr << "LP_ladspa_plugin::init_plugin: instantiate fails\n";
+					return -1;
+				}
+			}
+*/
+			/// Ok, we are ready
+			pv_plugin_ready = TRUE;
+
+			if(activate() <0){
+				std::cerr << "LP_ladspa_plugin::init_plugin: activate failed\n";
+			}
 
 //			pv_ui->show();
 
@@ -381,6 +438,16 @@ int LP_ladspa_plugin::set_port_value(unsigned long port, LADSPA_Data value)
 	return 0;
 }
 
+// Get the plugin's port value
+LADSPA_Data LP_ladspa_plugin::get_port_value(unsigned long port, LADSPA_Data value)
+{
+	if(port >= LP_MAX_PORT){
+		std::cerr << "LP_ladspa_plugin::get_port_value: port index is too big\n";
+		return -1;
+	}
+	return pv_out_ctl_value[port];
+}
+
 // Get the plugin's instance
 LP_ladspa_plugin *LP_ladspa_plugin::get_instance()
 {
@@ -407,21 +474,32 @@ void LP_ladspa_plugin::test()
 // Activate the plugin
 int LP_ladspa_plugin::activate()
 {
+	// If we are not ready, return error
+	if(pv_plugin_ready == FALSE){ return -1; }
+
+
 	if(pv_LD == 0){
 		std::cerr << "LP_ladspa_plugin::activate: pv_LD is Null\n";
 		return -1;
 	}
+	if(pv_ladspa_handle == 0){
+		std::cerr << "LP_ladspa_plugin::activate: pv_ladspa_handle is Null\n";
+		return -1;
+	}
 
 	// Test if activate ptr is not null, and call it
-	if(pv_LD->activate != 0){
-		if(pv_active == FALSE){
-			(pv_LD->activate)(pv_ladspa_handle);
-			std::cout << "Activation du plugin\n";
-			pv_active = TRUE;
-			pv_has_activate = TRUE;
+	if(pv_has_activate == TRUE){
+		if(pv_LD->activate != 0){
+			if(pv_active == FALSE){
+				(pv_LD->activate)(pv_ladspa_handle);
+				std::cout << "Activation du plugin\n";
+				pv_active = TRUE;
+			}
+		}else{
+			std::cerr << "LP_ladspa_plugin::activate: activate ptr is Null\n";
+			pv_active = FALSE;
+			return -1;
 		}
-	}else{
-		pv_has_activate = FALSE;
 	}
 
 	return 0;
@@ -432,6 +510,9 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 {
 
 	//TODO: pass buf_len to unsigned long in class, etc...
+
+	// If we are not ready, simply return
+	if(pv_plugin_ready == FALSE){ return 0; }
 
 	unsigned long port = 0;
 	LP_ladspa_utils utils;
@@ -465,69 +546,107 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 	}
 
 	if(((pv_has_activate == TRUE)&&(pv_active == TRUE))||(pv_has_activate == FALSE)){
-		// Copy passed buffer to each plugin's audio in port
-		for(port = 0; port < pv_LD->PortCount; port++){	
-			// Audio input ports
-			if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
-				(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
-				// for 2 channels plugin, split buffer
-				if(pv_nb_audio_in == 2){
-					if(iIN == 1){
-						// Copy right part of passed buffer to pv_in_buffer[port]
-						utils.LP_LR_to_R(pv_in_buffer[port], buffer, pv_buf_len);
-						iIN++;
-					}
-					if(iIN == 0){
-						// Copy right part of passed buffer to pv_in_buffer[port]
-						utils.LP_LR_to_L(pv_in_buffer[port], buffer, pv_buf_len);
-						iIN++;
-					}
-				}
-				// for 1 channel plugin just copy
-				if(pv_nb_audio_in == 1){
-					// Copy the buffer into pv_in_buffer[port] (if stereo, the buffer is
-					// interlaced, it's allright
-					for(i=0; i<pv_buf_len; i++){
-						pv_in_buffer[port][i] = buffer[i];
-					}
+
+		/// DEBUG
+		if(pv_has_activate == TRUE){
+			std::cout << "PLUGIN has activate function\n";
+		}
+		if(pv_active == TRUE){
+			std::cout << "PLUGIN is active\n";
+		}
+
+		// For 2 channels requests with 2 channels plugin
+		if(((pv_nb_channels == 2)&&(pv_nb_audio_in == 2))||((pv_nb_channels == 2)&&(pv_nb_audio_out == 2))) {
+			// Copy passed buffer to each plugin's audio in port
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio input ports
+				if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						if(iIN == 1){
+							// Copy right part of passed buffer to pv_in_buffer[port]
+							utils.LP_LR_to_R(pv_in_buffer[port], buffer, pv_buf_len);
+							iIN++;
+						}
+						if(iIN == 0){
+							// Copy right part of passed buffer to pv_in_buffer[port]
+							utils.LP_LR_to_L(pv_in_buffer[port], buffer, pv_buf_len);
+							iIN++;
+						}
 				}
 			}
-		}
-		pv_connect_ports();
-std::cout << "Run ......Ports connectes\n";
-		// Run one time
-		if(pv_nb_audio_in == 2){
+			if(pv_connect_ports() < 0){
+				std::cerr << "LP_ladspa_plugin::run: ports connections failed\n";
+				return -1;
+			}
 			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
-		}
-		if((pv_nb_audio_in == 1)||(pv_nb_audio_in == 0)) {
-			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len);
-		}
-std::cout << "Run ......  OK\n";
-		// Transfert result to bassed buffer
-		iIN = 0;
-		iOUT = 0;
-		for(port = 0; port < pv_LD->PortCount; port++){	
-			// Audio output ports
-			if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
-				(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
-				// Copy buffer
-				if(pv_nb_audio_out == 2){
-					if(iOUT == 1){
-						// Copy left part of passed buffer to pv_in_buffer[port]
-						utils.LP_R_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
-						iOUT++;
+			// copy plugin's outpute to passed buffer
+			iIN = 0;
+			iOUT = 0;
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio output ports
+				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy buffer
+						if(iOUT == 1){
+							// Copy left part of passed buffer to pv_in_buffer[port]
+							utils.LP_R_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
+							iOUT++;
+						}
+						if(iOUT == 0){
+							// Copy left part of passed buffer to pv_in_buffer[port]
+							utils.LP_L_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
+							iOUT++;
+						}
 					}
-					if(iOUT == 0){
+			}
+		}
+	
+		// For 2 channels requests with 1 channels plugin
+		if(((pv_nb_channels == 2)&&(pv_nb_audio_in == 1))||((pv_nb_channels == 2)&&(pv_nb_audio_out == 1))) {
+			// LEFT channel
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio input ports
+				if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy right part of passed buffer to pv_in_buffer[port]
+						utils.LP_LR_to_L(pv_in_buffer[port], buffer, pv_buf_len);
+				}
+			}
+			if(pv_connect_ports() < 0){
+				std::cerr << "LP_ladspa_plugin::run: ports connections failed\n";
+				return -1;
+			}
+			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+			// copy plugin's outpute to passed buffer
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio output ports
+				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 						// Copy left part of passed buffer to pv_in_buffer[port]
 						utils.LP_L_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
-						iOUT++;
 					}
-				}
-				if(pv_nb_audio_out == 1){
-					for(i=0; i<pv_buf_len; i++){
-						buffer[i] = pv_out_buffer[port][i];
+			}
+			// RIGHT channel
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio input ports
+				if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy right part of passed buffer to pv_in_buffer[port]
+						utils.LP_LR_to_R(pv_in_buffer[port], buffer, pv_buf_len);			}
+			}
+			if(pv_connect_ports() < 0){
+				std::cerr << "LP_ladspa_plugin::run: ports connections failed\n";
+				return -1;
+			}
+			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+			// copy plugin's outpute to passed buffer
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio output ports
+				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy right part of passed buffer to pv_in_buffer[port]
+						utils.LP_R_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
 					}
-				}
 			}
 		}
 	}
@@ -670,12 +789,16 @@ int LP_ladspa_plugin::pv_init_plugin()
 /// Connect plugin's ports
 int LP_ladspa_plugin::pv_connect_ports()
 {
+	// If we are not ready, simply return
+	if(pv_plugin_ready == FALSE){ return 0; }
+
 	if(pv_LD->connect_port == 0){
 		std::cerr << "LP_ladspa_plugin::pv_connect_ports: connect_port function is Null\n";
 		return -1;
 	}
 
 	unsigned long port = 0;
+	int iIN = 0, iOUT = 0;
 
 	for(port = 0; port < pv_LD->PortCount; port++){
 	//std::cout << "Connect: scan...port no " << port << std::endl;
@@ -685,23 +808,62 @@ int LP_ladspa_plugin::pv_connect_ports()
 			//pv_in_ctl_value[port];
 			//std::cout << "Connexion controle, handle: " << pv_ladspa_handle << " , port: " << port << " , Addresse: " << &pv_in_ctl[port] << " , valeur: " << pv_in_ctl[port] << std::endl;
 			(pv_LD->connect_port)(pv_ladspa_handle, port, &pv_in_ctl_value[port]);
-			// get all ctl port's value
+			// If second handle is active (mono plugins -> 2 channles)
+/*			if(pv_ladspa_handle2 != 0){
+				(pv_LD->connect_port)(pv_ladspa_handle2, port, &pv_in_ctl_value[port]);
+			}
+*/			// get all ctl port's value
 		}
+		// If the port is a control output
+		if((LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port])) && (LADSPA_IS_PORT_CONTROL(pv_LD->PortDescriptors[port]))) {
+			(pv_LD->connect_port)(pv_ladspa_handle, port, &pv_out_ctl_value[port]);
+			// If second handle is active (mono plugins -> 2 channles)
+/*			if(pv_ladspa_handle2 != 0){
+				// Dont't write to the same port ! Better loose info...
+				(pv_LD->connect_port)(pv_ladspa_handle2, port, &pv_out_ctl_fake[port]);
+			}
+*/		}
 
 		// Audio input ports
 		if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
 			(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 			// Connect audio in port
 			//std::cout << "Connexion audio in, handle: " << pv_ladspa_handle << " ,port: " << port << " , Addresse: " << pv_in_buffer[port] << std::endl;
-			(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_buffer[port]);
-		}
+			// If second handle is 0, simple connect first handle
+		//	if(pv_ladspa_handle2 == 0){
+				(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_buffer[port]);
+		/*	}else{
+				if(iIN == 1){
+					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_in_buffer[port]);
+					std::cout << "Connecte port " << port << " au handle 2\n";
+				}
+				if(iIN == 0){
+					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_buffer[port]);
+					std::cout << "Connecte port " << port << " au handle 1\n";
+					iIN++;
+				}
+			}
+	*/	}
 		// Audio output ports
 		if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
 			(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 			// Connect audio in port
 			//std::cout << "Connexion audio out, handle: " << pv_ladspa_handle << " ,port: " << port << " , Addresse: " << pv_out_buffer[port] << std::endl;
-			(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_buffer[port]);
-		}
+			// If second handle is 0, simple connect first handle
+		//	if(pv_ladspa_handle2 == 0){
+				(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_buffer[port]);
+		/*	}else{
+				if(iOUT == 1){
+					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_out_buffer[port]);
+					std::cout << "Connecte port " << port << " au handle 2\n";
+				}
+				if(iOUT == 0){
+					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_buffer[port]);
+					std::cout << "Connecte port " << port << " au handle 1\n";
+					iOUT++;
+				}
+			}
+	*/	}
 	}
 
 	return 0;
@@ -912,9 +1074,12 @@ int LP_ladspa_plugin_dlg::init_plugin(LP_ladspa_plugin *plugin/*unsigned long pl
 	for(port = 0; port < pv_nb_ports; port++){
 		//add_port_ctl(port, pv_ports[port].name, pv_ports[port].is_toggle, FALSE, pv_ports[port].is_int);
 		if(pv_ports[port].is_in_ctl == TRUE){
-			add_port_ctl(port, pv_ports[port].name, pv_ports[port].is_toggle, FALSE, pv_ports[port].is_int);
+			add_port_ctl(port, pv_ports[port].name, pv_ports[port].is_toggle, FALSE, pv_ports[port].is_int, FALSE);
 			set_range(port, pv_ports[port].low_bound, pv_ports[port].high_bound, pv_ports[port].is_logarithmic);
 			set_default_value(port, pv_ports[port].default_value);
+		}
+		if(pv_ports[port].is_out_ctl == TRUE){
+			add_port_ctl(port, pv_ports[port].name, FALSE, FALSE, FALSE, TRUE);
 		}
 	}
 
@@ -937,7 +1102,7 @@ int LP_ladspa_plugin_dlg::set_plug_name(char *name)
 	return 0;
 }
 
-int LP_ladspa_plugin_dlg::add_port_ctl(unsigned long index, char *port_name, bool toggel, bool dial, bool is_int)
+int LP_ladspa_plugin_dlg::add_port_ctl(unsigned long index, char *port_name, bool toggel, bool dial, bool is_int, bool is_out_ctl)
 {
 	// Verify index
 	if(index > LP_MAX_PORT){
@@ -945,7 +1110,7 @@ int LP_ladspa_plugin_dlg::add_port_ctl(unsigned long index, char *port_name, boo
 		return -1;
 	}
 
-	pv_port_ui[index] = new LP_ladspa_port_dlg(pv_hbox, port_name, 0, pv_plugin, toggel, dial, is_int, index);
+	pv_port_ui[index] = new LP_ladspa_port_dlg(pv_hbox, port_name, 0, pv_plugin, toggel, dial, is_int, index, is_out_ctl);
 
 	return 0;
 }
@@ -1014,7 +1179,7 @@ void LP_ladspa_plugin_dlg::languageChange()
 LP_ladspa_port_dlg::LP_ladspa_port_dlg( QWidget *parent , const char *name , 
 					WFlags fl, LP_ladspa_plugin *plugin, 
 					bool toggel, bool dial, bool is_int,
-					unsigned long port_index )
+					unsigned long port_index, bool out_ctl )
 {
 	if(port_index >= LP_MAX_PORT){
 		std::cerr << "LP_ladspa_port_dlg::LP_ladspa_port_dlg: WARNING! port index is too big !\n";
@@ -1043,36 +1208,42 @@ LP_ladspa_port_dlg::LP_ladspa_port_dlg( QWidget *parent , const char *name ,
 	if( (name != 0) && (strlen(name) > 0) ){
 		ql_port_name->setText(name);
 	}
-	if(toggel == FALSE){
-		// Is the port integer values ?
-		if(pv_is_int == TRUE){
-			qsl_int_value = new QSlider( vbox, "qsl_int_value");
-		}else{
-			// Is it a dial o a slider ?
-			if(dial == TRUE){
-				qdl_value = new QwtKnob( vbox, "qsl_value" );
+	// If in ctl port, draw a slider or so
+	if(out_ctl == FALSE){
+		if(toggel == FALSE){
+			// Is the port integer values ?
+			if(pv_is_int == TRUE){
+				qsl_int_value = new QSlider( vbox, "qsl_int_value");
 			}else{
-				// Draw a slider
-				qsl_value = new QwtSlider( vbox, "qsl_value", Qt::Vertical, QwtSlider::Left, QwtSlider::BgSlot );
-				//qsl_value->setTickmarks( QSlider::Above);
+				// Is it a dial or a slider ?
+				if(dial == TRUE){
+					qdl_value = new QwtKnob( vbox, "qsl_value" );
+				}else{
+					// Draw a slider
+					qsl_value = new QwtSlider( vbox, "qsl_value", Qt::Vertical, QwtSlider::Left, QwtSlider::BgSlot );
+					//qsl_value->setTickmarks( QSlider::Above);
+				}
 			}
+		} else {
+			pb_value = new QPushButton( vbox, "pb_value" );
+			pb_value->setToggleButton( TRUE );
+			pb_value->setText(tr("Off"));
 		}
-	} else {
-		pb_value = new QPushButton( vbox, "pb_value" );
-		pb_value->setToggleButton( TRUE );
-		pb_value->setText(tr("Off"));
+		if(qsl_value != 0){
+			connect (qsl_value, SIGNAL( valueChanged(double)) , this, SLOT(pv_set_value(double)) );
+		}
+		if(qdl_value != 0){
+			connect (qdl_value, SIGNAL( valueChanged(double)), this, SLOT(pv_set_value(double)) );
+		}
+		if(qsl_int_value != 0){
+			connect (qsl_int_value, SIGNAL( valueChanged(int)), this, SLOT(pv_set_value(int)) );
+		}
 	}
 	qle_value = new QLineEdit( vbox, "qle_value" );
 
-//	pv_display_test(50);
-	if(qsl_value != 0){
-		connect (qsl_value, SIGNAL( valueChanged(double)) , this, SLOT(pv_set_value(double)) );
-	}
-	if(qdl_value != 0){
-		connect (qdl_value, SIGNAL( valueChanged(double)), this, SLOT(pv_set_value(double)) );
-	}
-	if(qsl_int_value != 0){
-		connect (qsl_int_value, SIGNAL( valueChanged(int)), this, SLOT(pv_set_value(int)) );
+	if(out_ctl == TRUE){
+		// TODO disable qle_value
+		qle_value->setText("NOT implemented yet...");
 	}
 }
 

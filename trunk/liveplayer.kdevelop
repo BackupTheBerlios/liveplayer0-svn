@@ -98,7 +98,7 @@
       <envvars/>
     </run>
     <general>
-      <activedir>src/ladspa_cpp</activedir>
+      <activedir>#src/ladspa_cpp</activedir>
     </general>
     <make>
       <abortonerror>true</abortonerror>

@@ -56,6 +56,7 @@ class lp_ladspa_ports{
 	LADSPA_Data high_bound;
 	bool is_logarithmic;
 	LADSPA_Data default_value;
+	bool is_out_ctl;
 	// The values of each port are stored here, and passed to the plugin
 };
 
@@ -88,6 +89,8 @@ class LP_ladspa_plugin{
 
 		// Set the plugin port's values
 		int set_port_value(unsigned long port, LADSPA_Data value);
+		// Get the plugin port's values
+		LADSPA_Data get_port_value(unsigned long port, LADSPA_Data value);
 
 		char *get_plugin_name(unsigned long index);
 		unsigned long get_plugin_ID(unsigned long index);
@@ -120,6 +123,7 @@ class LP_ladspa_plugin{
 		LADSPA_PortDescriptor pv_port_desc;
 		// The LADSPA_Handle
 		LADSPA_Handle pv_ladspa_handle;
+		LADSPA_Handle pv_ladspa_handle2; // Mono plugins - 2 input audio
 
 		// Sample rate
 		unsigned int pv_srate;
@@ -129,9 +133,13 @@ class LP_ladspa_plugin{
 		char *pv_label;
 		char *pv_maker;
 		char *pv_copyright;
-		int pv_must_rt;		// Must run real time
-		int pv_inplace_brocken;
-		int pv_hard_rt;		// Is hard real-time capable
+		bool pv_must_rt;		// Must run real time
+		bool pv_inplace_broken;
+		bool pv_hard_rt;		// Is hard real-time capable
+
+		// This is TRUE whenn plugin is instanciated, memory allocation
+		// is OK - Else had problems in multi-thread program
+		bool pv_plugin_ready;
 
 		// Set the plugin "active state"
 		bool pv_active;
@@ -147,6 +155,7 @@ class LP_ladspa_plugin{
 		// The values of each port are stored here, and passed to the plugin
 		LADSPA_Data pv_in_ctl_value[LP_MAX_PORT];
 		LADSPA_Data pv_out_ctl_value[LP_MAX_PORT];
+		LADSPA_Data pv_out_ctl_fake[LP_MAX_PORT];
 
 		// Hint parameters
 		LADSPA_PortRangeHintDescriptor pv_port_hint_dec;
@@ -207,7 +216,7 @@ public:
 	int set_plug_name(char *name);
 
 	// Add a port control in ui
-	int add_port_ctl(unsigned long index, char *port_name, bool toggel, bool dial, bool is_int);
+	int add_port_ctl(unsigned long index, char *port_name, bool toggel, bool dial, bool is_int, bool is_out_ctl);
 	// Define ctl range
 	int set_port_max_val(unsigned long index, LADSPA_Data val);
 
@@ -249,7 +258,7 @@ class LP_ladspa_port_dlg : public QHBox
 	Q_OBJECT
 
 public:
-	LP_ladspa_port_dlg( QWidget *parent = 0, const char *name = 0, WFlags fl = 0, LP_ladspa_plugin *plugin = 0, bool toggel = FALSE, bool dial = 0 , bool is_int = 0 , unsigned long port_index = 0);
+	LP_ladspa_port_dlg( QWidget *parent = 0, const char *name = 0, WFlags fl = 0, LP_ladspa_plugin *plugin = 0, bool toggel = FALSE, bool dial = 0 , bool is_int = 0 , unsigned long port_index = 0, bool out_ctl = FALSE);
 	~LP_ladspa_port_dlg();
 
 	// Set the port range
