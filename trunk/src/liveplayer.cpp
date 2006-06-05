@@ -91,7 +91,7 @@ for (i=2; i>0; i--){
 
 a.exec();
 
-sleep(150);
+//sleep(150);
 
 /* Some brutal speed variations.... */
 usleep(100000);
@@ -101,7 +101,7 @@ usleep(1000000);
 //player_1->setDirection(LP_PLAY_REVERSE);
 //player_1->setSeek(-50000, SEEK_END);
 player_1->setSoundTouch(LP_OFF);
-sleep(5);
+//sleep(5);
 player_1->setSoundTouch(LP_ON);
 
 player_1->setSpeed(1.2);
@@ -109,20 +109,20 @@ player_1->setSpeed(1.2);
 player_1->setDirection(LP_PLAY_FORWARD);
 usleep(1000000);
 player_1->setSpeed(0.9);
-//player_1->setDirection(LP_PLAY_REVERSE);
+player_1->setDirection(LP_PLAY_REVERSE);
 usleep(1000000);
 player_1->setSpeed(1.05);
 player_1->setDirection(LP_PLAY_FORWARD);
 usleep(1000000);
-//player_1->setSpeed(1.1);
-//player_1->setDirection(LP_PLAY_REVERSE);
+player_1->setSpeed(1.1);
+player_1->setDirection(LP_PLAY_REVERSE);
 usleep(1000000);
 player_1->setSpeed(1.0);
 player_1->setSpeed(0.5464);
 player_1->setDirection(LP_PLAY_FORWARD);
 usleep(1000000);
 player_1->setSpeed(1.05314);
-//player_1->setDirection(LP_PLAY_REVERSE);
+player_1->setDirection(LP_PLAY_REVERSE);
 usleep(1000000);
 player_1->setSpeed(1.453431);
 //player_2->setSpeed(1.0);
@@ -136,7 +136,7 @@ player_1->setDirection(LP_PLAY_FORWARD);
 usleep(100000);
 player_1->setSpeed(0.91);
 usleep(100000);
-//player_1->setDirection(LP_PLAY_REVERSE);
+player_1->setDirection(LP_PLAY_REVERSE);
 player_1->setSpeed(0.93);
 usleep(100000);
 player_1->setSpeed(0.95);
@@ -157,7 +157,7 @@ player_1->setDirection(LP_PLAY_FORWARD);
 player_1->setSpeed(1.04);
 
 usleep(100000);
-//player_1->setDirection(LP_PLAY_FORWARD);
+player_1->setDirection(LP_PLAY_FORWARD);
 player_1->setSpeed(1.06);
 usleep(100000);
 player_1->setSpeed(1.08);
@@ -166,10 +166,12 @@ player_1->setSpeed(1.09);
 usleep(1000000);
 player_1->setSpeed(1.1);
 player_1->setDirection(LP_PLAY_REVERSE);
-player_1->setSeek(-50000, SEEK_END);
+//player_1->setSeek(-50000, SEEK_END);
+player_1->setDirection(LP_PLAY_FORWARD);
 
 player_1->setSpeed(0.9);
 //player_1->setDirection(LP_PLAY_REVERSE);
+//a.exec();
 
 /* The destructor waits the end of thread */
 delete player_1;

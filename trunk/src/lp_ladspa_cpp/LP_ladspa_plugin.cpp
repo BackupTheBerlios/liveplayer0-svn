@@ -56,6 +56,8 @@ LP_ladspa_plugin::LP_ladspa_plugin(char *file_path)
 	for(ul=0; ul<LP_MAX_PORT; ul++){
 		pv_in_buffer[ul] = 0;
 		pv_out_buffer[ul] = 0;
+		pv_in_buffer2[ul] = 0;
+		pv_out_buffer2[ul] = 0;
 	}
 
 	// Set the ready state to FALSE
@@ -336,6 +338,14 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 						return -1;
 					}
 					pv_nb_audio_in++;
+					// If run with 2 instance (mono plugins)
+					if((pv_nb_audio_in == 1)&&(pv_nb_channels == 2)) {
+						pv_in_buffer2[port] = new LADSPA_Data[pv_buf_len];
+						if(pv_in_buffer2[port] == 0){
+							std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_in_buffer\n";
+							return -1;
+						}
+					}
 				}
 				// Audio output ports
 				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
@@ -349,6 +359,14 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 						return -1;
 					}
 					pv_nb_audio_out++;
+					// If run with 2 instance (mono plugins)
+					if((pv_nb_audio_out == 1)&&(pv_nb_channels == 2)) {
+						pv_out_buffer2[port] = new LADSPA_Data[pv_buf_len];
+						if(pv_out_buffer2[port] == 0){
+							std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_in_buffer\n";
+							return -1;
+						}
+					}
 				}
 			} // Plugin's ports
 			// Allocate pv_LR_buffer
@@ -364,14 +382,14 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 				std::cerr << "LP_ladspa_plugin::init_plugin: instantiate fails\n";
 				return -1;
 			}
-/*			if((pv_nb_audio_in == 1)&&(pv_nb_channels == 2)) {
+			if((pv_nb_channels == 2) && ((pv_nb_audio_in < 2)||(pv_nb_audio_out < 2)) ) {
 				pv_ladspa_handle2 = (pv_LD->instantiate)(pv_LD, pv_srate);
 				if(pv_ladspa_handle2 == 0){
 					std::cerr << "LP_ladspa_plugin::init_plugin: instantiate fails\n";
 					return -1;
 				}
 			}
-*/
+
 			/// Ok, we are ready
 			pv_plugin_ready = TRUE;
 
@@ -536,7 +554,7 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 		std::cerr << "LP_ladspa_plugin::run: channels passed must be 1 or 2\n";
 		return -1;
 	}
-	if((pv_nb_audio_in < 0)||(pv_nb_audio_in > 2)){
+/*	if((pv_nb_audio_in < 0)||(pv_nb_audio_in > 2)){
 		std::cerr << "LP_ladspa_plugin::run: plugin must must 1 or 2 audio inputs\n";
 		return -1;
 	}
@@ -544,7 +562,7 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 		std::cerr << "LP_ladspa_plugin::run: plugin must must 1 or 2 audio outputs\n";
 		return -1;
 	}
-
+*/
 	if(((pv_has_activate == TRUE)&&(pv_active == TRUE))||(pv_has_activate == FALSE)){
 
 		/// DEBUG
@@ -555,8 +573,8 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 			std::cout << "PLUGIN is active\n";
 		}
 
-		// For 2 channels requests with 2 channels plugin
-		if(((pv_nb_channels == 2)&&(pv_nb_audio_in == 2))||((pv_nb_channels == 2)&&(pv_nb_audio_out == 2))) {
+		// For 2 channels requests with 2 channels plugin (2 IN and 2 OUT)
+		if(((pv_nb_channels == 2)&&(pv_nb_audio_in == 2))&&((pv_nb_channels == 2)&&(pv_nb_audio_out == 2))) {
 			// Copy passed buffer to each plugin's audio in port
 			for(port = 0; port < pv_LD->PortCount; port++){	
 				// Audio input ports
@@ -599,24 +617,39 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 						}
 					}
 			}
-		}
-	
-		// For 2 channels requests with 1 channels plugin
-		if(((pv_nb_channels == 2)&&(pv_nb_audio_in == 1))||((pv_nb_channels == 2)&&(pv_nb_audio_out == 1))) {
-			// LEFT channel
+		}else if(((pv_nb_channels == 2)&&(pv_nb_audio_in == 1))&&((pv_nb_channels == 2)&&(pv_nb_audio_out == 1))) {
+			// For 2 channels requests with 1 channels plugin (1 IN and 1 OUT)
+			// LEFT channel to handle (1)
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio input ports
+				if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy left part of passed buffer to pv_in_buffer[port]
+						std::cout << "Copie gauche dans in 1 - port " << port << std::endl;
+						utils.LP_LR_to_L(pv_in_buffer[port], buffer, pv_buf_len);
+				}
+			}
+			// RIGHT channel to handle 2
 			for(port = 0; port < pv_LD->PortCount; port++){	
 				// Audio input ports
 				if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
 					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 						// Copy right part of passed buffer to pv_in_buffer[port]
-						utils.LP_LR_to_L(pv_in_buffer[port], buffer, pv_buf_len);
-				}
+						std::cout << "Copie droite dans in 2 - port " << port << std::endl;
+						utils.LP_LR_to_R(pv_in_buffer2[port], buffer, pv_buf_len);			}
 			}
+			std::cout << "Connexions......\n";
 			if(pv_connect_ports() < 0){
 				std::cerr << "LP_ladspa_plugin::run: ports connections failed\n";
 				return -1;
 			}
+			std::cout << "OK, appel run....\n";
 			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+			std::cout << "Handle 1 run OK\n";
+			if(pv_ladspa_handle2 != 0){
+				(pv_LD->run)(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
+				std::cout << "Handle 2 run OK\n";
+			}
 			// copy plugin's outpute to passed buffer
 			for(port = 0; port < pv_LD->PortCount; port++){	
 				// Audio output ports
@@ -626,26 +659,70 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 						utils.LP_L_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
 					}
 			}
-			// RIGHT channel
-			for(port = 0; port < pv_LD->PortCount; port++){	
-				// Audio input ports
-				if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
-					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
-						// Copy right part of passed buffer to pv_in_buffer[port]
-						utils.LP_LR_to_R(pv_in_buffer[port], buffer, pv_buf_len);			}
-			}
-			if(pv_connect_ports() < 0){
-				std::cerr << "LP_ladspa_plugin::run: ports connections failed\n";
-				return -1;
-			}
-			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
 			// copy plugin's outpute to passed buffer
 			for(port = 0; port < pv_LD->PortCount; port++){	
 				// Audio output ports
 				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
 					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 						// Copy right part of passed buffer to pv_in_buffer[port]
-						utils.LP_R_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
+						utils.LP_R_to_LR(pv_out_buffer2[port], buffer, pv_buf_len);
+					}
+			}
+		}else if((pv_nb_channels == 2)&&(pv_nb_audio_in == 0)&&(pv_nb_audio_out == 2)) {
+			// whenn plying stereo song and have plugins with no input, but 1 output
+			if(pv_connect_ports() < 0){
+				std::cerr << "LP_ladspa_plugin::run: ports connections failed\n";
+				return -1;
+			}
+			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+			// copy plugin's outpute to passed buffer
+			iIN = 0;
+			iOUT = 0;
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio output ports
+				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy buffer
+						if(iOUT == 1){
+							// Copy left part of passed buffer to pv_in_buffer[port]
+							utils.LP_R_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
+							iOUT++;
+						}
+						if(iOUT == 0){
+							// Copy left part of passed buffer to pv_in_buffer[port]
+							utils.LP_L_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
+							iOUT++;
+						}
+					}
+			}
+		}else if((pv_nb_channels == 2)&&(pv_nb_audio_in == 0)&&(pv_nb_audio_out == 1)) {
+			if(pv_connect_ports() < 0){
+				std::cerr << "LP_ladspa_plugin::run: ports connections failed\n";
+				return -1;
+			}
+			std::cout << "OK, appel run....\n";
+			(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+			std::cout << "Handle 1 run OK\n";
+			if(pv_ladspa_handle2 != 0){
+				(pv_LD->run)(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
+				std::cout << "Handle 2 run OK\n";
+			}
+			// copy plugin's outpute to passed buffer
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio output ports
+				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy left part of passed buffer to pv_in_buffer[port]
+						utils.LP_L_to_LR(pv_out_buffer[port], buffer, pv_buf_len);
+					}
+			}
+			// copy plugin's outpute to passed buffer
+			for(port = 0; port < pv_LD->PortCount; port++){	
+				// Audio output ports
+				if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
+					(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
+						// Copy right part of passed buffer to pv_in_buffer[port]
+						utils.LP_R_to_LR(pv_out_buffer2[port], buffer, pv_buf_len);
 					}
 			}
 		}
@@ -808,62 +885,72 @@ int LP_ladspa_plugin::pv_connect_ports()
 			//pv_in_ctl_value[port];
 			//std::cout << "Connexion controle, handle: " << pv_ladspa_handle << " , port: " << port << " , Addresse: " << &pv_in_ctl[port] << " , valeur: " << pv_in_ctl[port] << std::endl;
 			(pv_LD->connect_port)(pv_ladspa_handle, port, &pv_in_ctl_value[port]);
+			std::cout << "Connecte ctl in - port " << port << std::endl;
 			// If second handle is active (mono plugins -> 2 channles)
-/*			if(pv_ladspa_handle2 != 0){
-				(pv_LD->connect_port)(pv_ladspa_handle2, port, &pv_in_ctl_value[port]);
+			if(pv_ladspa_handle2 != 0){
+				pv_in_ctl_value2[port] = pv_in_ctl_value[port];
+				(pv_LD->connect_port)(pv_ladspa_handle2, port, &pv_in_ctl_value2[port]);
+				std::cout << "Connecte ctl (handle 2) in - port " << port << std::endl;
 			}
-*/			// get all ctl port's value
+			// get all ctl port's value
 		}
 		// If the port is a control output
 		if((LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port])) && (LADSPA_IS_PORT_CONTROL(pv_LD->PortDescriptors[port]))) {
 			(pv_LD->connect_port)(pv_ladspa_handle, port, &pv_out_ctl_value[port]);
 			// If second handle is active (mono plugins -> 2 channles)
-/*			if(pv_ladspa_handle2 != 0){
+			if(pv_ladspa_handle2 != 0){
 				// Dont't write to the same port ! Better loose info...
 				(pv_LD->connect_port)(pv_ladspa_handle2, port, &pv_out_ctl_fake[port]);
 			}
-*/		}
+		}
 
 		// Audio input ports
 		if(LADSPA_IS_PORT_INPUT (pv_LD->PortDescriptors[port]) &&
 			(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 			// Connect audio in port
 			//std::cout << "Connexion audio in, handle: " << pv_ladspa_handle << " ,port: " << port << " , Addresse: " << pv_in_buffer[port] << std::endl;
-			// If second handle is 0, simple connect first handle
-		//	if(pv_ladspa_handle2 == 0){
+			std::cout << "Connexions audio in" << std::endl;
+			// If plugin have same ports as requierd, simple connect them
+			if(pv_nb_audio_in == pv_nb_channels){
 				(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_buffer[port]);
-		/*	}else{
-				if(iIN == 1){
-					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_in_buffer[port]);
-					std::cout << "Connecte port " << port << " au handle 2\n";
-				}
-				if(iIN == 0){
+			}else{
+				// Whenn playing stereo song with mono plugin, use second instance
+				if((pv_nb_channels == 2)&&(pv_nb_audio_in == 1)&&(pv_ladspa_handle2 != 0)) {
 					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_buffer[port]);
-					std::cout << "Connecte port " << port << " au handle 1\n";
-					iIN++;
+					std::cout << " Connecte port in no " << port << " au handle 1\n";
+					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_in_buffer2[port]);
+					std::cout << " Connecte port in 2 no " << port << " au handle 2\n";
+				}else if(pv_nb_audio_in == 0) {
+					// Plugin without input ports (generators...)
+				}else{
+					// Return error 
+					std::cout << __FUNCTION__ << ": mistake with input ports: plugin: " << pv_nb_audio_in << " ports, requierd: " << pv_nb_channels << std::endl;
+					return -1;
 				}
 			}
-	*/	}
+		}
 		// Audio output ports
 		if(LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port]) &&
 			(LADSPA_IS_PORT_AUDIO(pv_LD->PortDescriptors[port])) ) {
 			// Connect audio in port
 			//std::cout << "Connexion audio out, handle: " << pv_ladspa_handle << " ,port: " << port << " , Addresse: " << pv_out_buffer[port] << std::endl;
-			// If second handle is 0, simple connect first handle
-		//	if(pv_ladspa_handle2 == 0){
+			std::cout << "Connexions audio out" << std::endl;
+			// If plugin have same outputs that requierd, simply connect
+			if(pv_nb_audio_out == pv_nb_channels) {
 				(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_buffer[port]);
-		/*	}else{
-				if(iOUT == 1){
-					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_out_buffer[port]);
-					std::cout << "Connecte port " << port << " au handle 2\n";
-				}
-				if(iOUT == 0){
+			}else{
+				// If play a stereo song with 2 channels plugin, use second instance
+				if((pv_nb_channels == 2)&&(pv_nb_audio_out == 1)&&(pv_ladspa_handle2 != 0)) {
 					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_buffer[port]);
-					std::cout << "Connecte port " << port << " au handle 1\n";
-					iOUT++;
+					std::cout << "Connecte port out no " << port << " au handle 1\n";
+					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_out_buffer2[port]);
+					std::cout << "Connecte port out 2 no " << port << " au handle 2\n";
+				}else{
+					std::cout << __FUNCTION__ << ": mistake with output ports: plugin: " << pv_nb_audio_out << " ports, requierd: " << pv_nb_channels << std::endl;
+					return -1;
 				}
 			}
-	*/	}
+		}
 	}
 
 	return 0;

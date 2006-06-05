@@ -154,6 +154,7 @@ class LP_ladspa_plugin{
 		int pv_nb_ctl_out;
 		// The values of each port are stored here, and passed to the plugin
 		LADSPA_Data pv_in_ctl_value[LP_MAX_PORT];
+		LADSPA_Data pv_in_ctl_value2[LP_MAX_PORT];
 		LADSPA_Data pv_out_ctl_value[LP_MAX_PORT];
 		LADSPA_Data pv_out_ctl_fake[LP_MAX_PORT];
 
@@ -171,6 +172,9 @@ class LP_ladspa_plugin{
 		int pv_buf_len;
 		LADSPA_Data *pv_in_buffer[LP_MAX_PORT];
 		LADSPA_Data *pv_out_buffer[LP_MAX_PORT];
+		// Whenn run with 2 handles (mono plugins)
+		LADSPA_Data *pv_in_buffer2[LP_MAX_PORT];
+		LADSPA_Data *pv_out_buffer2[LP_MAX_PORT];
 
 		// Caller's given buffer
 		LADSPA_Data *pv_buffer;
