@@ -98,6 +98,14 @@ class LP_ladspa_plugin{
 		void test();
 
 	private:
+		// Some constants for the run mode
+		static const int unsupported 	= 0;
+		static const int normal 	= 1;
+		static const int splitted 	= 2;
+		static const int merge_output 	= 3;
+		static const int no_in_normal 	= 4;
+		static const int no_in_splitted	= 5;
+
 		// obtain a LADSPA_Descriptor_Function: if not ok, return 0
 		int pv_obtain_desriptor_function(char *file_path);
 
@@ -170,15 +178,28 @@ class LP_ladspa_plugin{
 
 		// Port's data buffer
 		int pv_buf_len;
-		LADSPA_Data *pv_in_buffer[LP_MAX_PORT];
-		LADSPA_Data *pv_out_buffer[LP_MAX_PORT];
+		LADSPA_Data *pv_in_L_buffer;//[LP_MAX_PORT];
+		LADSPA_Data *pv_in_R_buffer;
+		LADSPA_Data *pv_out_L_buffer;//[LP_MAX_PORT];
+		LADSPA_Data *pv_out_R_buffer;
+		// Neded for merge_output mode
+		LADSPA_Data *pv_out_L_buffer2;
+		LADSPA_Data *pv_out_R_buffer2;
+
+		// Some plugins can have more ports (unexploited)
+		LADSPA_Data *pv_in_fake_buffer[LP_MAX_PORT];
+		LADSPA_Data *pv_out_fake_buffer[LP_MAX_PORT];
 		// Whenn run with 2 handles (mono plugins)
-		LADSPA_Data *pv_in_buffer2[LP_MAX_PORT];
-		LADSPA_Data *pv_out_buffer2[LP_MAX_PORT];
+//		LADSPA_Data *pv_in_buffer2[LP_MAX_PORT];
+//		LADSPA_Data *pv_out_buffer2[LP_MAX_PORT];
 
 		// Caller's given buffer
 		LADSPA_Data *pv_buffer;
-		LADSPA_Data **pv_LR_buffer;
+//		LADSPA_Data **pv_LR_buffer;
+
+		// Run mode (normal, splitted, etc...)
+		int pv_run_mode;
+		int pv_set_run_mode();
 
 		// Connect ports
 		int pv_connect_ports();
