@@ -20,10 +20,19 @@ LP_ladspa_manager::LP_ladspa_manager()
 	for(ul=0; ul<LP_MAX_PLUGIN; ul++){
 		pv_plugins[ul] = 0;
 	}
+
+	// Allocate pv_buffer
+	pv_buffer = 0;
+
+	// start the thread
+	run_event = FALSE;
+	start(QThread::TimeCriticalPriority);
 }
 
 LP_ladspa_manager::~LP_ladspa_manager()
 {
+	// Wait the end of thread
+	wait();
 	// If a directory is open, close it
 	if(dh->dp != 0){
 		pv_close_dir();
@@ -40,11 +49,15 @@ LP_ladspa_manager::~LP_ladspa_manager()
 		}
 	}
 
+	if(pv_buffer != 0){
+		delete[] pv_buffer;
+	}
+
 }
 
 /// Retourne le nom du plugin demande, 0 si err ou fin de liste
 /// Le repertoire passe en argument sera utilise pour la rechrche
-/// Note: La variable out_name est allouee par la fonctio, mais il faut
+/// Note: La variable out_name est allouee par la fonction, mais il faut
 /// la liberer apres avoir utilise cette fonction.
 long LP_ladspa_manager::get_plugin_name(char *path, char *out_name[LP_MAX_PLUGIN], unsigned long *UniqueID, char *plugin_path)
 {
@@ -117,7 +130,7 @@ LP_ladspa_plugin *LP_ladspa_manager::add_plugin(unsigned long index, unsigned lo
 		std::cerr << "LP_ladspa_plugin *LP_ladspa_manager::add_plugin: path is not set\n";
 		return 0;
 	}
-	if(pv_channels < 1){
+	if(pv_channels != 2){
 		std::cerr << "LP_ladspa_plugin *LP_ladspa_manager::add_plugin: channels can't be < 1\n";
 		return 0;
 	}
@@ -234,22 +247,59 @@ int LP_ladspa_manager::set_audio_params(int channels, int sample_rate, int buffe
 		return -1;
 	}
 	pv_buffer_len = buffer_len;
+	pv_buffer = new LADSPA_Data[pv_buffer_len];
+	if(pv_buffer == 0){
+		std::cerr << "LP_ladspa_manager::set_audio_params: cannot allocate memory for pv_buffer\n";
+		return -1;
+	}
 	return 0;
 }
 
 int LP_ladspa_manager::run_plugins(float *buffer)
 {
-    // For each used plugin, if active, call run NOTE: 20 must be replaced !!
-    unsigned long ul;
-    for(ul=0; ul<20; ul++){
-	if(pv_plugins[ul] != 0){
-	    if(pv_plugins[ul]->get_active_state() == TRUE){
-		//std::cout << "Run.................\n";
-		pv_plugins[ul]->run(buffer);
-	    }
+	if(pv_buffer == 0){
+		std::cerr << "LP_ladspa_manager::run_plugins: pv_buffer is Null\n";
 	}
-    }
-    return 0;
+	int i;
+	// Lock, copy passed buffer
+	pv_mutex.lock();
+	for(i=0; i<pv_buffer_len; i++){
+		pv_buffer[i] = (LADSPA_Data)buffer[i];
+	}
+	run_event = TRUE;
+	// Wait the end
+	while(run_event == TRUE){
+		usleep(1000);
+	}
+	// Copy result and unlock
+	for(i=0; i<pv_buffer_len; i++){
+		buffer[i] = (float)pv_buffer[i];
+	}
+	pv_mutex.unlock();
+	return 0;
+}
+
+void LP_ladspa_manager::run()
+{
+	// run
+	while(1) {
+		// wait the run event
+		if(run_event == TRUE){
+			// For each used plugin, if active, call run NOTE: 20 must be replaced !!
+			unsigned long ul;
+			for(ul=0; ul<20; ul++){
+				if(pv_plugins[ul] != 0){
+					if(pv_plugins[ul]->get_active_state() == TRUE){
+						//std::cout << "Run.................\n";
+						pv_plugins[ul]->run_plugin(pv_buffer);
+					}
+				}
+			}
+			run_event = FALSE;
+		}else{
+			usleep(1000);
+		}
+	}
 }
 
 // Implement private functions
@@ -514,6 +564,7 @@ ladspa_manager_dlg::ladspa_manager_dlg( QWidget* parent, const char* name, bool 
     connect( pb_rem_used_plugin, SIGNAL( clicked() ), this, SLOT( rem_lw_used_plug_item() ) );
 
 	// Obtenir une instance du plugin manager
+	llm = 0;
 	llm = new LP_ladspa_manager;
 	if(llm == 0){
 		std::cerr << "ladspa_manager_dlg::ladspa_manager_dlg: WARNING! private instance of plugin_manager can't be set !\n";

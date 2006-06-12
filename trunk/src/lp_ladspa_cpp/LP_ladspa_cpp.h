@@ -1,3 +1,7 @@
+
+#ifndef LP_LADSPA_CPP_H
+#define LP_LADSPA_CPP_H
+
 #include <iostream>
 #include <qapplication.h>
 #include <qthread.h>
@@ -18,3 +22,5 @@ class lp_ladspa_cpp : QThread
 	ladspa_manager_dlg *manager_dlg;
 	LP_ladspa_manager *manager;
 };
+
+#endif

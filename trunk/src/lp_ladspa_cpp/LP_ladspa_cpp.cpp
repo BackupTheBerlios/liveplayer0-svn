@@ -1,7 +1,4 @@
 
-#ifndef LP_LADSPA_CPP_H
-#define LP_LADSPA_CPP_H
-
 #include "LP_ladspa_cpp.h"
 //#include <qwidget.h>
 
@@ -49,4 +46,3 @@ void lp_ladspa_cpp::run()
 	}
 }
 
-#endif 

@@ -40,7 +40,7 @@ LP_ladspa_plugin::LP_ladspa_plugin(char *file_path)
 	pv_LD = 0;
 
 	// Plugin's UI
-	pv_ui = 0;
+//	pv_ui = 0;
 
 	// Set the samplerate to 44100 - TEMPORAIRE !!
 	pv_srate = 44100;
@@ -53,18 +53,21 @@ LP_ladspa_plugin::LP_ladspa_plugin(char *file_path)
 	}
 
 	// Set port buffers to Null
-	for(ul=0; ul<LP_MAX_PORT; ul++){
+/*	for(ul=0; ul<LP_MAX_PORT; ul++){
 		pv_in_fake_buffer[ul] = 0;
 		pv_out_fake_buffer[ul] = 0;
 //		pv_in_buffer2[ul] = 0;
 //		pv_out_buffer2[ul] = 0;
 	}
-
+*/
 	// Set the ready state to FALSE
 	pv_plugin_ready = FALSE;
 
 	// Set the active state to FALSE as default
 	pv_active = FALSE;
+
+	// Set run status to FALSE
+	pv_run_status = FALSE;
 
 	// Set run mode to 0
 	pv_run_mode = 0;
@@ -72,6 +75,14 @@ LP_ladspa_plugin::LP_ladspa_plugin(char *file_path)
 	// Set handles to 0
 	pv_ladspa_handle = 0;
 	pv_ladspa_handle2 = 0;
+
+	// Set audio port's buffers to 0
+	pv_in_L_buffer = 0;
+	pv_in_R_buffer = 0;
+	pv_out_L_buffer = 0;
+	pv_out_R_buffer = 0;
+	pv_out_L_buffer2 = 0;
+	pv_out_R_buffer2 = 0;
 }
 
 // Destructor
@@ -89,21 +100,30 @@ LP_ladspa_plugin::~LP_ladspa_plugin()
 		pv_LD = 0;
 	}
 
-	delete pv_ui;
-	pv_ui = 0;
+//	delete pv_ui;
+//	pv_ui = 0;
 
 	// free the buffers
 	unsigned long ul;
 	for(ul=0; ul<LP_MAX_PORT; ul++){
-		if(pv_in_fake_buffer[ul] != 0){
+/*		if(pv_in_fake_buffer[ul] != 0){
 			delete[] pv_in_fake_buffer[ul];
 		}
 		// free the buffer
 		if(pv_out_fake_buffer[ul] != 0){
 			delete[] pv_out_fake_buffer[ul];
 		}
-	}
-	// TODO Delete pv_LR_buffer and FINI !
+*/	}
+	// Delete pv_LR_buffer and FINI !
+	if(pv_in_L_buffer != 0) { delete[]pv_in_L_buffer; }
+	if(pv_in_R_buffer != 0) { delete[]pv_in_R_buffer; }
+	if(pv_out_L_buffer != 0) { delete[]pv_out_L_buffer; }
+	if(pv_out_R_buffer != 0) { delete[]pv_out_R_buffer; }
+	if(pv_out_L_buffer2 != 0) { delete[]pv_out_L_buffer2; }
+	if(pv_out_R_buffer2 != 0) { delete[]pv_out_R_buffer2; }
+
+	// Cleanup plugin's instance(s)
+	pv_cleanup();
 }
 
 
@@ -121,7 +141,7 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 	char *tmp = new char[NAME_MAX];
 	LADSPA_Data low_bound = 0, high_bound = 0, def_val = 0;
 	// Utilities class
-	LP_ladspa_utils utils;
+	//LP_ladspa_utils utils;
 
 	// test variables
 	if(pv_lib_handler == 0){
@@ -359,6 +379,7 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 					std::cerr << "LP_ladspa_plugin::init_plugin: instantiate fails\n";
 					return -1;
 				}
+		std::cout << "H2 instancied OK\n";
 			}
 
 //			pv_ui->show();
@@ -376,40 +397,39 @@ int LP_ladspa_plugin::init_plugin(/*QWidget* parent, const char* name,*/ unsigne
 		index++;
 	}
 
-			// Allocate memory for audio ports NOTE taille ? /2 ??
-			pv_in_L_buffer = new LADSPA_Data[pv_buf_len];
-			if(pv_in_L_buffer == 0){
-				std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_in_L_buffer\n";
-				return -1;
-			}
-			pv_in_R_buffer = new LADSPA_Data[pv_buf_len];
-			if(pv_in_R_buffer == 0){
-				std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_in_R_buffer\n";
-				return -1;
-			}
-			pv_out_L_buffer = new LADSPA_Data[pv_buf_len];
-			if(pv_out_L_buffer == 0){
-				std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_L_buffer\n";
-				return -1;
-			}
-			pv_out_R_buffer = new LADSPA_Data[pv_buf_len];
-			if(pv_out_R_buffer == 0){
-				std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_R_buffer\n";
-				return -1;
-			}
-			if(pv_run_mode == merge_output) {
-				pv_out_L_buffer2 = new LADSPA_Data[pv_buf_len];
-				if(pv_out_L_buffer2 == 0){
-					std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_L_buffer2\n";
-					return -1;
-				}
-				pv_out_R_buffer2 = new LADSPA_Data[pv_buf_len];
-				if(pv_out_R_buffer2 == 0){
-					std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_R_buffer2\n";
-					return -1;
-				}	
-			}
-std::cout << "Alloc OK\n";
+	// Allocate memory for audio ports NOTE taille ? /2 ??
+	pv_in_L_buffer = new LADSPA_Data[pv_buf_len];
+	if(pv_in_L_buffer == 0){
+		std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_in_L_buffer\n";
+		return -1;
+	}
+	pv_in_R_buffer = new LADSPA_Data[pv_buf_len];
+	if(pv_in_R_buffer == 0){
+		std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_in_R_buffer\n";
+		return -1;
+	}
+	pv_out_L_buffer = new LADSPA_Data[pv_buf_len];
+	if(pv_out_L_buffer == 0){
+		std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_L_buffer\n";
+		return -1;
+	}
+	pv_out_R_buffer = new LADSPA_Data[pv_buf_len];
+	if(pv_out_R_buffer == 0){
+		std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_R_buffer\n";
+		return -1;
+	}
+	if(pv_run_mode == merge_output) {
+		pv_out_L_buffer2 = new LADSPA_Data[pv_buf_len];
+		if(pv_out_L_buffer2 == 0){
+			std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_L_buffer2\n";
+			return -1;
+		}
+		pv_out_R_buffer2 = new LADSPA_Data[pv_buf_len];
+		if(pv_out_R_buffer2 == 0){
+			std::cerr << "LP_ladspa_plugin::init_plugin: cannot allocate memory for pv_out_R_buffer2\n";
+			return -1;
+		}	
+	}
 
 	// If nothing found, return error
 	if(count == 0){
@@ -420,11 +440,11 @@ std::cout << "Alloc OK\n";
 
 	/// Ok, we are ready
 	pv_plugin_ready = TRUE;
-
+//std::cout << "Plugin ready\n";
 	if(activate() <0){
 		std::cerr << "LP_ladspa_plugin::init_plugin: activate failed\n";
 	}
-
+std::cout << "Plugin ready and active\n";
 	return 0;
 }
 
@@ -458,7 +478,11 @@ int LP_ladspa_plugin::set_port_value(unsigned long port, LADSPA_Data value)
 		std::cerr << "LP_ladspa_plugin::set_port_value: port index is too big\n";
 		return -1;
 	}
+	pv_mutex.lock();
+	std::cout << "set port value... mutex verouille\n";
 	pv_in_ctl_value[port] = value;
+	pv_mutex.unlock();
+	std::cout << "set port value... mutex libere\n";
 //	std::cout << "New valeur sur port " << port << ": " << pv_in_ctl_value[port] << std::endl;
 	return 0;
 }
@@ -470,7 +494,9 @@ LADSPA_Data LP_ladspa_plugin::get_port_value(unsigned long port, LADSPA_Data val
 		std::cerr << "LP_ladspa_plugin::get_port_value: port index is too big\n";
 		return -1;
 	}
+	pv_mutex.lock();
 	return pv_out_ctl_value[port];
+	pv_mutex.unlock();
 }
 
 // Get the plugin's instance
@@ -490,7 +516,7 @@ void LP_ladspa_plugin::test()
 				testbuf[y] = 0.1*y;
 				std::cout << "[" << y << "] " << testbuf[y] << "\n";
 			}
-			run(testbuf);
+			run_plugin(testbuf);
 			for(y=0; y<pv_buf_len; y++){
 				std::cout << "[" << y << "] " << testbuf[y] << "\n";
 			}
@@ -512,11 +538,16 @@ int LP_ladspa_plugin::activate()
 		return -1;
 	}
 
+	pv_mutex.lock();
+
 	// Test if activate ptr is not null, and call it
 	if(pv_has_activate == TRUE){
 		if(pv_LD->activate != 0){
 			if(pv_active == FALSE){
-				(pv_LD->activate)(pv_ladspa_handle);
+				pv_LD->activate(pv_ladspa_handle);
+				if(pv_ladspa_handle2 != 0){
+					pv_LD->activate(pv_ladspa_handle2);
+				}
 				std::cout << "Activation du plugin\n";
 				pv_active = TRUE;
 			}
@@ -526,34 +557,87 @@ int LP_ladspa_plugin::activate()
 			return -1;
 		}
 	}
-
+	pv_mutex.unlock();
 	return 0;
 }
 
-/// run
-int LP_ladspa_plugin::run(LADSPA_Data *buffer)
+int LP_ladspa_plugin::deactivate()
 {
+	// If we are not ready, return error
+	if(pv_plugin_ready == FALSE){ return -1; }
 
+
+	if(pv_LD == 0){
+		std::cerr << "LP_ladspa_plugin::activate: pv_LD is Null\n";
+		return -1;
+	}
+	if(pv_ladspa_handle == 0){
+		std::cerr << "LP_ladspa_plugin::activate: pv_ladspa_handle is Null\n";
+		return -1;
+	}
+	pv_mutex.lock();
+
+	// Test the desactivate ptr, if set, desactivate plugin
+	if(pv_LD->deactivate != 0) {
+		if(pv_active == TRUE){
+			pv_LD->deactivate(pv_ladspa_handle);
+			if(pv_ladspa_handle2 != 0){
+				pv_LD->deactivate(pv_ladspa_handle2);
+			}
+			pv_active = FALSE;
+		}
+	}else{
+		pv_active = FALSE;
+	}
+
+	pv_mutex.unlock();
+	return 0;
+}
+
+
+/// run the plugin
+int LP_ladspa_plugin::run_plugin(LADSPA_Data *buffer)
+{
+	std::cout << "RUN CALLED\n";
 	//TODO: pass buf_len to unsigned long in class, etc...
 
 	// If we are not ready, simply return
 	if(pv_plugin_ready == FALSE){ return 0; }
 
-	unsigned long port = 0;
+	int i = 0;
+
+	// Test if we are not running now
+	pv_run_status_mutex.lock();
+	if(pv_run_status == TRUE){
+		std::cerr << "LP_ladspa_plugin::run_plugin: allready running, return\n";
+		pv_run_status = FALSE;
+		pv_run_status_mutex.unlock();
+		pv_mutex.unlock();
+		return -1;
+	}
+	pv_run_status_mutex.unlock();
+
+	//unsigned long port = 0;
 	LP_ladspa_utils utils;
-	int iIN = 0, iOUT = 0, i = 0;
+	//int iIN = 0, iOUT = 0, 
 
 	if(pv_LD == 0){
 		std::cout << "LP_ladspa_plugin::run: pv_LD is Null\n";
 		return -1;
 	}
-	if(buffer == 0){
-		std::cout << "LP_ladspa_plugin::run: buffer is Null\n";
-		return -1;
-	}
 	if(pv_LD->run == 0){
 		std::cout << "LP_ladspa_plugin::run: run function is Null\n";
 		return -1;		
+	}
+
+	// Verify handle(s)
+	if(pv_ladspa_handle == 0){
+		std::cout << "LP_ladspa_plugin::run: pv_ladspa_handle is Null\n";
+		return -1;
+	}
+	if(((pv_run_mode == splitted)||(pv_run_mode == merge_output)||(pv_run_mode == no_in_splitted))&&(pv_ladspa_handle2 == 0)){
+		std::cout << "LP_ladspa_plugin::run: pv_ladspa_handle2 is needed, but is Null\n";
+		return -1;
 	}
 
 	// Test nb_channels and plugin's channels 
@@ -565,40 +649,58 @@ int LP_ladspa_plugin::run(LADSPA_Data *buffer)
 	if((pv_has_activate == TRUE)&&(pv_active == FALSE)) {
 		return 0;
 	}
-std::cout << "Run...\n";
+
+	pv_mutex.lock();
+
+std::cout << "Run... mutext verouille\n";
 	switch(pv_run_mode) {
 		case normal:
 	std::cout << "Run normal\n";
+	if(pv_inplace_broken == TRUE){
+		std::cout << "Inplace broken\n";
+	}
 			// Copy given data to L and R ports buffer
 			utils.LP_LR_to_L_R(pv_in_L_buffer, pv_in_R_buffer, buffer, pv_buf_len);
 			if(pv_connect_ports() >= 0){
-				(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+				pv_LD->run(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
 			}
 			// Copy result to given buffer
 			utils.LP_L_R_to_LR(pv_out_L_buffer, pv_out_R_buffer, buffer, pv_buf_len);
 			break;
 		case splitted:
 	std::cout << "Run splitted\n";
+	if(pv_inplace_broken == TRUE){
+		std::cout << "Inplace broken\n";
+	}
+	if(pv_must_rt == TRUE){
+		std::cout << "Must run RT\n";
+	}
 			// Copy given data to L and R ports buffer
 			utils.LP_LR_to_L_R(pv_in_L_buffer, pv_in_R_buffer, buffer, pv_buf_len);
 			if(pv_connect_ports() >= 0){
-				(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
-				(pv_LD->run)(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
+	std::cout << "Connexion faites, run..." << (unsigned long)pv_buf_len/2 << " samples\n";
+				pv_LD->run(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+	std::cout << "run: H1 OK\n";
+				pv_LD->run(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
+	std::cout << "run: H2 OK\n";
 			}
 			// Copy result to given buffer
 			utils.LP_L_R_to_LR(pv_out_L_buffer, pv_out_R_buffer, buffer, pv_buf_len);
 			break;
 		case merge_output:
 	std::cout << "Run merge_output\n";
+	if(pv_inplace_broken == TRUE){
+		std::cout << "Inplace broken\n";
+	}
 			// Copy given data to L and R ports buffer
 			utils.LP_LR_to_L_R(pv_in_L_buffer, pv_in_R_buffer, buffer, pv_buf_len);
 			if(pv_connect_ports() >= 0){
-				(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
-				(pv_LD->run)(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
+				pv_LD->run(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+				pv_LD->run(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
 			}
 			// Copy result: merge L and L2, R and R2
-/*			LADSPA_Data tmp1, tmp2;
-			for(i=0; i<pv_buf_len; i++){
+			LADSPA_Data tmp1, tmp2;
+/*			for(i=0; i<pv_buf_len; i++){
 				// Left part
 				tmp1 = pv_out_L_buffer[i] / 2;
 				tmp2 = pv_out_L_buffer2[i] / 2;
@@ -609,29 +711,35 @@ std::cout << "Run...\n";
 				pv_out_R_buffer[i] = tmp1 + tmp2;
 			}
 */			// Copy result to given buffer
-			utils.LP_L_R_to_LR(pv_out_L_buffer2, pv_out_R_buffer, buffer, pv_buf_len);
+			utils.LP_L_R_to_LR(pv_out_L_buffer, pv_out_R_buffer2, buffer, pv_buf_len);
 			break;
 		case no_in_normal:
 	std::cout << "Run no_in_normal\n";
+	if(pv_inplace_broken == TRUE){
+		std::cout << "Inplace broken\n";
+	}
 			// Clen buffer
 /*			for(i=0; i<pv_buf_len; i++) {
 				buffer[i] = 0;
 			}
 */			if(pv_connect_ports() >= 0){
-				(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+				pv_LD->run(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
 			}
 			// Copy result to given buffer
 			utils.LP_L_R_to_LR(pv_out_L_buffer, pv_out_R_buffer, buffer, pv_buf_len);
 			break;
 		case no_in_splitted:
 	std::cout << "Run no_in_splitted\n";
+	if(pv_inplace_broken == TRUE){
+		std::cout << "Inplace broken\n";
+	}
 			// Clen buffer
 /*			for(i=0; i<pv_buf_len; i++) {
 				buffer[i] = 0;
 			}
 */			if(pv_connect_ports() >= 0){
-				(pv_LD->run)(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
-				(pv_LD->run)(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
+				pv_LD->run(pv_ladspa_handle, (unsigned long)pv_buf_len/2);
+				pv_LD->run(pv_ladspa_handle2, (unsigned long)pv_buf_len/2);
 			}
 			// Copy result to given buffer
 			utils.LP_L_R_to_LR(pv_out_L_buffer, pv_out_R_buffer, buffer, pv_buf_len);
@@ -641,8 +749,15 @@ std::cout << "Run...\n";
 			break;
 	}
 
+	pv_run_status_mutex.lock();
+	pv_run_status = FALSE;
+	pv_run_status_mutex.unlock();
+
+	pv_mutex.unlock();
+std::cout << "Run... mutex libere\n";
 	return 0;
 }
+
 
 char *LP_ladspa_plugin::get_plugin_name(unsigned long index)
 {
@@ -702,6 +817,9 @@ unsigned long LP_ladspa_plugin::get_plugin_ID(unsigned long index)
 /// Get the state (active or not)
 bool LP_ladspa_plugin::get_active_state()
 {
+	if(pv_plugin_ready == FALSE){
+		return FALSE;
+	}
 	if((pv_has_activate == TRUE)&&(pv_active == TRUE)){
 		return TRUE;
 	}
@@ -711,6 +829,9 @@ bool LP_ladspa_plugin::get_active_state()
 	if(pv_has_activate == FALSE){
 		return TRUE;
 	}
+	// If we are here, an error occured
+	std::cerr << " LP_ladspa_plugin::get_active_state: unknow state - return FALSE\n";
+	return FALSE;
 }
 
 /***** private functions *****/
@@ -797,23 +918,25 @@ int LP_ladspa_plugin::pv_connect_ports()
 			// Connect input ctl port
 			//pv_in_ctl_value[port];
 			//std::cout << "Connexion controle, handle: " << pv_ladspa_handle << " , port: " << port << " , Addresse: " << &pv_in_ctl[port] << " , valeur: " << pv_in_ctl[port] << std::endl;
-			(pv_LD->connect_port)(pv_ladspa_handle, port, &pv_in_ctl_value[port]);
+			pv_LD->connect_port(pv_ladspa_handle, port, &pv_in_ctl_value[port]);
 			std::cout << "Connecte ctl in - port " << port << std::endl;
 			// If second handle is active (mono plugins -> 2 channles)
 			if(pv_ladspa_handle2 != 0){
 				pv_in_ctl_value2[port] = pv_in_ctl_value[port];
-				(pv_LD->connect_port)(pv_ladspa_handle2, port, &pv_in_ctl_value2[port]);
+				pv_LD->connect_port(pv_ladspa_handle2, port, &pv_in_ctl_value2[port]);
 				std::cout << "Connecte ctl (handle 2) in - port " << port << std::endl;
 			}
 			// get all ctl port's value
 		}
 		// If the port is a control output
 		if((LADSPA_IS_PORT_OUTPUT (pv_LD->PortDescriptors[port])) && (LADSPA_IS_PORT_CONTROL(pv_LD->PortDescriptors[port]))) {
-			(pv_LD->connect_port)(pv_ladspa_handle, port, &pv_out_ctl_value[port]);
+			pv_LD->connect_port(pv_ladspa_handle, port, &pv_out_ctl_value[port]);
+			std::cout << "Connecte ctl out - port " << port << std::endl;
 			// If second handle is active (mono plugins -> 2 channles)
 			if(pv_ladspa_handle2 != 0){
 				// Dont't write to the same port ! Better loose info...
 				(pv_LD->connect_port)(pv_ladspa_handle2, port, &pv_out_ctl_fake[port]);
+				std::cout << "Connecte ctl (handle 2) out - port " << port << std::endl;
 			}
 		}
 
@@ -825,22 +948,23 @@ int LP_ladspa_plugin::pv_connect_ports()
 				case normal:
 					if(iIN == 1) {
 						// Right audio port
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_R_buffer);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_in_R_buffer);
 					}
 					if(iIN == 0) {
 						// Left audio port
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_L_buffer);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_in_L_buffer);
 						iIN++;
 					}
 					break;
 				case splitted:
-					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_L_buffer);
-					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_in_R_buffer);
+					pv_LD->connect_port(pv_ladspa_handle, port, pv_in_L_buffer);
+					pv_LD->connect_port(pv_ladspa_handle2, port, pv_in_R_buffer);
+			std::cout << "(splitted mode) Connected audio in to port " << port << std::endl;
 					break;
 				case merge_output:
-					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_in_L_buffer);
-					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_in_R_buffer);
-			std::cout << "Connect audio in to port " << port << std::endl;
+					pv_LD->connect_port(pv_ladspa_handle, port, pv_in_L_buffer);
+					pv_LD->connect_port(pv_ladspa_handle2, port, pv_in_R_buffer);
+			std::cout << "Connected audio in to port " << port << std::endl;
 					break;
 				case no_in_normal:
 					break;
@@ -861,29 +985,30 @@ int LP_ladspa_plugin::pv_connect_ports()
 				case normal:
 					if(iOUT == 1) {
 						// Right audio port
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_R_buffer);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_out_R_buffer);
 					}
 					if(iOUT == 0) {
 						// Left audio port
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_L_buffer);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_out_L_buffer);
 						iOUT++;
 					}
 					break;
 				case splitted:
-					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_L_buffer);
-					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_out_R_buffer);
+					pv_LD->connect_port(pv_ladspa_handle, port, pv_out_L_buffer);
+					pv_LD->connect_port(pv_ladspa_handle2, port, pv_out_R_buffer);
+			std::cout << "(splitted mode) Connected audio out to port " << port << std::endl;
 					break;
 				case merge_output:
 					if(iOUT == 1) {
 						// Right part
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_R_buffer);
-						(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_out_R_buffer2);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_out_R_buffer);
+						pv_LD->connect_port(pv_ladspa_handle2, port, pv_out_R_buffer2);
 			std::cout << "Connect audio R to port " << port << std::endl;
 					}
 					if(iOUT == 0) {
 						// Left part
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_L_buffer);
-						(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_out_L_buffer2);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_out_L_buffer);
+						pv_LD->connect_port(pv_ladspa_handle2, port, pv_out_L_buffer2);
 			std::cout << "Connect audio L to port " << port << std::endl;
 						iOUT++;
 					}
@@ -891,17 +1016,17 @@ int LP_ladspa_plugin::pv_connect_ports()
 				case no_in_normal:
 					if(iOUT == 1) {
 						// Right audio port
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_R_buffer);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_out_R_buffer);
 					}
 					if(iOUT == 0) {
 						// Left audio port
-						(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_L_buffer);
+						pv_LD->connect_port(pv_ladspa_handle, port, pv_out_L_buffer);
 						iOUT++;
 					}
 					break;
 				case no_in_splitted:
-					(pv_LD->connect_port)(pv_ladspa_handle, port, pv_out_L_buffer);
-					(pv_LD->connect_port)(pv_ladspa_handle2, port, pv_out_R_buffer);
+					pv_LD->connect_port(pv_ladspa_handle, port, pv_out_L_buffer);
+					pv_LD->connect_port(pv_ladspa_handle2, port, pv_out_R_buffer);
 					break;
 				default:
 					std::cerr << "LP_ladspa_plugin::pv_connect_ports: unable to make audio output connections\n";
@@ -947,6 +1072,35 @@ int LP_ladspa_plugin::pv_init_ports()
 	}
 
 
+	return 0;
+}
+
+// Cleanup plugin
+int LP_ladspa_plugin::pv_cleanup()
+{
+	// If we are not ready, simply return
+	if(pv_plugin_ready == FALSE){ return -1; }
+
+	if(pv_LD == 0){
+		std::cerr << "LP_ladspa_plugin::cleanup: pv_LD is Null\n";
+		return -1;
+	}
+	if(pv_LD->cleanup == 0){
+		std::cerr << "LP_ladspa_plugin::cleanup: cleanup function is Null\n";
+		return -1;
+	}
+	if(pv_ladspa_handle == 0){
+		std::cerr << "LP_ladspa_plugin::cleanup: pv_ladspa_handle is Null\n";
+		return -1;
+	}
+
+	pv_mutex.lock();
+	deactivate();
+	pv_LD->cleanup(pv_ladspa_handle);
+	if(pv_ladspa_handle2 != 0){
+		pv_LD->cleanup(pv_ladspa_handle2);
+	}
+	pv_mutex.unlock();
 	return 0;
 }
 
@@ -1275,6 +1429,7 @@ LP_ladspa_port_dlg::LP_ladspa_port_dlg( QWidget *parent , const char *name ,
 	// If in ctl port, draw a slider or so
 	if(out_ctl == FALSE){
 		if(toggel == FALSE){
+			pv_is_toggle = FALSE;
 			// Is the port integer values ?
 			if(pv_is_int == TRUE){
 				qsl_int_value = new QSlider( vbox, "qsl_int_value");
@@ -1292,6 +1447,7 @@ LP_ladspa_port_dlg::LP_ladspa_port_dlg( QWidget *parent , const char *name ,
 			pb_value = new QPushButton( vbox, "pb_value" );
 			pb_value->setToggleButton( TRUE );
 			pb_value->setText(tr("Off"));
+			pv_is_toggle = TRUE;
 		}
 		if(qsl_value != 0){
 			connect (qsl_value, SIGNAL( valueChanged(double)) , this, SLOT(pv_set_value(double)) );
@@ -1301,6 +1457,9 @@ LP_ladspa_port_dlg::LP_ladspa_port_dlg( QWidget *parent , const char *name ,
 		}
 		if(qsl_int_value != 0){
 			connect (qsl_int_value, SIGNAL( valueChanged(int)), this, SLOT(pv_set_value(int)) );
+		}
+		if(pb_value != 0){
+			connect (pb_value, SIGNAL( clicked()), this, SLOT(pv_set_value()) );
 		}
 	}
 	qle_value = new QLineEdit( vbox, "qle_value" );
@@ -1350,6 +1509,11 @@ int LP_ladspa_port_dlg::set_range(LADSPA_Data min, LADSPA_Data max, bool is_log)
 	if(qsl_int_value != 0){
 		qsl_int_value->setRange((int)min, (int)max);
 	}
+	// Toggel button
+	if(pv_is_toggle == TRUE){
+		pv_on = max;
+		pv_off = min;
+	}
 
 	return 0;
 }
@@ -1366,6 +1530,14 @@ int LP_ladspa_port_dlg::set_default_value(LADSPA_Data val)
 	// Integer values
 	if(qsl_int_value != 0){
 		qsl_int_value->setValue((int)val);
+	}
+	// Toggel value
+	if(pb_value != 0){
+		if(val == 0){
+			pb_value->setOn(FALSE);
+		}else{
+			pb_value->setOn(TRUE);
+		}
 	}
 	pv_plugin->set_port_value(pv_port_index, (LADSPA_Data)val);
 //	std::cout << "OK, set default to " << (double)val << std::endl;
@@ -1404,7 +1576,34 @@ void LP_ladspa_port_dlg::pv_set_value(double val)
 
 void LP_ladspa_port_dlg::pv_set_value(int val)
 {
-	if(qsl_int_value != 0){
+	pv_plugin->set_port_value(pv_port_index, (LADSPA_Data)val);
+
+	if(qle_value != 0){
 		qle_value->setText(QString::number(val));
+	}else{
+		std::cerr << "LP_ladspa_port_dlg::pv_display_test: qle_value is NULL\n";
+	}
+}
+
+void LP_ladspa_port_dlg::pv_set_value()
+{
+	if(pb_value == 0){
+		std::cerr << "LP_ladspa_port_dlg::pv_set_value: pb_value is Null\n";
+		return;
+	}
+	if(qle_value == 0){
+		std::cerr << "LP_ladspa_port_dlg::pv_set_value: ple_value is Null\n";
+		return;
+	}
+	if(pv_is_toggle == TRUE){
+		if(pb_value->isOn() == TRUE){
+			pv_plugin->set_port_value(pv_port_index, 1);
+			qle_value->setText(tr("1"));
+			pb_value->setText(tr("On"));
+		}else{
+			pv_plugin->set_port_value(pv_port_index, 0);
+			qle_value->setText(tr("0"));
+			pb_value->setText(tr("Off"));
+		}
 	}
 }

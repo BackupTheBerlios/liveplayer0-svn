@@ -23,6 +23,7 @@
 #include <qvbox.h>
 #include <qhbox.h>
 #include <qlabel.h>
+#include <qthread.h>
 // Qwt classes (needs libqwt4c2 and libqwt-dev on Debian)
 #include <qwt/qwt_slider.h>
 #include <qwt/qwt_knob.h>
@@ -66,7 +67,8 @@ class LP_ladspa_port_dlg;
 // Classe ladspa: doit etre un plugin simple, et non une libraie.
 // On doit pouvoir charger un plugin, et en obtenir une instance
 // avec une instance de cette classe
-class LP_ladspa_plugin{
+class LP_ladspa_plugin
+{
 
 	public:
 		LP_ladspa_plugin(char *file_path);
@@ -76,7 +78,8 @@ class LP_ladspa_plugin{
 		int init_plugin(/*QWidget* parent, const char* name, */unsigned long unique_ID,int channels, int sample_rate, int buf_len);
 		// Activate the pèlugin's instance
 		int activate();
-		int run(LADSPA_Data *buffer);
+		int deactivate();
+		int run_plugin(LADSPA_Data *buffer);
 		bool get_active_state();
 		// Return a ports structure
 		lp_ladspa_ports *get_ports();
@@ -96,6 +99,9 @@ class LP_ladspa_plugin{
 		unsigned long get_plugin_ID(unsigned long index);
 		int list();
 		void test();
+
+		// The run thraed
+		//virtual void run();
 
 	private:
 		// Some constants for the run mode
@@ -119,6 +125,10 @@ class LP_ladspa_plugin{
 		int pv_init_ports();
 
 		/* Variables membres */
+		QMutex pv_mutex;
+		// Running status
+		bool pv_run_status;
+		QMutex pv_run_status_mutex;
 		// The plugin path
 		char *pv_plugin_path;
 		// the library handler (returned by dlopen() )
@@ -152,7 +162,8 @@ class LP_ladspa_plugin{
 		// Set the plugin "active state"
 		bool pv_active;
 		bool pv_has_activate;
-
+		// cleanup plugin
+		int pv_cleanup();
 		/* Ports parameters */
 		//lp_ladspa_ports pv_ports[LP_MAX_PORT];
 		lp_ladspa_ports pv_ports[];
@@ -187,14 +198,14 @@ class LP_ladspa_plugin{
 		LADSPA_Data *pv_out_R_buffer2;
 
 		// Some plugins can have more ports (unexploited)
-		LADSPA_Data *pv_in_fake_buffer[LP_MAX_PORT];
-		LADSPA_Data *pv_out_fake_buffer[LP_MAX_PORT];
+//		LADSPA_Data *pv_in_fake_buffer[LP_MAX_PORT];
+//		LADSPA_Data *pv_out_fake_buffer[LP_MAX_PORT];
 		// Whenn run with 2 handles (mono plugins)
 //		LADSPA_Data *pv_in_buffer2[LP_MAX_PORT];
 //		LADSPA_Data *pv_out_buffer2[LP_MAX_PORT];
 
 		// Caller's given buffer
-		LADSPA_Data *pv_buffer;
+		//LADSPA_Data *pv_buffer;
 //		LADSPA_Data **pv_LR_buffer;
 
 		// Run mode (normal, splitted, etc...)
@@ -205,7 +216,7 @@ class LP_ladspa_plugin{
 		int pv_connect_ports();
 
 		// The plugin's UI instance
-		LP_ladspa_plugin_dlg *pv_ui;
+//		LP_ladspa_plugin_dlg *pv_ui;
 };
 
 // Declarations for the plugin's UI
@@ -306,6 +317,11 @@ private:
 	// True if port ctl is integer
 	bool pv_is_int;
 
+	// for toggel ports
+	bool pv_is_toggle;
+	LADSPA_Data pv_off;
+	LADSPA_Data pv_on;
+
 	// Plugin instance
 	LP_ladspa_plugin *pv_plugin;
 
@@ -317,6 +333,7 @@ private:
 private slots:
 	void pv_set_value(double val);
 	void pv_set_value(int val);
+	void pv_set_value();
 };
 
 #endif

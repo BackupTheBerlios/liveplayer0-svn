@@ -16,7 +16,7 @@
 #include <qwhatsthis.h>
 #include <qimage.h>
 #include <qpixmap.h>
-
+#include <qthread.h>
 // C libs
 #include <stdlib.h>
 #include <dlfcn.h>
@@ -37,14 +37,15 @@ const int LP_DIR_NO_ENTRY	= 2;
 
 class ladspa_manager_dlg;
 
-class LP_ladspa_manager{
+class LP_ladspa_manager : QThread
+{
 
 	public:
 		LP_ladspa_manager();
 		~LP_ladspa_manager();
 
 		/// This function give the plugins name and UniqueID found in path, it's desined
-		/// to be used une a bounce. It return the number of plugin found in
+		/// to be used ine a bounce. It return the number of plugin found in
 		/// path, use this result in a for() bounce to have all names.
 		/// At end of directory, or if error occur, it returns -1
 		long get_plugin_name(char *path, char *out_name[LP_MAX_PLUGIN], unsigned long *UniqueID, char *plugin_path);
@@ -63,7 +64,10 @@ class LP_ladspa_manager{
 		// Return the plugin's instance of inexd
 		LP_ladspa_plugin *get_plugin_instance(unsigned long index);
 
-		int run_plugins( float * buffer );
+		int run_plugins( float * buffer ); // NOTE: add sample count here
+
+		// The run thread
+		virtual void run();
 
 	private:
 		// parse the LADSPA_PATH and return the requierd path(first, second etc...) - Null if err
@@ -96,6 +100,11 @@ class LP_ladspa_manager{
 		int pv_sample_rate;
 		int pv_buffer_len;
 
+		LADSPA_Data *pv_buffer;
+
+		// Thread vars
+		QMutex pv_mutex;
+		bool run_event;
 };
 
 /// The plugins manager's UI
@@ -121,7 +130,7 @@ public:
 	QPushButton* pb_rem_used_plugin;
 	QListView* lw_used_plugin;
 	
-	// return the plugins manager instance
+	/// return the plugins manager instance
 	LP_ladspa_manager *get_manager_instance();
 	
 //	virtual int run_plugins( float * buffer );
