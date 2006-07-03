@@ -42,6 +42,8 @@
 
 #include "lp_ladspa_cpp/LP_ladspa_cpp.h"
 
+#include "vu_meter/vu_meter.h"
+
 /* Play mode */
 #define LP_PLAY_MODE_PLAYING	1
 #define LP_PLAY_MODE_PAUSE 	2
@@ -105,6 +107,9 @@ class LP_player {
 		int volume;
 		/// Instance de dialogue ladspa_cpp
 		LP_ladspa_manager *llm;
+
+		/// Vu meter
+		vu_meter *vu;
 
 	private:
 		LP_utils LPu;

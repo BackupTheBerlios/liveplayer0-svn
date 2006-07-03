@@ -90,7 +90,12 @@ LP_player::LP_player(int init_player_ID, LP_ladspa_manager *_llm) {
 	if(tmp_buffer == 0) {
 		std::cout << "LP_player::LP_player(): cannot allocate memory for rd_buffer\n";
 	}
-	
+
+	/// Vumetre
+	vu = new vu_meter(0, "test_vu");
+	vu->alloc_mem(rd_size *2);
+	vu->show();
+
 
 	/* The buffer wich recieve the resampled data */
 	sampled_buffer = new float[rd_size + 1000];
@@ -445,6 +450,9 @@ extern "C" void *lp_player_thread(void *p_data) {
 	/// Premiers test ladspa_cpp
 	data->llm->set_audio_params( 2, audio_data.rate, data->rd_size );
 
+	/// Premiers tests vumter
+	
+
 	/* Attendre que it_to_ot_ready == 1 */
 	/* waiting until it_ot_buffer thread is ready */
 	while(audio_data.it_to_ot_ready != 1){
@@ -520,12 +528,15 @@ extern "C" void *lp_player_thread(void *p_data) {
 			std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
 		}
 
-		/// Premiers test ladspa_cpp
+		/// Premiers test ladspa_cpp ET Vu_meter
 		if(data->getSoundTouch() == LP_ON) {
 			data->llm->run_plugins(data->sampled_buffer);
+			data->vu->set_value(data->sampled_buffer, 0); // NOTE temps au hazard !
 		} else {
 			data->llm->run_plugins(data->tmp_buffer);
+			data->vu->set_value(data->tmp_buffer, 0); // NOTE temps au hazard !
 		}
+
 
 		/* Tant que play_buf_full != 0 --> buffer plein, on attends*/
 		/* witing until buffer is empty */
