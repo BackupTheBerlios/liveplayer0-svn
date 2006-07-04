@@ -18,11 +18,13 @@ class vu_meter : public QWidget, QThread
 	Q_OBJECT
 
 	public:
-	vu_meter( QWidget *parent = 0, const char *name = 0);
+	vu_meter( QWidget *parent = 0, const char *name = 0, int nb_channels = 1);
 	~vu_meter();
-	// Transmit buffer and give buffer time in us
-	int set_value(float *buffer, int buffer_time);
+	// Set audio parameters
+	int set_samplerate(int samplerate);
 	int alloc_mem(int buf_size);
+	// Transmit buffer to display
+	int run_buffer(float *buffer, int buf_len);
 
 	protected:
 	virtual void paintEvent(QPaintEvent*);
@@ -38,17 +40,20 @@ class vu_meter : public QWidget, QThread
 	int pv_channels;
 
 	// Data
-	float pv_range_low;	// For range ( -1.0 for example)
+	float pv_range_low;	// For range ( 0.001 for example)
 	float pv_range_high;	// For range ( 1.0 for example)
 	float pv_val;		// Instant value
 	float *pv_buffer;
-	int pv_buffer_time;
+	int pv_s_rate;		// Audio samplerate
+	unsigned int pv_sample_time;
 	int pv_buf_size;
+	bool pv_buf_end;	// Whenn new call, reset process and run new buffer
 	float pv_range_factor;	// For conversion to int ( 0.658 becomes 65 for exemple )
 	int pv_set_range_factor();
 	bool pv_clip;
-	int pv_clip_hold_time;
+	unsigned int pv_clip_hold_time;
 
+	// Convert a float value to dB val
 	int pv_val_to_db(float f_val);
 
 	// Qt objects
@@ -57,6 +62,7 @@ class vu_meter : public QWidget, QThread
 	QLabel *pv_lb[MAX_CHANNELS];	// The vu_meter
 	QLabel *pv_txt[MAX_CHANNELS];	// The text
 	QWaitCondition pv_qwc;
+	bool pv_running;
 	QMutex pv_mutex;
 
 	// Time

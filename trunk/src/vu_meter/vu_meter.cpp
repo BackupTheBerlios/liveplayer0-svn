@@ -11,17 +11,16 @@
 
 // Public functions
 
-vu_meter::vu_meter(QWidget *parent, const char *name) : QWidget(parent, name)
+vu_meter::vu_meter(QWidget *parent, const char *name, int nb_channels) : QWidget(parent, name)
 {
 	pv_bl = new QBoxLayout(this, QBoxLayout::LeftToRight, 5, 10);
 	//pix = new QPixmap(100, 100);
 
-	pv_channels = 2;
-
-	// Build widgets
-	if(pv_build_widgets() < 0){
-		std::cerr << "m_widget::m_widget: Warning! pv_channels is not in range\n";
-		return;
+	if((nb_channels < 1)||(nb_channels > MAX_CHANNELS)) {
+		std::cerr << "vu_meter::set_audio_params: nb_channels is not in range\n\tSet to 1\n";
+		pv_channels = 1;
+	}else{
+		pv_channels = nb_channels;
 	}
 
 	// Widget size
@@ -41,12 +40,21 @@ vu_meter::vu_meter(QWidget *parent, const char *name) : QWidget(parent, name)
 	// Default clip hold time (us)
 	pv_clip_hold_time = 200000;
 
+	// Build widgets
+	if(pv_build_widgets() < 0){
+		std::cerr << "vu_meter::set_audio_params: Warning! Unable to build Widgets\n";
+		return;
+	}
+
 	int i;
 	if((pv_channels >= 1)||(pv_channels <= MAX_CHANNELS)){
 		for(i=0; i<pv_channels; i++){
 			draw_vu(pv_lb[i], 0);
 		}
 	}
+
+	pv_running = FALSE;
+
 	// Start the thread
 	start();
 }
@@ -56,32 +64,6 @@ vu_meter::~vu_meter()
 	if(pv_buffer != 0){
 		delete[] pv_buffer;
 	}
-}
-
-int vu_meter::set_value(float *buffer ,int buffer_time)
-{
-	if(pv_buffer == 0) {
-		std::cout << "vu_meter::set_value: pv_buffer is Null !\n";
-		return -1;
-	}
-
-	int i;
-
-	QMutexLocker locker(&pv_mutex);
-
-	for(i=0; i<pv_buf_size; i++){
-		pv_buffer[i] = buffer[i];
-	}
-	pv_buffer_time = buffer_time;
-/*	if(val < 0) {
-		pv_val = -val;
-	}else{
-		pv_val = val;
-	}
-*/	//std::cout << "Set_value: pv_val: " << pv_val << "\n";
-	pv_qwc.wakeOne();
-
-	return 0;
 }
 
 int vu_meter::alloc_mem(int buf_size)
@@ -103,13 +85,60 @@ int vu_meter::alloc_mem(int buf_size)
 	return 0;
 }
 
+int vu_meter::set_samplerate(int samplerate)
+{
+	QMutexLocker locker(&pv_mutex);		// Automatic unlocked wenn function goes end
+
+	double d_tmp1 = 0, d_tmp2 = 0;
+
+	// Verification
+	if(samplerate == 0) {
+		std::cerr << "vu_meter::set_audio_params: samplerate is Null\n";
+		return -1;
+	}
+
+	// Set the sample time
+	d_tmp1 = (double)samplerate;
+	d_tmp2 = ((1 / (d_tmp1 * (double)pv_channels)) * 1000000);
+	//pv_sample_time = (unsigned int)((1 / (samplerate * pv_channels)) * 1000000);
+	pv_sample_time = (unsigned int)d_tmp2;
+	std::cout << "Sample time: " << (unsigned int)d_tmp2 << std::endl;
+
+	return 0;
+}
+
+int vu_meter::run_buffer(float *buffer ,int buf_len)
+{
+	QMutexLocker locker(&pv_mutex);
+
+	if(pv_buffer == 0) {
+		std::cout << "vu_meter::run_buffer: pv_buffer is Null !\n";
+		return -1;
+	}
+
+	int i;
+	pv_buf_end = TRUE;
+	// Copy data and wake the process thread on
+	for(i=0; i<buf_len; i++){
+		pv_buffer[i] = buffer[i];
+	}
+
+	while(pv_running == TRUE){
+		usleep(100);
+	}
+	pv_qwc.wakeOne();
+
+	return 0;
+}
+
 // Protected functions
 
 void vu_meter::paintEvent(QPaintEvent*)
 {
 	// Verification
 	if((pv_channels < 1)||(pv_channels > MAX_CHANNELS)) {
-		std::cerr << "m_widget::pv_build_widgets: pv_channels is not in range\n";
+		std::cerr << "vu_meter::paintEvent: pv_channels is not in range\n";
+		std::cerr << "\tGiven value: " << pv_channels << " , range from 1 to " << MAX_CHANNELS << std::endl;
 		return;
 	}
 
@@ -133,11 +162,6 @@ void vu_meter::draw_vu(QPaintDevice *dev, int val)
 	paint.setPen(QPen(Qt::blue));
 	paint.setBrush(QBrush(Qt::blue));
 	// clip
-//	if(pv_clip == TRUE) {
-//		paint.setBrush(QBrush(Qt::red));
-//	}else{
-//		paint.setBrush(QBrush(Qt::blue));
-//	}
 	if(pv_clip == TRUE){
 		paint.setBrush(QBrush(Qt::red));
 		paint.drawEllipse(10, 5, 10, 10);
@@ -150,9 +174,9 @@ void vu_meter::draw_vu(QPaintDevice *dev, int val)
 		val = -100;
 	}
 	if(val > 0) { val = 0; }
-*/	std::cout << "Val: " << val << "\t";
+	std::cout << "Val: " << val << "\t";
 	std::cout << "Draw " << -(val+100) << std::endl;
-	paint.drawRect(10, 120, 10, -(val+100));
+*/	paint.drawRect(10, 120, 10, -(val+100));
 	// Text label
 }
 
@@ -163,22 +187,19 @@ void vu_meter::run()
 	gettimeofday(&t0, 0);
 	// Timer values for Clip hold
 	struct timeval clip_t0, clip_t1;
-	// Wait time
-	int wait_time;
 
 	while(1){
 		// Wait wakeUp
 		pv_qwc.wait();
-
-		// Calculate wait time
-		wait_time = (int)(pv_buffer_time / pv_buf_size);
+		pv_running = TRUE;
+		pv_buf_end = FALSE;
 
 		int i;
 		for(i=0; i<pv_buf_size; i++) {
 			pv_val = pv_buffer[i];
 
 			// Set 0.0 to range_low
-			if(pv_val <= pv_range_low) {
+			if(pv_val < pv_range_low) {
 				pv_val = pv_range_low;
 			}
 	
@@ -220,8 +241,14 @@ void vu_meter::run()
 				event->val = pv_val_to_db(pv_val);
 				QApplication::postEvent(this, event);
 			}
-			usleep(wait_time);
+			if(pv_buf_end == TRUE){
+				pv_buf_end = FALSE;
+				std::cout << "BREAK\n";
+				break;
+			}
+			usleep(pv_sample_time);
 		}
+		pv_running = FALSE;
 	}
 }
 
@@ -229,7 +256,8 @@ void vu_meter::customEvent(QCustomEvent *event)
 {
 	// Verification
 	if((pv_channels < 1)||(pv_channels >= MAX_CHANNELS)) {
-		std::cerr << "m_widget::pv_build_widgets: pv_channels is not in range\n";
+		std::cerr << "vu_meter::customEvent: pv_channels is not in range\n";
+		std::cerr << "\tGiven value: " << pv_channels << " , range from 1 to " << MAX_CHANNELS << std::endl;
 		return;
 	}
 
@@ -260,7 +288,8 @@ int vu_meter::pv_build_widgets()
 {
 	// Verification
 	if((pv_channels < 1)||(pv_channels >= MAX_CHANNELS)) {
-		std::cerr << "m_widget::pv_build_widgets: pv_channels is not in range\n";
+		std::cerr << "vu_meter::pv_build_widgets: pv_channels is not in range\n";
+		std::cerr << "\tGiven value: " << pv_channels << " , range from 1 to " << MAX_CHANNELS << std::endl;
 		return -1;
 	}
 

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** vu_meter meta object code from reading C++ file 'vu_meter.h'
 **
-** Created: Mon Jul 3 23:55:12 2006
+** Created: Tue Jul 4 22:11:46 2006
 **      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.6   edited Mar 8 17:43 $)
 **
 ** WARNING! All changes made in this file will be lost!
