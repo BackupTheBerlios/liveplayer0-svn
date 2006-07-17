@@ -92,10 +92,8 @@ LP_player::LP_player(int init_player_ID, LP_ladspa_manager *_llm) {
 	}
 
 	/// Vumetre
-	vu = new vu_meter(0, "test_vu", 1);
-	vu->alloc_mem(rd_size *2);
-	vu->set_samplerate((int)rate);
-	vu->show();
+	pv_pm = new lp_peackmeter(0, "test_vu", nb_channel, (int)rd_size*2);
+	//pv_pm->show();
 
 
 	/* The buffer wich recieve the resampled data */
@@ -451,6 +449,9 @@ extern "C" void *lp_player_thread(void *p_data) {
 	/// Premiers test ladspa_cpp
 	data->llm->set_audio_params( 2, audio_data.rate, data->rd_size );
 
+	/// Peackmeter
+	data->pv_pm->set_samplerate(audio_data.rate);
+
 	/* Attendre que it_to_ot_ready == 1 */
 	/* waiting until it_ot_buffer thread is ready */
 	while(audio_data.it_to_ot_ready != 1){
@@ -529,10 +530,10 @@ extern "C" void *lp_player_thread(void *p_data) {
 		/// Premiers test ladspa_cpp ET Vu_meter
 		if(data->getSoundTouch() == LP_ON) {
 			data->llm->run_plugins(data->sampled_buffer);
-			data->vu->run_buffer(data->sampled_buffer, nSampled);
+			data->pv_pm->run_buffer(data->sampled_buffer, nSampled);
 		} else {
 			data->llm->run_plugins(data->tmp_buffer);
-			data->vu->run_buffer(data->sampled_buffer, rd_readen);
+			data->pv_pm->run_buffer(data->sampled_buffer, rd_readen);
 		}
 
 

@@ -42,7 +42,7 @@
 
 #include "lp_ladspa_cpp/LP_ladspa_cpp.h"
 
-#include "vu_meter/vu_meter.h"
+#include "lp_peackmeter/lp_peackmeter.h"
 
 /* Play mode */
 #define LP_PLAY_MODE_PLAYING	1
@@ -108,8 +108,8 @@ class LP_player {
 		/// Instance de dialogue ladspa_cpp
 		LP_ladspa_manager *llm;
 
-		/// Vu meter
-		vu_meter *vu;
+		/// Peack meter
+		lp_peackmeter *pv_pm;
 
 	private:
 		LP_utils LPu;

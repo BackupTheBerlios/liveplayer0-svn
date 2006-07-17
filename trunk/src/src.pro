@@ -8,14 +8,14 @@ HEADERS += LP_alsaout.h \
            LP_global_var.h \
 	   LP_utils.h \
            LP_mad.h 	\
-	   vu_meter/vu_meter.h
+	   lp_peackmeter/lp_peackmeter.h
 SOURCES += liveplayer.cpp \
            LP_alsaout.cpp \
            LP_audiofile.cpp \
            LP_global_var.cpp \
 	   LP_utils.cpp \
-           LP_mad.cpp \
-	   vu_meter/vu_meter.cpp
+           LP_mad.cpp   \
+	   lp_peackmeter/lp_peackmeter.cpp
 
 TARGET=../bin/liveplayer
 LIBS += -lasound -lpthread -lsndfile -lsamplerate -lSoundTouch -lvorbis -lvorbisfile -lmad
