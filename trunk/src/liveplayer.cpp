@@ -63,19 +63,19 @@ int main(int argc, char *argv[])
   LP_player *player_1 = new LP_player(0, lmd1->get_manager_instance() );
 	if(player_1 == 0) { std::cout << "Probleme init player_1\n"; 	return -1;}
 
-  LP_player *player_2 = new LP_player(1, lmd2->get_manager_instance());
-	if(player_2 == 0) { std::cout << "Probleme init player_2\n"; 	return -1;}
+//  LP_player *player_2 = new LP_player(1, lmd2->get_manager_instance());
+//	if(player_2 == 0) { std::cout << "Probleme init player_2\n"; 	return -1;}
 
 
 
   player_1->mplay_mode = LP_PLAY_MODE_PAUSE;
-  player_2->mplay_mode = LP_PLAY_MODE_PAUSE;
+//  player_2->mplay_mode = LP_PLAY_MODE_PAUSE;
 
   player_1->mbus = 1;
-  player_2->mbus = 2;
+//  player_2->mbus = 2;
 
   player_1->mfile = argv[1];
-  player_2->mfile = argv[2];
+//  player_2->mfile = argv[2];
 
 
 
@@ -87,7 +87,7 @@ for (i=2; i>0; i--){
 }
 
   player_1->mplay_mode = LP_PLAY_MODE_PLAYING;	// mode play
-  player_2->mplay_mode = LP_PLAY_MODE_PLAYING;
+ // player_2->mplay_mode = LP_PLAY_MODE_PLAYING;
 
 a.exec();
 

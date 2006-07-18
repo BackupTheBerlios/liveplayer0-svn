@@ -46,7 +46,7 @@ lp_peackmeter::lp_peackmeter(QWidget *parent, const char *name, int nb_channels,
 	// FIXME:
 	// I have several performance problem. With low sample_time, the clipping
 	// detection works not. The value here is hazardous
-	pv_minimal_sample_time = 5; // AMD Athlon 2Ghz
+	pv_minimal_sample_time = 1; // AMD Athlon 2Ghz
 
 	// Get a dlg instance
 	pv_peack_meter_dlg = new lp_peackmeter_dlg(parent, name, this);
@@ -166,6 +166,7 @@ void lp_peackmeter::run()
 			//std::cout << "Sleeping for " << pv_sample_time << " uSec\n";
 			usleep(pv_sample_time);
 		}
+		std::cout << "Peak metre: Nbre de samples traites: " << i << std::endl;
 		pv_running = FALSE;
 	}
 }
@@ -250,13 +251,13 @@ lp_peackmeter_dlg::lp_peackmeter_dlg(QWidget *parent, const char *name, lp_peack
 		}
 	}
 
-	pv_clip = FALSE;
+	pv_clip = TRUE;
 
 	// Down factors
 	pv_down_ref_time = 1500000;
-	pv_down_factor = pow(10, (-55/20) );
+	//pv_down_factor = pow(10, (-55/20) );
+	pv_down_factor = pow(10, (-20/20) );
 	std::cout << "Down factor: " << pv_down_factor << std::endl;
-//	gettimeofday(&pv_last_time, 0);
 
 	start();
 	show();
@@ -320,6 +321,7 @@ void lp_peackmeter_dlg::run()
 			pv_clip = FALSE;
 		}
 		val = pv_peack_meter->get_value();
+		val = pv_down_val(val);
 		//std::cout << "VAL: " << val << "\n";
 		// envois toutes les 1/25 sec (=0.04s --> 40ms --> 40000us)
 		// Send a vu_event every 1/25 seconds (=0.04s --> 40ms --> 40000us)
@@ -330,7 +332,7 @@ void lp_peackmeter_dlg::run()
 			vu_event *event = new vu_event;
 
 			// Traitement ICI
-			val = pv_down_val(val);
+			//val = pv_down_val(val);
 			// Tests
 			std::cout << "Niveau: " << pv_val_to_db(val) << std::endl;
 			event->val = pv_val_to_db(val);
@@ -362,7 +364,7 @@ void lp_peackmeter_dlg::draw_meter(QPaintDevice *dev, int val)
 		paint.setBrush(QBrush(Qt::blue));
 		paint.drawEllipse(10, 5, 10, 10);
 	}
-	paint.drawRect(10, 120, 10, -(val+100));
+	paint.drawRect(10, 120, 10, -(val+80));
 }
 
 // Private functions
@@ -382,17 +384,25 @@ float lp_peackmeter_dlg::pv_down_val(float act_val)
 	unsigned int last_usec;		// last time in usec
 	last_usec = pv_last_time.tv_usec + (pv_last_time.tv_sec * 1000000);
 
-	std::cout << "Last peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
-
-	if(act_val < pv_last_peack){
-		act_val = pv_last_peack * ((pv_down_factor * pv_down_ref_time) / (actual_usec - last_usec));
-		pv_last_peack = act_val;
-		return act_val;
+	if(act_val < pv_last_val){
+		pv_last_val = pv_last_peack * ((pv_down_factor * pv_down_ref_time) / (actual_usec - last_usec));
+		std::cout << "Down...\n";
+		std::cout << "\tLast peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
+		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
+		return pv_last_val;
 	}else{
 		// reset timer
+		std::cout << "PEAK - Reset timer\n";
 		pv_last_peack = act_val;
+		pv_last_val = act_val;
 		gettimeofday(&pv_last_time, 0);
+		std::cout << "\tLast peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
+		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
 	}
+
+//	std::cout << "Last peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
+//	std::cout << "Last val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
+
 	return act_val;
 }
 

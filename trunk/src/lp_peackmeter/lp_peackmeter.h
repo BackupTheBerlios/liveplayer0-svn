@@ -89,7 +89,8 @@ class lp_peackmeter_dlg : public QWidget, QThread
 	unsigned int pv_down_ref_time;	// ref. time: 1.5sec in std -> 1 500 000us
 	struct timeval pv_last_time;	// elapsed time at last peack
 	float pv_down_factor;		// down factor: -55dB in std -> pow(10, (-55/20))
-	float pv_last_peack;		// Last value
+	float pv_last_peack;		// Last peack value
+	float pv_last_val;		// Store previous value
 
 	lp_peackmeter *pv_peack_meter;		// The peack_meter instance
 
