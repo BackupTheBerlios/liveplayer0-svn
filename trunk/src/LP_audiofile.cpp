@@ -497,7 +497,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 	while((rd_readen = data->lp_read(to_read)) > 0){
 
 		//rd_readen = sf_read_float(data->snd_fd, data->rd_buffer, data->rd_size);
-		std::cout << "Lecture " << rd_readen << " samples, ID " << data->player_ID << std::endl;
+	//	std::cout << "Lecture " << rd_readen << " samples, ID " << data->player_ID << std::endl;
 
 		/* Copy rd_buffer to tmp_buffer - if reverse playing, do the reverse copy here */
 		if(data->getDirection() == LP_PLAY_FORWARD) {
@@ -524,7 +524,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 			pSoundTouch->putSamples(data->tmp_buffer, rd_readen/2);
 			
 			nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
-			std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
+		//	std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
 		}
 
 		/// Premiers test ladspa_cpp ET Vu_meter
@@ -764,7 +764,7 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 */
 int mix_out(float *in_buffer, int in_buf_size, int bus)
 {
-	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
+//	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
 	/* variables internes */
 	float *out_buffer = NULL;
 	float tmp1, tmp2;

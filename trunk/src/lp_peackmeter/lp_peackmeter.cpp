@@ -166,7 +166,7 @@ void lp_peackmeter::run()
 			//std::cout << "Sleeping for " << pv_sample_time << " uSec\n";
 			usleep(pv_sample_time);
 		}
-		std::cout << "Peak metre: Nbre de samples traites: " << i << std::endl;
+		//std::cout << "Peak metre: Nbre de samples traites: " << i << std::endl;
 		pv_running = FALSE;
 	}
 }
@@ -309,7 +309,7 @@ void lp_peackmeter_dlg::customEvent(QCustomEvent *event)
 
 void lp_peackmeter_dlg::run()
 {
-	float val;
+	float val, old_val;
 	struct timeval t0, t1;
 	gettimeofday(&t0, 0);
 
@@ -321,7 +321,10 @@ void lp_peackmeter_dlg::run()
 			pv_clip = FALSE;
 		}
 		val = pv_peack_meter->get_value();
+		// Get RMS value
+		val = sqrt((float)val);
 		val = pv_down_val(val);
+
 		//std::cout << "VAL: " << val << "\n";
 		// envois toutes les 1/25 sec (=0.04s --> 40ms --> 40000us)
 		// Send a vu_event every 1/25 seconds (=0.04s --> 40ms --> 40000us)
@@ -337,9 +340,10 @@ void lp_peackmeter_dlg::run()
 			std::cout << "Niveau: " << pv_val_to_db(val) << std::endl;
 			event->val = pv_val_to_db(val);
 			QApplication::postEvent(this, event);
+			old_val = val;
 		}
 
-		usleep(1000);
+		usleep(100);
 	}
 
 }
@@ -364,7 +368,7 @@ void lp_peackmeter_dlg::draw_meter(QPaintDevice *dev, int val)
 		paint.setBrush(QBrush(Qt::blue));
 		paint.drawEllipse(10, 5, 10, 10);
 	}
-	paint.drawRect(10, 120, 10, -(val+80));
+	paint.drawRect(10, 120, 10, -(val+70));
 }
 
 // Private functions
@@ -386,18 +390,18 @@ float lp_peackmeter_dlg::pv_down_val(float act_val)
 
 	if(act_val < pv_last_val){
 		pv_last_val = pv_last_peack * ((pv_down_factor * pv_down_ref_time) / (actual_usec - last_usec));
-		std::cout << "Down...\n";
-		std::cout << "\tLast peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
-		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
+		//std::cout << "Down...\n";
+//		std::cout << "\tLast peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
+//		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
 		return pv_last_val;
 	}else{
 		// reset timer
-		std::cout << "PEAK - Reset timer\n";
+		std::cout << "PEAK - Reset timer ###################################################\n";
 		pv_last_peack = act_val;
 		pv_last_val = act_val;
 		gettimeofday(&pv_last_time, 0);
-		std::cout << "\tLast peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
-		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
+//		std::cout << "\tLast peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
+//		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
 	}
 
 //	std::cout << "Last peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
