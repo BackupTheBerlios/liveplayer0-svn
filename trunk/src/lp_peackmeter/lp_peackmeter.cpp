@@ -329,7 +329,7 @@ void lp_peackmeter_dlg::run()
 		// envois toutes les 1/25 sec (=0.04s --> 40ms --> 40000us)
 		// Send a vu_event every 1/25 seconds (=0.04s --> 40ms --> 40000us)
 		gettimeofday(&t1, 0);
-		if(((t1.tv_usec + (t1.tv_sec * 1000000)) - (t0.tv_usec + (t0.tv_sec * 1000000))) >= 40000){
+		if(((t1.tv_usec + (t1.tv_sec * 1000000)) - (t0.tv_usec + (t0.tv_sec * 1000000))) >= 20000){
 			//std::cout << "Intervale: " << t1.tv_usec - t0.tv_usec << std::endl;
 			gettimeofday(&t0, 0);
 			vu_event *event = new vu_event;
@@ -364,11 +364,12 @@ void lp_peackmeter_dlg::draw_meter(QPaintDevice *dev, int val)
 		paint.setBrush(QBrush(Qt::red));
 		paint.drawEllipse(10, 5, 10, 10);
 		paint.setBrush(QBrush(Qt::blue));
+		pv_clip = FALSE;
 	}else{
 		paint.setBrush(QBrush(Qt::blue));
 		paint.drawEllipse(10, 5, 10, 10);
 	}
-	paint.drawRect(10, 120, 10, -(val+70));
+	paint.drawRect(10, 120, 10, -((val*2)+60));
 }
 
 // Private functions
@@ -388,11 +389,20 @@ float lp_peackmeter_dlg::pv_down_val(float act_val)
 	unsigned int last_usec;		// last time in usec
 	last_usec = pv_last_time.tv_usec + (pv_last_time.tv_sec * 1000000);
 
+	unsigned int delta_t;
+	delta_t = actual_usec - last_usec;
+
+	float tmp_val;
+
 	if(act_val < pv_last_val){
-		pv_last_val = pv_last_peack * ((pv_down_factor * pv_down_ref_time) / (actual_usec - last_usec));
+		//pv_last_val = pv_last_peack * ((pv_down_factor * pv_down_ref_time) / delta_t );
+		tmp_val = pv_last_peack * ((pv_down_factor * pv_down_ref_time) / delta_t );
+		if(tmp_val < pv_last_val){
+			pv_last_val = tmp_val;
+		}
 		//std::cout << "Down...\n";
 //		std::cout << "\tLast peack: " << pv_last_peack << " , act_val: " << act_val << std::endl;
-//		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << actual_usec - last_usec << std::endl;
+//		std::cout << "\tLast val: " << pv_last_val << " , elapsed time: " << delta_t << std::endl;
 		return pv_last_val;
 	}else{
 		// reset timer
