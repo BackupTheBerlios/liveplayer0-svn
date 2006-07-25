@@ -35,7 +35,8 @@ class lp_peackmeter : public QThread, QWidget
 	// Audio
 	float pv_range_low;	// For range ( 0.001 for example)
 	float pv_range_high;	// For range ( 1.0 for example)
-	float pv_val;		// Instant value
+	float pv_val[MAX_CHANNELS];		// Instant value
+	float pv_last_val[MAX_CHANNELS];	// Store last value (store peakcs)
 	int pv_s_rate;		// Audio samplerate
 	int pv_buf_size;	// Buffer size for allocation
 	int pv_buf_len;		// Buffer len (can call smaller size than buf_len)
@@ -86,10 +87,15 @@ class lp_peackmeter_dlg : public QWidget, QThread
 	int pv_val_to_db(float f_val);
 	// Calculate a instant value depend on time (peack_meter goes down with 55dB/1.5 sec in std)
 	float pv_down_val(float act_val);
+	float pv_peack_hold(float act_val);
+
 	unsigned int pv_down_ref_time;	// ref. time: 1.5sec in std -> 1 500 000us
+	unsigned int pv_hold_ref_time;	// ref. for peack hold
 	struct timeval pv_last_time;	// elapsed time at last peack
+	struct timeval pv_last_hold_time; // elapsed time at last peack - for peack hold
 	float pv_down_factor;		// down factor: -55dB in std -> pow(10, (-55/20))
 	float pv_last_peack;		// Last peack value
+	float pv_last_hold_peack;	// last value for peack hold
 	float pv_last_val;		// Store previous value
 
 	lp_peackmeter *pv_peack_meter;		// The peack_meter instance
@@ -106,6 +112,9 @@ class lp_peackmeter_dlg : public QWidget, QThread
 
 	// Build widgets
 	int pv_build_widgets();
+
+	// Tests: import from meterbridge sources
+	int pv_iec_scale(float db);
 };
 
 // The event class to transmission between lp_peackmeter_dlg's run thread and main thread
@@ -114,6 +123,7 @@ class vu_event : public QCustomEvent
 	public:
 	vu_event();
 	int val;
+	int txt_val;
 };
 
 #endif // LP_PEAKMETER_H
