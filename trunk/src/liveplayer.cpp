@@ -37,13 +37,6 @@ int main(int argc, char *argv[])
   QApplication a(argc, argv);
   pthread_t thread_id;
 
-  /// LADSPA
-  ladspa_manager_dlg *lmd1 = new ladspa_manager_dlg(0, "TES", 0, 0);
-  lmd1->show();
-
-  ladspa_manager_dlg *lmd2 = new ladspa_manager_dlg(0, "TEST2", 0, 0);
-  lmd2->show();
-
   /* on mets les parametres audio */
   LP_global_audio_data audio_globals;
   audio_globals.lp_audio_global_init();
@@ -60,7 +53,7 @@ int main(int argc, char *argv[])
 
   lp_it_ot_thread_init(&thread_id);
 
-  LP_player *player_1 = new LP_player(0, lmd1->get_manager_instance() );
+  LP_player *player_1 = new LP_player(0);
 	if(player_1 == 0) { std::cout << "Probleme init player_1\n"; 	return -1;}
 
 //  LP_player *player_2 = new LP_player(1, lmd2->get_manager_instance());

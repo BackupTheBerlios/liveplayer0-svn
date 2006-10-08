@@ -23,14 +23,11 @@
 /* Constantes privees */
 const int LP_player::nb_channel = 2;
 
-LP_player::LP_player(int init_player_ID, LP_ladspa_manager *_llm) {
+LP_player::LP_player(int init_player_ID) {
 
 	/* Variables */
 	LP_global_audio_data audio_data;
 	int err;
-
-	/// Ladspa manager
-	llm = _llm;
 
 	/* player settings */
 
@@ -92,8 +89,8 @@ LP_player::LP_player(int init_player_ID, LP_ladspa_manager *_llm) {
 	}
 
 	/// Vumetre
-	pv_pm = new lp_peackmeter(0, "test_vu", nb_channel, (int)rd_size*2);
-	//pv_pm->show();
+	pv_pm = new lp_peackmeter(0, nb_channel, (int)rd_size*2);
+	pv_pmc = pv_pm->get_core();
 
 
 	/* The buffer wich recieve the resampled data */
@@ -446,9 +443,6 @@ extern "C" void *lp_player_thread(void *p_data) {
 	pSoundTouch->setSetting(SETTING_OVERLAP_MS, 12);	// default 12
 	pSoundTouch->setSetting(SETTING_USE_QUICKSEEK, 0);	// With 1, faster but degrade sound quality
 
-	/// Premiers test ladspa_cpp
-	data->llm->set_audio_params( 2, audio_data.rate, data->rd_size );
-
 	/// Peackmeter
 	data->pv_pm->set_samplerate(audio_data.rate);
 
@@ -529,11 +523,11 @@ extern "C" void *lp_player_thread(void *p_data) {
 
 		/// Premiers test ladspa_cpp ET Vu_meter
 		if(data->getSoundTouch() == LP_ON) {
-			data->llm->run_plugins(data->sampled_buffer);
-			data->pv_pm->run_buffer(data->sampled_buffer, nSampled);
+		//	data->llm->run_plugins(data->sampled_buffer);
+			data->pv_pmc->run_buffer(data->sampled_buffer, nSampled);
 		} else {
-			data->llm->run_plugins(data->tmp_buffer);
-			data->pv_pm->run_buffer(data->sampled_buffer, rd_readen);
+		//	data->llm->run_plugins(data->tmp_buffer);
+			data->pv_pmc->run_buffer(data->sampled_buffer, rd_readen);
 		}
 
 
