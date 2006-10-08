@@ -26,8 +26,8 @@
 #include <iostream>
 #include <cstdlib>
 #include "LP_global_var.h"
-#include "lp_ladspa_cpp/LP_ladspa_manager.h"
 
+#include <QApplication>
 
 using namespace std;
 

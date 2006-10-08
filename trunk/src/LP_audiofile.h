@@ -37,10 +37,6 @@
 #include <vorbis/vorbisfile.h>
 #include "LP_global_var.h"
 #include "LP_mad.h"
-// QT
-#include <qapplication.h>
-
-#include "lp_ladspa_cpp/LP_ladspa_cpp.h"
 
 #include "lp_peackmeter/lp_peackmeter.h"
 
