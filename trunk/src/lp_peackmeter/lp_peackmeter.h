@@ -4,6 +4,8 @@
 #include "lp_peackmeter_core.h"
 #include "lp_peackmeter_widget.h"
 
+#include "../lp_timer/lp_timer.h"
+
 #include <QWidget>
 #include <QHBoxLayout>
 #include <math.h>
@@ -26,12 +28,12 @@ private:
 	QHBoxLayout *b_layout;
 	int nb_channels;
 	// Calculate a instant value depend on time (peack_meter goes down with 55dB/1.5 sec in std)
-	float down_val(float act_val, int channel);
-	struct timeval pv_last_time[lp_peackmeter_core::MAX_CHANNELS];
-	float pv_last_val[lp_peackmeter_core::MAX_CHANNELS];
-	float pv_last_peack[lp_peackmeter_core::MAX_CHANNELS];
-	float pv_down_factor;
-	unsigned int pv_down_ref_time;
+	int down_val(int cur_val, int channel);
+	lp_timer down_timer[lp_peackmeter_core::MAX_CHANNELS];
+	int pv_down_val[lp_peackmeter_core::MAX_CHANNELS];
+	int pv_last_peack[lp_peackmeter_core::MAX_CHANNELS];
+	int pv_down_factor;
+	int pv_down_ref_time;
 
 	// Hold a value for some time (Used to display numerical values slow, else there ares illisible)
 	float pv_peack_hold(float act_val, int channel);
