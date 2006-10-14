@@ -22,11 +22,18 @@ echo ""
 if [ -z "$1" ]
 then
 	echo -n "Try to find distrib name"
-	if [ -e '/etc/debian_version' ] # Could be a debain...
+	# Ubuntu
+	if [ -e '/usr/share/ubuntu-docs' ]
+	then
+		echo "			Selecting Ubuntu"
+		DEPEND_FILE="depends-ubuntu-606"
+	# Debian...
+	elif [ -e '/etc/debian_version' ]
 	then
 		echo "			Selecting Debian"
 		DEPEND_FILE="depends-debian"
 	fi
+
 	# ADD OTHER DISTRIBUTIONS HERE
 else
 	case "$1" in
