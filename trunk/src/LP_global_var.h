@@ -23,7 +23,6 @@
 
 #include "LP_audiofile.h"
 #include "LP_alsaout.h"
-#include "LP_mad.h"
 
 /* here are the global vars.
    For the moment some vars are not used, I must look this....
