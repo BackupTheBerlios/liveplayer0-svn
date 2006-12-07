@@ -38,7 +38,7 @@ LP_player::LP_player(int init_player_ID) {
 	audio_info = new SF_INFO;
 
 	/* vorbisfile data structure */
-	vf = new OggVorbis_File;
+	//vf = new OggVorbis_File;
 
 	/* stream from opened file with fopen */
 	fds = new FILE;
@@ -92,18 +92,16 @@ LP_player::LP_player(int init_player_ID) {
 	pv_pm = new lp_peackmeter(0, nb_channel, (int)rd_size*2);
 	pv_pmc = pv_pm->get_core();
 
+	/// ladspa
+	ladspa = new lp_ladspa_manager;
+	ladspa->init(4, nb_channel, rd_size*2, 44100);
+	ladspa->show();
 
 	/* The buffer wich recieve the resampled data */
 	sampled_buffer = new float[rd_size + 1000];
 	if(sampled_buffer == 0) {
 		std::cout << "LP_player::LP_player(): cannot allocate memory for sampled_buffer\n";
 	}
-
-	/* The ogg/vorbis buffer */
-//	vorbis_buffer[0] = new float[rd_size * 2];
-//	vorbis_buffer[1] = new float[rd_size * 2];
-	//LP_utils LPu;
-	vorbis_buffer = LPu.lp_fmalloc_2d_array( 2, (rd_size/2) * 2 );
 
 	/* Run the player thread */
 	err = pthread_create(&thread_id, 0, lp_player_thread, (void *)this);
@@ -132,13 +130,12 @@ LP_player::~ LP_player() {
 
 	/* Liberation memoire */
 	delete audio_info;
-	delete vf;
+	//delete vf;
 	delete fds;
 	delete[] rd_buffer;
 	delete[] tmp_buffer;
 	delete[] audio_info;
 	delete[] sampled_buffer;
-	delete[] vorbis_buffer;
 }
 
 /* Enable / Disable SoundTouch procesing */
@@ -167,7 +164,6 @@ int LP_player::getSoundTouch(){
 int LP_player::setSpeed(double speed){
 	/* variables */
 	double min, max;
-//	LP_global_audio_data audio_data;
 
 	/* Check if SoundTouch is enable */
 	if(mSoundTouch == LP_ON) {
@@ -269,37 +265,6 @@ int LP_player::get_file(char *file) {
 		return 0;
 	}
 
-	/* Ogg/Vorbis with vorbisfile
-	   At first, we test if the file is in ogg/vorbis format
-	 */
-	if((fds = fopen(file, "r")) == 0) {
-		std::cerr << "LP_player::get_file(): could not open file: " << file << std::endl;
-		return -1;
-	}
-	if(ov_test(fds, vf, 0, 0) == 0) {
-		/* it's Ogg/Vorbis file: finish open the file */
-		if(ov_test_open(vf) != 0) {
-			std::cerr << "LP_player::get_file(): unable to open the Ogg/Vorbis file: " << file << std::endl;
-		}
-		/* Ok, tell that the lib to use is vorbisfile and return 0 */
-		mRead_lib = LP_LIB_VORBIS;
-		return 0;
-	}
-
-	/* Open with the mad callback (mpg file) */
-	mad_cb = new LP_mad(rd_size);
-	if(mad_cb == 0) {
-		std::cerr << "LP_player::get_file: unable to call LP_mad \n";
-	} else {
-		if(mad_cb->open_file(file)<0) {
-			std::cerr << "LP_player::get_file: unable to open file: " << file << std::endl;
-		}else {
-			/* Ok, tell that the lib to use is libmad and return 0 */
-			mRead_lib = LP_LIB_MAD;
-			return 0;
-		}
-	}
-
 	/* wenn arriving here, the file is not supported */
 	std::cerr << "LP_player::get_file(): failed to open file '" << file << "'\n";
 	return -1;
@@ -366,30 +331,8 @@ sf_count_t LP_player::lp_read(sf_count_t samples) {
 		case LP_LIB_SNDFILE:
 			return sf_read_float(snd_fd, rd_buffer, samples);
 			break;
-		case LP_LIB_VORBIS:
-		 int i,y, pos, pos2;	
-			y=0; ret=0; pos = 0; pos2=0;
-			//printf("OV  lire %d samples\n", samples);
-/*			while(pos < (samples/2)){
-				ret = ov_read_float(vf, &pcm, samples, &vf_current_section);
-			printf("RET - %d -- current: %d\n", ret, vf_current_section);
-			pos = pos + ret;
-			printf("EOB - pos: %d\n", pos);
-			}
-*/
-			ret = ov_read_float(vf, &vorbis_buffer, samples, &vf_current_section);
-			LPu.lp_fcopy_2d_1d_array(vorbis_buffer, rd_buffer, 2, rd_size/2);
-			return ret;
-			break;
-		case LP_LIB_MAD:
-			ret = mad_cb->read(rd_buffer, rd_size);
-			return rd_size;
-			break;
-		default:
-			std::cerr << "LP_player::lp_read: unable to find wich lib to use for reading\n";
-			return 0;
-			break;
 	}
+
 }
 
 /* Fonction de recherche de position dans le fichier */
@@ -515,16 +458,19 @@ extern "C" void *lp_player_thread(void *p_data) {
 			pSoundTouch->putSamples(data->tmp_buffer, rd_readen/2);
 			
 			nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
-		//	std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
+			std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
 		}
 
 		/// Premiers test ladspa_cpp ET Vu_meter
 		if(data->getSoundTouch() == LP_ON) {
 		//	data->llm->run_plugins(data->sampled_buffer);
-			data->pv_pmc->run_interlaced_buffer(data->sampled_buffer, nSampled);
+			std::cout << "running sampled_buffer - " << nSampled << " samples\n";
+			data->ladspa->run_interlaced_buffer(data->sampled_buffer, nSampled*2);
+			data->pv_pmc->run_interlaced_buffer(data->sampled_buffer, nSampled*2);
 		} else {
 		//	data->llm->run_plugins(data->tmp_buffer);
 			data->pv_pmc->run_interlaced_buffer(data->sampled_buffer, rd_readen);
+			data->ladspa->run_interlaced_buffer(data->sampled_buffer, rd_readen);
 		}
 
 
@@ -755,7 +701,7 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 */
 int mix_out(float *in_buffer, int in_buf_size, int bus)
 {
-//	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
+	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
 	/* variables internes */
 	float *out_buffer = NULL;
 	float tmp1, tmp2;

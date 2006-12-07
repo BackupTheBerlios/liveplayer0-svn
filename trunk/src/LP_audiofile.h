@@ -31,14 +31,11 @@
 #include <sndfile.h>
 #include <soundtouch/SoundTouch.h>
 /* Utilities */
-#include "LP_utils.h"
-//#include <mad.h>
-#include <vorbis/codec.h>
-#include <vorbis/vorbisfile.h>
 #include "LP_global_var.h"
-#include "LP_mad.h"
 
 #include "lp_peackmeter/lp_peackmeter.h"
+
+#include "lp_ladspa/lp_ladspa_manager.h"
 
 /* Play mode */
 #define LP_PLAY_MODE_PLAYING	1
@@ -64,6 +61,8 @@ class LP_player {
 	public:
 		LP_player(int player_ID );
 		~LP_player();
+		/// ladspa
+		lp_ladspa_manager *ladspa;
 		// Enable / Disable SoundTouch processing
 		int setSoundTouch(int state);	// can be LP_ON or LP_OFF
 		int getSoundTouch();		// Return state (LP_ON or LP_OFF)
@@ -107,15 +106,11 @@ class LP_player {
 		lp_peackmeter_core *pv_pmc;
 
 	private:
-		LP_utils LPu;
 		unsigned int rate;		// sample rate du fichier
 		SF_INFO *audio_info;		// Infos fournis par libsndfile
-		OggVorbis_File *vf;		// Structure pour vorbisfile
+		//OggVorbis_File *vf;		// Structure pour vorbisfile
 		int vf_current_section;
-		float **vorbis_buffer;
-//		float **pcm;
 		FILE *fds;			// file stream opened with fopen
-		LP_mad *mad_cb;			// The mad callback
 		pthread_t thread_id;		// Thread ID for LP_player instance
 		int mSoundTouch;		// Enable / disable SoundTouch processing
 		double mSpeed;			// Resampling factor for speed
