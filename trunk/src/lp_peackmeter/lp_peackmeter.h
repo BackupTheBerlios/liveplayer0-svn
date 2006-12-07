@@ -4,7 +4,7 @@
 #include "lp_peackmeter_core.h"
 #include "lp_peackmeter_widget.h"
 
-#include "../lp_timer/lp_timer.h"
+#include "lp_utils/lp_timer/lp_timer.h"
 
 #include <QWidget>
 #include <QHBoxLayout>

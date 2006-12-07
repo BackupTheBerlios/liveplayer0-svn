@@ -7,7 +7,7 @@
 #include <QWaitCondition>
 
 //#include "../lp_timer/lp_timer.h"
-#include "lp_timer/lp_timer.h"
+#include "lp_utils/lp_timer/lp_timer.h"
 #include "lp_peackmeter_widget.h"
 
 class lp_peackmeter_core : public QThread
