@@ -1,7 +1,7 @@
 # Fichier généré par le module QMake de KDevelop.- plus édition manuelle
 # -------------------------------------------------- 
 # Sous dossier relatif au dossier principal du projet: ./src
-# Cible: une application??:  ../bin/liveplayer
+# Cible: une application:  ../bin/liveplayer
 
 HEADERS += LP_alsaout.h \
            LP_audiofile.h \
@@ -10,6 +10,10 @@ SOURCES += liveplayer.cpp \
            LP_alsaout.cpp \
            LP_audiofile.cpp \
            LP_global_var.cpp
+
+# lp_sndfile_in
+HEADERS += lp_sndfile_in.h
+SOURCES += lp_sndfile_in.cpp
 
 # Utils
 HEADERS += lp_utils/lp_custom_types/lp_custom_types.h \

@@ -37,6 +37,8 @@
 
 #include "lp_ladspa/lp_ladspa_manager.h"
 
+#include "lp_sndfile_in.h"
+
 /* Play mode */
 #define LP_PLAY_MODE_PLAYING	1
 #define LP_PLAY_MODE_PAUSE 	2
@@ -80,7 +82,10 @@ class LP_player {
 		/* To read a opened file */
 		sf_count_t lp_read(sf_count_t samples);
 		sf_count_t lp_seek(sf_count_t samples, int ref_pos);
-		SNDFILE *snd_fd;		// descripteur fichier (libsndfile)
+		//SNDFILE *snd_fd;	
+		// descripteur fichier (libsndfile)
+		/* sndfile input */
+		lp_sndfile_in sndfile_in;
 		int rd_size;
 		float *rd_buffer;
 		float *tmp_buffer;		// intermediaire
@@ -110,7 +115,7 @@ class LP_player {
 		SF_INFO *audio_info;		// Infos fournis par libsndfile
 		//OggVorbis_File *vf;		// Structure pour vorbisfile
 		int vf_current_section;
-		FILE *fds;			// file stream opened with fopen
+		//FILE *fds;			// file stream opened with fopen
 		pthread_t thread_id;		// Thread ID for LP_player instance
 		int mSoundTouch;		// Enable / disable SoundTouch processing
 		double mSpeed;			// Resampling factor for speed

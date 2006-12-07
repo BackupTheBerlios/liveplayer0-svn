@@ -60,7 +60,7 @@ int lp_ladspa_manager::run_interlaced_buffer(float *buffer, int tot_len)
 		}else{
 			retval = last_ret;
 		}
-		std::cout << "Called item[" << i << "] - protected samples: " << retval << "\n";
+	//	std::cout << "Called item[" << i << "] - protected samples: " << retval << "\n";
 	}
 	return retval;
 }

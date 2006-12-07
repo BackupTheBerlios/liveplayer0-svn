@@ -27,6 +27,9 @@
 #include <cstdlib>
 #include "LP_global_var.h"
 
+// tests
+#include "lp_sndfile_in.h"
+
 #include <QApplication>
 
 using namespace std;

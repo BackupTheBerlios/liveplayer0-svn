@@ -35,13 +35,13 @@ LP_player::LP_player(int init_player_ID) {
 	player_ID = init_player_ID;
 
 	/* audio_info (libsndfile) */
-	audio_info = new SF_INFO;
+	//audio_info = new SF_INFO;
 
 	/* vorbisfile data structure */
 	//vf = new OggVorbis_File;
 
 	/* stream from opened file with fopen */
-	fds = new FILE;
+	//fds = new FILE;
 
 	/* new file event detection - default: no event (0) */
 	mfile = 0;
@@ -131,7 +131,7 @@ LP_player::~ LP_player() {
 	/* Liberation memoire */
 	delete audio_info;
 	//delete vf;
-	delete fds;
+	//delete fds;
 	delete[] rd_buffer;
 	delete[] tmp_buffer;
 	delete[] audio_info;
@@ -255,12 +255,17 @@ int LP_player::get_file(char *file) {
 
 	/* infos fichier - mise a 0 du champs format (requis pour ouverture en lecture) */
 	/* file infos - set field 'format' to 0 (describe in API doc of libsndfile */
-	audio_info->format = 0;
+//	audio_info->format = 0;
 
 	/* Ouverture du fichier avec libsndfile */
-	snd_fd = sf_open(file, SFM_READ, audio_info);
-	if(snd_fd != 0) {
-		/* Ok, tell that the lib to use is sndfile and return 0 */
+//	snd_fd = sf_open(file, SFM_READ, audio_info);
+//	if(snd_fd != 0) {
+//		/* Ok, tell that the lib to use is sndfile and return 0 */
+//		mRead_lib = LP_LIB_SNDFILE;
+//		return 0;
+//	}
+
+	if(sndfile_in.open_file(file) == 0){
 		mRead_lib = LP_LIB_SNDFILE;
 		return 0;
 	}
@@ -329,7 +334,8 @@ sf_count_t LP_player::lp_read(sf_count_t samples) {
 	/* Select the read routine and read */
 	switch (mRead_lib){
 		case LP_LIB_SNDFILE:
-			return sf_read_float(snd_fd, rd_buffer, samples);
+//			return sf_read_float(snd_fd, rd_buffer, samples);
+			return sndfile_in.read_frames(rd_buffer, samples);
 			break;
 	}
 
@@ -340,7 +346,8 @@ sf_count_t LP_player::lp_seek(sf_count_t samples, int ref_pos){
 
 	switch (mRead_lib){
 		case LP_LIB_SNDFILE:
-			return sf_seek(snd_fd, samples, ref_pos);
+//			return sf_seek(snd_fd, samples, ref_pos);
+			return sndfile_in.seek_frame((long int)samples, ref_pos);
 			break;
 		default:
 			std::cout << "LP_player::lp_read: unable to find wich lib to use for reading\n";
@@ -458,13 +465,13 @@ extern "C" void *lp_player_thread(void *p_data) {
 			pSoundTouch->putSamples(data->tmp_buffer, rd_readen/2);
 			
 			nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
-			std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
+		//	std::cout << "Nbre processes: " << nSampled * data->nb_channel << " (ID " << data->player_ID << ")" << std::endl;
 		}
 
 		/// Premiers test ladspa_cpp ET Vu_meter
 		if(data->getSoundTouch() == LP_ON) {
 		//	data->llm->run_plugins(data->sampled_buffer);
-			std::cout << "running sampled_buffer - " << nSampled << " samples\n";
+		//	std::cout << "running sampled_buffer - " << nSampled << " samples\n";
 			data->ladspa->run_interlaced_buffer(data->sampled_buffer, nSampled*2);
 			data->pv_pmc->run_interlaced_buffer(data->sampled_buffer, nSampled*2);
 		} else {
@@ -542,7 +549,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 			}
 			/* Direction */
 			if(data->getDirection() == LP_PLAY_REVERSE) {
-				err = data->lp_seek( -(to_read), SEEK_CUR);
+				err = data->lp_seek( -(to_read), LP_SEEK_CUR);
 				if(err < 0) { printf("ERR SEEK - err no: %d\n", err); }
 				std::cout << "REV - SEEK " << -(to_read) << std::endl;
 			}
@@ -701,7 +708,7 @@ extern "C" void *lp_it_to_ot_buffer(void *fake) {
 */
 int mix_out(float *in_buffer, int in_buf_size, int bus)
 {
-	printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
+	//printf("mix_out: recus %d samples pour bus %d\n", in_buf_size, bus);
 	/* variables internes */
 	float *out_buffer = NULL;
 	float tmp1, tmp2;

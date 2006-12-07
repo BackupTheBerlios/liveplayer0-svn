@@ -46,7 +46,7 @@ void lp_peackmeter_core::set_range(float min, float max)
 {
 	range_low = min;
 	if(max == 1.0f){
-		range_high = max - 0.0001f;
+		range_high = max;// - 0.0001f;
 	}else{
 		range_high = max;
 	}
