@@ -1,0 +1,18 @@
+<ui version="4.0" >
+ <class>lp_ladspa_manager</class>
+ <widget class="QWidget" name="lp_ladspa_manager" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>280</width>
+    <height>130</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Form</string>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
