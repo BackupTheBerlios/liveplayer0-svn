@@ -455,7 +455,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 		/* If SoundTouch processing is enabled */
 		if(data->getSoundTouch() == LP_ON){
 			/* SoundTouch (rate) */
-			pSoundTouch->setRate(data->dv_in.get_audio_sampling_factor());
+			//pSoundTouch->setRate(data->dv_in.get_audio_sampling_factor());
 			pSoundTouch->putSamples(data->tmp_buffer, rd_readen/2);
 			
 			nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
