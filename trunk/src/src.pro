@@ -15,6 +15,14 @@ SOURCES += liveplayer.cpp \
 HEADERS += lp_sndfile_in.h
 SOURCES += lp_sndfile_in.cpp
 
+# lp_libdv_in
+HEADERS += lp_libdv_in.h
+SOURCES += lp_libdv_in.cpp
+
+# lp_sdl_out
+HEADERS += lp_sdl_out.h
+SOURCES += lp_sdl_out.cpp
+
 # Utils
 HEADERS += lp_utils/lp_custom_types/lp_custom_types.h \
            lp_utils/lp_timer/lp_timer.h \
@@ -89,4 +97,4 @@ TEMPLATE = app
 TARGET=../bin/liveplayer
 LIBS += -lasound -lpthread -lsndfile -lsamplerate -lSoundTouch
 #CFLAFS += -ldl
-LIBS += -lasound -lsndfile -lsamplerate -lSoundTouch
+LIBS += -lasound -lsndfile -lsamplerate -lSoundTouch -ldv -lSDL

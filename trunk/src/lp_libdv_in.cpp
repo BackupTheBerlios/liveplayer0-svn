@@ -15,6 +15,7 @@ lp_libdv_in::lp_libdv_in()
 //	pv_pixels[0] = 0;
 	set_color_space(LP_COLOR_SPACE_YUV);
 	pv_audio_sampling_factor = 0.0;
+	pv_audio_samplerate = 0;
 
 	pv_sdl_out = 0;
 }
@@ -208,15 +209,16 @@ void lp_libdv_in::set_audio_samplerate(int samplerate)
 		std::cerr << "lp_libdv_in::" << __FUNCTION__ << ": pv_decoder is Null - You must call init first !\n";
 		return;
 	}
-	pv_audio_sampling_factor = (double)(samplerate / pv_decoder->audio->frequency);
+	pv_audio_samplerate = samplerate;
 }
 
 double lp_libdv_in::get_audio_sampling_factor()
 {
-	if(pv_audio_sampling_factor == 0.0){
-		std::cerr << "lp_libdv_in::" << __FUNCTION__ << ": pv_decoder is Null - You must call set_audio_samplerate first !\n";
+	if(pv_audio_samplerate == 0){
+		std::cerr << "lp_libdv_in::" << __FUNCTION__ << ": You must call set_audio_samplerate first !\n";
 		return 1.0;
 	}
+	pv_audio_sampling_factor = (double)pv_audio_samplerate / (double)pv_decoder->audio->frequency;
 	return pv_audio_sampling_factor;
 }
 
@@ -225,6 +227,18 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 	int audio_decoded = 0, file_readen = 0;
 	int i, channel;
 //	std::cerr << "lp_libdv_in::" << __FUNCTION__ << " called\n";
+
+	// TESTS
+	len = len/2;
+
+  /* Interleave the audio into a single buffer */
+/*  for (i = 0, samples = dv_get_num_samples (dv), channels = dv_get_num_channels (dv);
+       i < samples; i++) {
+    for (ch = 0; ch < channels; ch++) {
+      oss -> buffer [j++] = out [ch] [i];
+    }
+  }
+*/
 
 	// Check if decoding is requierd
 	while(pv_audio_num_ready <= len){
@@ -236,8 +250,9 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 		dv_decode_full_audio(pv_decoder, pv_file_buffer, pv_dv_audio_buffers);
 		audio_decoded = dv_get_num_samples(pv_decoder);
 		// Copy to ready buffer
-		for(channel = 0; channel < pv_audio_channels; channel++){
-			for(i=0; i<audio_decoded/pv_audio_channels; i++){
+		
+		for(i=0; i<audio_decoded; i++){
+			for(channel = 0; channel < pv_audio_channels; channel++){
 				// write to ready buffer from start position
 				pv_audio_ready_buffer[pv_audio_decoder_start+channel+i*pv_audio_channels] = pv_dv_audio_buffers[channel][i];
 			}
@@ -249,12 +264,13 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 
 	// Copy needed to output buffer
 	for(i=0; i<len; i++){
-		buffer[i] = (float)(pv_audio_ready_buffer[pv_audio_decoder_start+i] / 32768);
+		//buffer[i] = (float)(pv_audio_ready_buffer[pv_audio_decoder_start+i] / 32768);
+		buffer[i] = (float)(pv_audio_ready_buffer[pv_audio_decoder_start+i] / 4000);
 	}
 	// update start pos
 	pv_audio_consumer_start = pv_audio_decoder_start + len;
 
-	// Calcue samples consomés
+	// Calcule samples consomés
 	pv_audio_num_ready = pv_audio_num_ready - len;
 
 	// On déplace le reste au début de pv_audio_ready buffer
@@ -267,7 +283,7 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 		pv_audio_consumer_start = 0;
 	}
 
-//	std::cout << "Décodé: " << audio_decoded << " - consommés: " << len << " - prêts: " << pv_audio_num_ready << "\n";
+	std::cout << "Décodés: " << pv_audio_num_ready << " - consommés: " << len << " - prêts: " << pv_audio_num_ready << "\n";
 //	std::cout << "Start decodeur: " << pv_audio_decoder_start << " - start consumer: " << pv_audio_consumer_start << "\n\n";
 
 	// THIS is false !

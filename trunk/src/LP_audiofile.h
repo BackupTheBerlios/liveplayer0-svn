@@ -39,6 +39,8 @@
 
 #include "lp_sndfile_in.h"
 
+#include "lp_libdv_in.h"
+
 /* Play mode */
 #define LP_PLAY_MODE_PLAYING	1
 #define LP_PLAY_MODE_PAUSE 	2
@@ -55,6 +57,7 @@
 #define LP_LIB_SNDFILE		1
 #define LP_LIB_VORBIS		2
 #define LP_LIB_MAD		3
+#define LP_LIB_DV		4
 
 
 /* Les players individuels seront issu de cette classe */
@@ -65,6 +68,8 @@ class LP_player {
 		~LP_player();
 		/// ladspa
 		lp_ladspa_manager *ladspa;
+		/// dv
+		lp_libdv_in dv_in;
 		// Enable / Disable SoundTouch processing
 		int setSoundTouch(int state);	// can be LP_ON or LP_OFF
 		int getSoundTouch();		// Return state (LP_ON or LP_OFF)

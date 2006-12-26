@@ -33,15 +33,16 @@ public:
 	/// Call init() and give the audio buffer total len needed (in samples)
 	int init(int audio_buffer_len, int nb_audio_channels);
 	int set_color_space(int color_space);
-	/// Call this to open a file
+	/// Call this to open a file (return < 0 if faile)
 	int open_file(QString file);
 	int get_channels();
 	int get_samplerate();
+	/// Give the audio samplerate needed
 	void set_audio_samplerate(int samplerate);
 	double get_audio_sampling_factor();
 	long int get_frames_count();
 	long int get_samples_count();
-	/// Read len samples in the file
+	/// Read len audio samples in the file
 	long int read_samples(float *buffer, long int len);
 	// Read len frames in the file. a frames is the sum of samples * channels
 	long int read_frames(float *buffer, long int len);
@@ -69,6 +70,7 @@ private:
 	int pv_audio_consumer_start;	// start position in pv_audio_ready_buffer
 	int pv_dv_audio_channels;	// number of channels in dv audio stream
 	int pv_audio_channels;		// number of channels in output stream
+	int pv_audio_samplerate;	// samplerate in output stream
 
 	// NOTE: move this later...
 	lp_sdl_out *pv_sdl_out;

@@ -34,15 +34,6 @@ LP_player::LP_player(int init_player_ID) {
 	/* Player ID - must stay all the player's life */
 	player_ID = init_player_ID;
 
-	/* audio_info (libsndfile) */
-	//audio_info = new SF_INFO;
-
-	/* vorbisfile data structure */
-	//vf = new OggVorbis_File;
-
-	/* stream from opened file with fopen */
-	//fds = new FILE;
-
 	/* new file event detection - default: no event (0) */
 	mfile = 0;
 
@@ -96,6 +87,10 @@ LP_player::LP_player(int init_player_ID) {
 	ladspa = new lp_ladspa_manager;
 	ladspa->init(4, nb_channel, rd_size*2, 44100);
 	ladspa->show();
+
+	/// dv
+	dv_in.init((int)rd_size*2, nb_channel);
+	dv_in.set_audio_samplerate( 44100);
 
 	/* The buffer wich recieve the resampled data */
 	sampled_buffer = new float[rd_size + 1000];
@@ -250,23 +245,18 @@ int LP_player::get_file(char *file) {
 		std::cerr << "LP_player::get_file(): no file given\n";
 		return -1;
 	}
+	QString qfile = file;
 
-	/* TEST Formats (ogg, mp3) */
-
-	/* infos fichier - mise a 0 du champs format (requis pour ouverture en lecture) */
-	/* file infos - set field 'format' to 0 (describe in API doc of libsndfile */
-//	audio_info->format = 0;
-
-	/* Ouverture du fichier avec libsndfile */
-//	snd_fd = sf_open(file, SFM_READ, audio_info);
-//	if(snd_fd != 0) {
-//		/* Ok, tell that the lib to use is sndfile and return 0 */
-//		mRead_lib = LP_LIB_SNDFILE;
-//		return 0;
-//	}
+	/* TEST Formats (ogg, mp3, dv) */
 
 	if(sndfile_in.open_file(file) == 0){
 		mRead_lib = LP_LIB_SNDFILE;
+		return 0;
+	}else if(dv_in.open_file(qfile)>=0){
+		mRead_lib = LP_LIB_DV;
+		// Set sampling factor
+		
+		std::cout << "Sampling factor: " << mSpeed << "\n";
 		return 0;
 	}
 
@@ -336,6 +326,9 @@ sf_count_t LP_player::lp_read(sf_count_t samples) {
 		case LP_LIB_SNDFILE:
 //			return sf_read_float(snd_fd, rd_buffer, samples);
 			return sndfile_in.read_frames(rd_buffer, samples);
+			break;
+		case LP_LIB_DV:
+			return dv_in.read_samples(rd_buffer, samples)*2;
 			break;
 	}
 
@@ -462,6 +455,7 @@ extern "C" void *lp_player_thread(void *p_data) {
 		/* If SoundTouch processing is enabled */
 		if(data->getSoundTouch() == LP_ON){
 			/* SoundTouch (rate) */
+			pSoundTouch->setRate(data->dv_in.get_audio_sampling_factor());
 			pSoundTouch->putSamples(data->tmp_buffer, rd_readen/2);
 			
 			nSampled = pSoundTouch->receiveSamples(data->sampled_buffer, data->rd_size/2);
