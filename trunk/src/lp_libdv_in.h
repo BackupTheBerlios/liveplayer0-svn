@@ -13,6 +13,7 @@
 
 #include <QString>
 #include "lp_utils/qstring_char.h"
+#include "lp_utils/lp_buffer.h"
 
 // NOTE: move this later...
 #include "lp_sdl_out.h"
@@ -71,6 +72,8 @@ private:
 	int pv_dv_audio_channels;	// number of channels in dv audio stream
 	int pv_audio_channels;		// number of channels in output stream
 	int pv_audio_samplerate;	// samplerate in output stream
+
+	lp_int16_t_buffer pv_lp_audio_buffer;
 
 	// NOTE: move this later...
 	lp_sdl_out *pv_sdl_out;

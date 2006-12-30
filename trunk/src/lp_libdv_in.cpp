@@ -82,6 +82,8 @@ int lp_libdv_in::init(int audio_buffer_len, int nb_audio_channels)
 	}
 	pv_audio_channels = nb_audio_channels;
 
+	pv_lp_audio_buffer.init(audio_buffer_len * 4 * 4);
+
 	// Debug - infos
 	if(dv_format_wide(pv_decoder)){
 		std::cerr << "lp_libdv_in::" << __FUNCTION__ << ": Format video 16/9\n";
@@ -218,7 +220,9 @@ double lp_libdv_in::get_audio_sampling_factor()
 		std::cerr << "lp_libdv_in::" << __FUNCTION__ << ": You must call set_audio_samplerate first !\n";
 		return 1.0;
 	}
-	pv_audio_sampling_factor = (double)pv_audio_samplerate / (double)pv_decoder->audio->frequency;
+	//pv_audio_sampling_factor = (double)pv_audio_samplerate / (double)pv_decoder->audio->frequency;
+	//pv_audio_sampling_factor = (double)pv_audio_samplerate * (double)pv_decoder->audio->frequency;
+	pv_audio_sampling_factor = 1.0;
 	return pv_audio_sampling_factor;
 }
 
@@ -241,7 +245,8 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 */
 
 	// Check if decoding is requierd
-	while(pv_audio_num_ready <= len){
+	//while(pv_audio_num_ready <= len){
+	while(pv_lp_audio_buffer.left() <= len){
 		file_readen = read(pv_fd, pv_file_buffer, 144000); // FIXME: len to read ?
 		// decode a video frame and display - NOTE this part must move to another class later...
 		dv_decode_full_frame(pv_decoder, pv_file_buffer, pv_color_space, pv_sdl_out->pb_pixels, pv_sdl_out->pb_pitches);
@@ -251,21 +256,28 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 		audio_decoded = dv_get_num_samples(pv_decoder);
 		// Copy to ready buffer
 		
-		for(i=0; i<audio_decoded; i++){
+		//for(i=0; i<audio_decoded; i++){
 			for(channel = 0; channel < pv_audio_channels; channel++){
 				// write to ready buffer from start position
-				pv_audio_ready_buffer[pv_audio_decoder_start+channel+i*pv_audio_channels] = pv_dv_audio_buffers[channel][i];
+				//pv_audio_ready_buffer[pv_audio_decoder_start+channel+i*pv_audio_channels] = pv_dv_audio_buffers[channel][i];
+				pv_lp_audio_buffer.put(pv_dv_audio_buffers[channel], audio_decoded / pv_audio_channels);
 			}
-		}
+		//}
 		pv_audio_num_ready = pv_audio_num_ready + audio_decoded;
 		// update start pos
 		pv_audio_decoder_start = pv_audio_decoder_start + audio_decoded;
 	}
 
+	pv_lp_audio_buffer.get(pv_audio_ready_buffer, len);
+
+	float tmp;
 	// Copy needed to output buffer
 	for(i=0; i<len; i++){
 		//buffer[i] = (float)(pv_audio_ready_buffer[pv_audio_decoder_start+i] / 32768);
-		buffer[i] = (float)(pv_audio_ready_buffer[pv_audio_decoder_start+i] / 4000);
+		//buffer[i] = (float)(pv_audio_ready_buffer[pv_audio_decoder_start+i] / 4000);
+		tmp = (float)pv_audio_ready_buffer[i];
+		buffer[i] = tmp / 6000.0;
+		//buffer[i] = (float)(pv_audio_ready_buffer[i] / 6000);
 	}
 	// update start pos
 	pv_audio_consumer_start = pv_audio_decoder_start + len;
@@ -274,7 +286,7 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 	pv_audio_num_ready = pv_audio_num_ready - len;
 
 	// On déplace le reste au début de pv_audio_ready buffer
-	if(pv_audio_num_ready > 0){
+/*	if(pv_audio_num_ready > 0){
 		for(i=0; i<pv_audio_num_ready; i++){
 			pv_audio_ready_buffer[i] = pv_audio_ready_buffer[pv_audio_decoder_start+i];
 		}
@@ -282,8 +294,8 @@ long int lp_libdv_in::read_samples(float *buffer, long int len)
 		pv_audio_decoder_start = 0;
 		pv_audio_consumer_start = 0;
 	}
-
-	std::cout << "Décodés: " << pv_audio_num_ready << " - consommés: " << len << " - prêts: " << pv_audio_num_ready << "\n";
+*/
+//	std::cout << "Décodés: " << pv_audio_num_ready << " - consommés: " << len << " - prêts: " << pv_audio_num_ready << "\n";
 //	std::cout << "Start decodeur: " << pv_audio_decoder_start << " - start consumer: " << pv_audio_consumer_start << "\n\n";
 
 	// THIS is false !

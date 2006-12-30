@@ -28,13 +28,15 @@ HEADERS += lp_utils/lp_custom_types/lp_custom_types.h \
            lp_utils/lp_timer/lp_timer.h \
            lp_utils/qstring_char.h \
            lp_utils/treemodel/treeitem.h \
-           lp_utils/treemodel/treemodel.h
+           lp_utils/treemodel/treemodel.h \
+	   lp_utils/lp_buffer.h
 SOURCES += lp_utils/lp_custom_types/lp_custom_types.cpp \
            lp_utils/lp_timer/lp_timer.cpp \
            lp_utils/qstring_char.cpp \
            lp_utils/treemodel/treeitem.cpp \
            lp_utils/treemodel/treemodel.cpp \
-           lp_utils/lp_array_utils.cpp
+           lp_utils/lp_array_utils.cpp \
+	   lp_utils/lp_buffer.cpp
 
 # peackmeter
 FORMS += lp_peackmeter/lp_peackmeter_widget_ui.ui
