@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Variables globales
 REP=""
@@ -8,6 +8,8 @@ INCLUDE="include/"
 LIBS="lib/"
 DEPEND_FILE=""
 MISSING_FILE="depends_missing.cache"
+APT_STR=""
+APT_IDX=0
 
 # Librairies recherchees
 LIBASOUND="libasound.so*"
@@ -26,7 +28,7 @@ then
 	if [ -e '/usr/share/ubuntu-docs' ]
 	then
 		echo "			Selecting Ubuntu"
-		DEPEND_FILE="depends-ubuntu-606"
+		DEPEND_FILE="depends-ubuntu-610"
 	# Debian...
 	elif [ -e '/etc/debian_version' ]
 	then
@@ -79,9 +81,8 @@ FIND() {
 		else
 			echo "Not found"
 			# Donner ici la corespondance PKG name
-			echo "$1 -> "$(FIND_PKG "$1" 'DEV') >> "$MISSING_FILE"
-			APT_STR=$APT_STR$1
-			echo "STR: $APT_STR"
+			echo "$1 -> "$(FIND_PKG "$1" 'DEV' "comment") >> "$MISSING_FILE"
+			APT_STR="$APT_STR"' '$(FIND_PKG "$1" 'DEV' | tr -d '\t' | tr -d '\n')
 		fi
 	else
 		echo -n "Searching for $1 in $PREFIX_1				"
@@ -101,7 +102,8 @@ FIND() {
 		else
 			echo "Not found"
 			# Donner ici la corespondance PKG name
-			echo "$1 -> "$(FIND_PKG "$1") >> "$MISSING_FILE"
+			echo "$1 -> "$(FIND_PKG "$1" "comment") >> "$MISSING_FILE"
+			APT_STR="$APT_STR"' '$(FIND_PKG "$1" | tr -d '\t' | tr -d '\n')
 		fi
 	fi
 
@@ -111,9 +113,9 @@ FIND() {
 # Cherche une concordance nom-de-packet <-> nom de librairie dans
 # Si l'argument 2 recoit la chaine 'DEV', on retourne le nom de
 # paquet -dev  (headers)
+# Si l'argument 3 recois la chaine "comment", on ajoute le commentaire (champ 3)
 FIND_PKG() {
 	local TMP
-	local REP
 
 	if [ -z "$1" ]
 	then
@@ -130,10 +132,16 @@ FIND_PKG() {
 	if [ "$2" == "DEV" ]
 	then
 		grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
-		grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+		if [ "$3" == "comment" ]
+		then
+			grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+		fi
 	else
 		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
-		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+		if [ "$3" == "comment" ]
+		then
+			grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+		fi
 	fi
 }
 
@@ -164,6 +172,12 @@ then
 	cat "$MISSING_FILE"
 	rm  "$MISSING_FILE"
 	echo ""
+	echo -n "Should we try to install these dependencies ? (apt-get only) [y/n]: "
+	read REP
+	if [ "$REP" == "y" ]
+	then
+		sudo apt-get install $APT_STR
+	fi
 	exit 1
 else
 	echo ""
