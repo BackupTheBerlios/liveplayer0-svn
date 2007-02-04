@@ -111,6 +111,7 @@ FIND() {
 # paquet -dev  (headers)
 FIND_PKG() {
 	local TMP
+	local REP
 
 	if [ -z "$1" ]
 	then
@@ -128,9 +129,24 @@ FIND_PKG() {
 	then
 		grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
 		grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+		TMP=$(grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' ')
+		echo -n "$TMP is missing. Try to install (works with apt-get only) [y/n]: "
+		read REP
+		if [ "$REP" == "y" ]
+		then
+			sudo apt-get install "$TMP"
+		fi
 	else
 		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
 		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+		TMP=$(grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' ')
+		echo -n "$TMP is missing. Try to install (works with apt-get only) [y/n]: "
+		read REP
+		if [ "$REP" == "y" ]
+		then
+			sudo apt-get install "$TMP"
+		fi
+
 	fi
 }
 
