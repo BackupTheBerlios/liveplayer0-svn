@@ -80,6 +80,8 @@ FIND() {
 			echo "Not found"
 			# Donner ici la corespondance PKG name
 			echo "$1 -> "$(FIND_PKG "$1" 'DEV') >> "$MISSING_FILE"
+			APT_STR=$APT_STR$1
+			echo "STR: $APT_STR"
 		fi
 	else
 		echo -n "Searching for $1 in $PREFIX_1				"
@@ -129,24 +131,9 @@ FIND_PKG() {
 	then
 		grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
 		grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
-		TMP=$(grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' ')
-		echo -n "$TMP is missing. Try to install (works with apt-get only) [y/n]: "
-		read REP
-		if [ "$REP" == "y" ]
-		then
-			sudo apt-get install "$TMP"
-		fi
 	else
 		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
 		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
-		TMP=$(grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' ')
-		echo -n "$TMP is missing. Try to install (works with apt-get only) [y/n]: "
-		read REP
-		if [ "$REP" == "y" ]
-		then
-			sudo apt-get install "$TMP"
-		fi
-
 	fi
 }
 
