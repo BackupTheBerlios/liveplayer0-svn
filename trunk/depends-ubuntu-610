@@ -15,7 +15,7 @@ libSoundTouch.so*	= "libsoundtouch1c2"		= "http://www.surina.net/soundtouch/"
 SoundTouch.h		= "libsoundtouch1-dev"		= "http://www.surina.net/soundtouch/"
 libvorbis.so*		=
 libvorbisfile.so*	= "libvorbisfile3"		= "http://www.vorbis.com/"
-vorbisfile.h		= "libvorbisfile3"		= "http://www.vorbis.com/"
+vorbisfile.h		= "libvorbis-dev"		= "http://www.vorbis.com/"
 libmad.so*		= "libmad0"			= "http://www.underbit.com/products/mad/"
 mad.h			= "libmad0-dev"			= "http://www.underbit.com/products/mad/"
 libogg.so*		= "libogg0"			= "http://www.vorbis.com/"

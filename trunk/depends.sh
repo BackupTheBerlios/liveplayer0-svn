@@ -171,6 +171,9 @@ do
 	fi
 done
 
+# g++ pakage
+sudo apt-get install g++
+
 # Show missings if exists
 if [ -e "$MISSING_FILE" ]
 then
@@ -185,8 +188,14 @@ then
 	if [ "$REP" == "y" ]
 	then
 		sudo apt-get install $APT_STR
+		if [ "$?" != "0" ]
+		then
+			exit 1
+		fi
+	else
+		echo "Dependencies are not installed - abort"
+		exit 1
 	fi
-	exit 1
 else
 	echo ""
 	echo "All dependencies seems OK"
