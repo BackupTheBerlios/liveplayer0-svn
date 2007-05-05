@@ -23,12 +23,20 @@ echo ""
 # select depends file
 if [ -z "$1" ]
 then
-	echo -n "Try to find distrib name"
+	echo "Try to find distrib name..."
 	# Ubuntu
 	if [ -e '/usr/share/ubuntu-docs' ]
 	then
-		echo "			Selecting Ubuntu"
-		DEPEND_FILE="depends-ubuntu-610"
+		echo -n "You run on Ubuntu, but I'm unable to now witch version, is it the 7.04 [y/n] (n = 6.10) ?: "
+		read ANS
+		if [ "$ANS" == "y" ]
+		then
+			echo "		Selecting Ubuntu 7.04"
+			DEPEND_FILE="depends-ubuntu-740"
+		else
+			echo "		Selecting Ubuntu 6.10"
+			DEPEND_FILE="depends-ubuntu-610"
+		fi
 	# Debian...
 	elif [ -e '/etc/debian_version' ]
 	then
@@ -131,16 +139,16 @@ FIND_PKG() {
 
 	if [ "$2" == "DEV" ]
 	then
-		grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
+		grep -v '#' "$DEPEND_FILE" | grep -w "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
 		if [ "$3" == "comment" ]
 		then
-			grep -v '#' "$DEPEND_FILE" | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+			grep -v '#' "$DEPEND_FILE" | grep -w "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
 		fi
 	else
-		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
+		grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep -w "$1" | cut -d= -f 2 | tr -d \" | tr -d ' '
 		if [ "$3" == "comment" ]
 		then
-			grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
+			grep -v '#' "$DEPEND_FILE" | grep -v 'DEV' | grep -w "$1" | cut -d= -f 3 | tr -d \" | tr -d ' '
 		fi
 	fi
 }
@@ -152,6 +160,7 @@ FIND_PKG() {
 #FIND $FAKELIB
 #FIND $FAKELIB_DEV
 
+
 for ENTRY in $(grep -v '#' "$DEPEND_FILE" | cut -d= -f 1)
 do
 	if [ ! -z $(echo "$ENTRY" | grep '.h$') ]
@@ -161,7 +170,6 @@ do
 		FIND "$ENTRY"
 	fi
 done
-
 
 # Show missings if exists
 if [ -e "$MISSING_FILE" ]

@@ -1,4 +1,4 @@
-# Debian packages names For Ubuntu 6.06 (Dapper Drake)
+# Debian packages names For Ubuntu 6.10 (Edgy)
 # The file format is:
 # lib = pkg_name = web site
 # Be care: if one name, such libone.so* is present,
@@ -20,11 +20,12 @@ libmad.so*		= "libmad0"			= "http://www.underbit.com/products/mad/"
 mad.h			= "libmad0-dev"			= "http://www.underbit.com/products/mad/"
 libogg.so*		= "libogg0"			= "http://www.vorbis.com/"
 ogg.h			= "libogg-dev"
-qt4/			= "libqt4-dev"			= "http://www.trolltech.com/"
+qt4			= "libqt4-dev"			= "http://www.trolltech.com/"
 #libqwt.so*		= "libqwt4c2"			= "http://qwt.sourceforge.net/"
 #qwt.h			= "libqwt-dev"			= "http://qwt.sourceforge.net/"
 libQtGui.so*		= "libqt4-gui"			= "http://www.trolltech.com/"
 libQtCore.so*		= "libqt4-core"			= "http://www.trolltech.com/"
+ladspa.h		= "ladspa-sdk"			= "http://ladspa.org"
 # libQtCore_debug.so*	= "libqt4-debug"		= "http://www.trolltech.com/"
 #libpthread.so*		=
 #libFLAC.so*		= 

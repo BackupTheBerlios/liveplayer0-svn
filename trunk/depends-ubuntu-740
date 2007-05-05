@@ -1,0 +1,56 @@
+# Debian packages names For Ubuntu 6.10 (Edgy)
+# The file format is:
+# lib = pkg_name = web site
+# Be care: if one name, such libone.so* is present,
+# and another called libonebbb.so*, a bug occur in search ! Sorry,
+# I don't know how to remedy this...
+
+libasound.so* 		= "libasound2"			= "http://www.alsa-project.org/"
+asoundlib.h 		= "libasound2-dev"		= "http://www.alsa-project.org/"
+libsamplerate.so*	= "libsamplerate0"
+samplerate.h		= "libsamplerate0-dev"
+libsndfile.so*		= "libsndfile1"			= "http://www.mega-nerd.com/libsndfile/"
+sndfile.h		= "libsndfile1-dev"		= "http://www.mega-nerd.com/libsndfile/"
+libSoundTouch.so*	= "libsoundtouch1c2"		= "http://www.surina.net/soundtouch/"
+SoundTouch.h		= "libsoundtouch1-dev"		= "http://www.surina.net/soundtouch/"
+libvorbis.so*		=
+libvorbisfile.so*	= "libvorbisfile3"		= "http://www.vorbis.com/"
+vorbisfile.h		= "libvorbis-dev"		= "http://www.vorbis.com/"
+libmad.so*		= "libmad0"			= "http://www.underbit.com/products/mad/"
+mad.h			= "libmad0-dev"			= "http://www.underbit.com/products/mad/"
+libogg.so*		= "libogg0"			= "http://www.vorbis.com/"
+ogg.h			= "libogg-dev"
+qt4			= "libqt4-dev"			= "http://www.trolltech.com/"
+#libqwt.so*		= "libqwt4c2"			= "http://qwt.sourceforge.net/"
+#qwt.h			= "libqwt-dev"			= "http://qwt.sourceforge.net/"
+libQtGui.so*		= "libqt4-gui"			= "http://www.trolltech.com/"
+libQtCore.so*		= "libqt4-core"			= "http://www.trolltech.com/"
+ladspa.h		= "ladspa-sdk"			= "http://ladspa.org"
+# libQtCore_debug.so*	= "libqt4-debug"		= "http://www.trolltech.com/"
+#libpthread.so*		=
+#libFLAC.so*		= 
+
+#libX11.so*		=
+#	libXext.so.6 => /usr/X11R6/lib/libXext.so.6 (0xb75b4000)
+#	libstdc++.so.6 => /usr/lib/libstdc++.so.6 (0xb73f6000)
+#	libm.so.6 => /lib/tls/libm.so.6 (0xb73d0000)
+#	libgcc_s.so.1 => /lib/libgcc_s.so.1 (0xb73c4000)
+#	libc.so.6 => /lib/tls/libc.so.6 (0xb728c000)
+#	libdl.so.2 => /lib/tls/libdl.so.2 (0xb7288000)
+#	libfontconfig.so.1 => /usr/lib/libfontconfig.so.1 (0xb7213000)
+#	libaudio.so.2 => /usr/lib/libaudio.so.2 (0xb71fe000)
+#	libXt.so.6 => /usr/X11R6/lib/libXt.so.6 (0xb71ae000)
+#	libjpeg.so.62 => /usr/lib/libjpeg.so.62 (0xb718e000)
+#	libpng12.so.0 => /usr/lib/libpng12.so.0 (0xb7169000)
+#	libz.so.1 => /usr/lib/libz.so.1 (0xb7155000)
+#	libXi.so.6 => /usr/X11R6/lib/libXi.so.6 (0xb714c000)
+#	libXrender.so.1 => /usr/lib/libXrender.so.1 (0xb7143000)
+#	libXrandr.so.2 => /usr/X11R6/lib/libXrandr.so.2 (0xb713f000)
+#	libXcursor.so.1 => /usr/lib/libXcursor.so.1 (0xb7136000)
+#	libXinerama.so.1 => /usr/X11R6/lib/libXinerama.so.1 (0xb7133000)
+#	libXft.so.2 => /usr/lib/libXft.so.2 (0xb7120000)
+#	libfreetype.so.6 => /usr/lib/libfreetype.so.6 (0xb70b3000)
+#	libSM.so.6 => /usr/X11R6/lib/libSM.so.6 (0xb70aa000)
+#	libICE.so.6 => /usr/X11R6/lib/libICE.so.6 (0xb7092000)
+#	/lib/ld-linux.so.2 (0xb7fe0000)
+#	libexpat.so.1 => /usr/lib/libexpat.so.1 (0xb7072000)

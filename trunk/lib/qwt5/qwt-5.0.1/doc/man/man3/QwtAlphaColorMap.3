@@ -1,0 +1,167 @@
+.TH "QwtAlphaColorMap" 3 "26 Feb 2007" "Version 5.0.1" "Qwt User's Guide" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+QwtAlphaColorMap \- 
+.SH SYNOPSIS
+.br
+.PP
+Inherits \fBQwtColorMap\fP.
+.PP
+.SH "Detailed Description"
+.PP 
+\fBQwtAlphaColorMap\fP variies the alpha value of a color. 
+.PP
+Definition at line 160 of file qwt_color_map.h.
+.SS "Public Member Functions"
+
+.in +1c
+.ti -1c
+.RI "\fBQwtAlphaColorMap\fP (const QColor &=QColor(Qt::gray))"
+.br
+.ti -1c
+.RI "\fBQwtAlphaColorMap\fP (const \fBQwtAlphaColorMap\fP &)"
+.br
+.ti -1c
+.RI "virtual \fB~QwtAlphaColorMap\fP ()"
+.br
+.ti -1c
+.RI "\fBQwtAlphaColorMap\fP & \fBoperator=\fP (const \fBQwtAlphaColorMap\fP &)"
+.br
+.ti -1c
+.RI "virtual \fBQwtColorMap\fP * \fBcopy\fP () const "
+.br
+.ti -1c
+.RI "void \fBsetColor\fP (const QColor &)"
+.br
+.ti -1c
+.RI "QColor \fBcolor\fP () const "
+.br
+.ti -1c
+.RI "virtual QRgb \fBrgb\fP (const \fBQwtDoubleInterval\fP &, double value) const "
+.br
+.in -1c
+.SH "Constructor & Destructor Documentation"
+.PP 
+.SS "QwtAlphaColorMap::QwtAlphaColorMap (const QColor & color = \fCQColor(Qt::gray)\fP)"
+.PP
+Constructor 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIcolor\fP Color of the map 
+.RE
+.PP
+
+.PP
+Definition at line 402 of file qwt_color_map.cpp.
+.PP
+Referenced by copy().
+.SS "QwtAlphaColorMap::QwtAlphaColorMap (const \fBQwtAlphaColorMap\fP & other)"
+.PP
+Copy constructor 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIother\fP Other color map 
+.RE
+.PP
+
+.PP
+Definition at line 414 of file qwt_color_map.cpp.
+.SS "QwtAlphaColorMap::~QwtAlphaColorMap ()\fC [virtual]\fP"
+.PP
+Destructor. 
+.PP
+Definition at line 422 of file qwt_color_map.cpp.
+.SH "Member Function Documentation"
+.PP 
+.SS "QColor QwtAlphaColorMap::color () const"
+.PP
+\fBReturns:\fP
+.RS 4
+the color 
+.RE
+.PP
+\fBSee also:\fP
+.RS 4
+\fBsetColor()\fP 
+.RE
+.PP
+
+.PP
+Definition at line 465 of file qwt_color_map.cpp.
+.SS "\fBQwtColorMap\fP * QwtAlphaColorMap::copy () const\fC [virtual]\fP"
+.PP
+Clone the color map. 
+.PP
+Implements \fBQwtColorMap\fP.
+.PP
+Definition at line 441 of file qwt_color_map.cpp.
+.PP
+References QwtAlphaColorMap().
+.SS "\fBQwtAlphaColorMap\fP & QwtAlphaColorMap::operator= (const \fBQwtAlphaColorMap\fP & other)"
+.PP
+Assignment operator 
+.PP
+\fBParameters:\fP
+.RS 4
+\fIother\fP Other color map 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+*this 
+.RE
+.PP
+
+.PP
+Definition at line 432 of file qwt_color_map.cpp.
+.PP
+References d_data.
+.SS "QRgb QwtAlphaColorMap::rgb (const \fBQwtDoubleInterval\fP & interval, double value) const\fC [virtual]\fP"
+.PP
+Map a value of a given interval into a alpha value. 
+.PP
+alpha := (value - interval.minValue()) / interval.width();
+.PP
+\fBParameters:\fP
+.RS 4
+\fIinterval\fP Range for all values 
+.br
+\fIvalue\fP Value to map into a rgb value 
+.RE
+.PP
+\fBReturns:\fP
+.RS 4
+rgb value, with an alpha value 
+.RE
+.PP
+
+.PP
+Implements \fBQwtColorMap\fP.
+.PP
+Definition at line 479 of file qwt_color_map.cpp.
+.PP
+References QwtDoubleInterval::isValid(), QwtDoubleInterval::minValue(), and QwtDoubleInterval::width().
+.SS "void QwtAlphaColorMap::setColor (const QColor & color)"
+.PP
+Set the color
+.PP
+\fBParameters:\fP
+.RS 4
+\fIcolor\fP Color 
+.RE
+.PP
+\fBSee also:\fP
+.RS 4
+\fBcolor()\fP 
+.RE
+.PP
+
+.PP
+Definition at line 455 of file qwt_color_map.cpp.
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for Qwt User's Guide from the source code.
