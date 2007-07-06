@@ -87,6 +87,7 @@ fi
 # create the links
 sudo ln -s /usr/local/qwt/lib/libqwt.so /usr/lib/libqwt.so
 sudo ln -s /usr/local/qwt/lib/libqwt.so.5 /usr/lib/libqwt.so.5
+sudo ln -s /usr/local/qwt/include /usr/include/qwt
 echo "Execute ldconfig..."
 sudo ldconfig
 

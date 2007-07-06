@@ -26,6 +26,12 @@ qt4			= "libqt4-dev"			= "http://www.trolltech.com/"
 libQtGui.so*		= "libqt4-gui"			= "http://www.trolltech.com/"
 libQtCore.so*		= "libqt4-core"			= "http://www.trolltech.com/"
 ladspa.h		= "ladspa-sdk"			= "http://ladspa.org"
+libdv.so.*		= "libdv4"			= ""
+libdv/dv.h		= "libdv4-dev"			= ""
+libSDL-1.2.so.*		= "libsdl1.2debian-all"		= ""
+SDL/SDL.h		= "libsdl1.2-dev"
+liblrdf.so.*		= "liblrdf0"
+lrdf.h			= "liblrdf0-dev"
 # libQtCore_debug.so*	= "libqt4-debug"		= "http://www.trolltech.com/"
 #libpthread.so*		=
 #libFLAC.so*		= 
