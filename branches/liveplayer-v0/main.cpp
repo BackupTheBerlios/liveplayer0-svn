@@ -46,7 +46,7 @@ int main(int argc, char **argv)
   QSemaphore wait_ready(1);
 
   lp_portaudio_IO aout;
-  aout.init(0, 2, 44100, n_frames/2, &as, &sig_cond, &wait_ready, num_players);
+  aout.init(0, 2, 44100, n_frames, &as, &sig_cond, &wait_ready, num_players);
   aout.start_stream();
 
   long int readen_frames = 1;
